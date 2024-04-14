@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "RedRockAI"
 include(":app")
- 
+
+include(":lib_utils")

@@ -1,18 +1,17 @@
 package com.example.redrockai
 
-import androidx.appcompat.app.AppCompatActivity
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.redrockai.lib.utils.BaseActivity
+import com.example.redrockai.lib.utils.BaseUtils
 import com.iflytek.sparkchain.core.LLM
 import com.iflytek.sparkchain.core.LLMCallbacks
 import com.iflytek.sparkchain.core.LLMConfig
@@ -21,10 +20,11 @@ import com.iflytek.sparkchain.core.LLMEvent
 import com.iflytek.sparkchain.core.LLMResult
 import com.iflytek.sparkchain.core.Memory
 import com.iflytek.sparkchain.core.SparkChain
-import com.iflytek.sparkchain.core.SparkChainConfig
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
+
+
     private val TAG = "AEE"
     private lateinit var startChatBtn: Button
     private lateinit var chatText: TextView
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var sessionFinished = true
 
     private var llm: LLM? = null
-    var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
+    private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
         override fun onLLMResult(llmResult: LLMResult, usrContext: Any?) {
             Log.d(TAG, "onLLMResult\n")
             val content: String = llmResult.getContent()
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             if (content != null) {
                 runOnUiThread {
                     chatText!!.append(content)
-                    toend()
+                    toEnd()
                 }
             }
             if (usrContext != null) {
@@ -78,17 +78,17 @@ class MainActivity : AppCompatActivity() {
             sessionFinished = true
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-                initView()
-                initButtonClickListener()
-                initSDK ()
+        initView()
+        initButtonClickListener()
+        setLLMConfig()
+
+
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        unInitSDK()
-    }
+
 
     private fun setLLMConfig() {
         Log.d(TAG, "setLLMConfig")
@@ -104,33 +104,15 @@ class MainActivity : AppCompatActivity() {
         llm!!.registerLLMCallbacks(llmCallbacks)
     }
 
-    private fun initSDK() {
-        // 初始化SDK，Appid等信息在清单中配置
-        val sparkChainConfig: SparkChainConfig = SparkChainConfig.builder()
-        sparkChainConfig.appID("da2f95cc")
-            .apiKey("fac412ab739047c09f08d5360592cb1c")
-            .apiSecret("YTNiNzQ1ZDk5ZTY1ZGJiZTQ5ODRmN2Ni") //应用申请的appid三元组
-            .logLevel(0)
-        val ret: Int = SparkChain.getInst().init(applicationContext, sparkChainConfig)
-        if (ret == 0) {
-            Log.d(TAG, "SDK初始化成功：$ret")
-            showToast(this@MainActivity, "SDK初始化成功：$ret")
-            setLLMConfig()
-        } else {
-            Log.d(TAG, "SDK初始化失败：其他错误:$ret")
-            showToast(this@MainActivity, "SDK初始化失败-其他错误：$ret")
-        }
-    }
-
 
     private fun startChat() {
         if (llm == null) {
             Log.e(TAG, "startChat failed,please setLLMConfig before!")
             return
         }
-        val usrInputText = inputText!!.text.toString()
+        val usrInputText = inputText.text.toString()
         Log.d(TAG, "用户输入：$usrInputText")
-        if (usrInputText.length >= 1) chatText!!.append("\n输入:\n    $usrInputText\n")
+        if (usrInputText.isNotEmpty()) chatText.append("\n输入:\n    $usrInputText\n")
         val myContext = "myContext"
         val ret: Int = llm!!.arun(usrInputText, myContext)
         if (ret != 0) {
@@ -138,8 +120,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
         runOnUiThread {
-            inputText!!.setText("")
-            chatText!!.append("输出:\n    ")
+            inputText.setText("")
+            chatText.append("输出:\n    ")
         }
         sessionFinished = false
         return
@@ -150,29 +132,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initButtonClickListener() {
-        startChatBtn!!.setOnClickListener {
+        startChatBtn.setOnClickListener {
             if (sessionFinished) {
                 startChat()
-                toend()
+                toEnd()
             } else {
                 Toast.makeText(this@MainActivity, "Busying! Please Wait", Toast.LENGTH_SHORT).show()
             }
         }
         // 监听文本框点击时间,跳转到底部
-        inputText!!.setOnClickListener { toend() }
+        inputText.setOnClickListener { toEnd() }
     }
 
     private fun initView() {
         startChatBtn = findViewById(R.id.chat_start_btn)
         chatText = findViewById(R.id.chat_output_text)
         inputText = findViewById(R.id.chat_input_text)
-        this.chatText.setMovementMethod(ScrollingMovementMethod())
+        this.chatText.movementMethod = ScrollingMovementMethod()
         val drawable = GradientDrawable()
         // 设置圆角弧度为5dp
         drawable.cornerRadius = dp2px(this, 5f)
         // 设置边框线的粗细为1dp，颜色为黑色【#000000】
         drawable.setStroke(dp2px(this, 1f).toInt(), Color.parseColor("#000000"))
-        this.inputText.setBackground(drawable)
+        this.inputText.background = drawable
     }
 
     private fun dp2px(context: Context?, dipValue: Float): Float {
@@ -183,17 +165,17 @@ class MainActivity : AppCompatActivity() {
         return (dipValue * scale + 0.5f)
     }
 
-    fun showToast(context: Activity, content: String?) {
-        context.runOnUiThread {
-            val random = (Math.random() * (1 - 0) + 0).toInt()
-            Toast.makeText(context, content, random).show()
+
+    fun toEnd() {
+        val scrollAmount = chatText.layout.getLineTop(chatText.lineCount) - chatText.height
+        if (scrollAmount > 0) {
+            chatText.scrollTo(0, scrollAmount + 10)
         }
     }
 
-    fun toend() {
-        val scrollAmount = chatText!!.layout.getLineTop(chatText!!.lineCount) - chatText!!.height
-        if (scrollAmount > 0) {
-            chatText!!.scrollTo(0, scrollAmount + 10)
-        }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unInitSDK()
     }
 }
