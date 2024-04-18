@@ -17,3 +17,4 @@ rootProject.name = "RedRockAI"
 include(":app")
 
 include(":lib_utils")
+include(":lib_api")

@@ -85,8 +85,6 @@ class MainActivity : BaseActivity() {
         initView()
         initButtonClickListener()
         setLLMConfig()
-
-
     }
 
 
