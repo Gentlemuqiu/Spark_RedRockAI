@@ -18,3 +18,5 @@ include(":app")
 
 include(":lib_utils")
 include(":lib_api")
+include(":language")
+include(":voice")
