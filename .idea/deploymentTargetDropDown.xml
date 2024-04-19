@@ -21,13 +21,25 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-13T08:45:04.195459800Z" />
         </State>
       </entry>
+      <entry key="MainActivity (1)">
+        <State />
+      </entry>
       <entry key="app">
+        <State />
+      </entry>
+      <entry key="identify">
+        <State />
+      </entry>
+      <entry key="language">
         <State />
       </entry>
       <entry key="lib_utils">
         <State />
       </entry>
       <entry key="module_login">
+        <State />
+      </entry>
+      <entry key="voice">
         <State />
       </entry>
     </value>

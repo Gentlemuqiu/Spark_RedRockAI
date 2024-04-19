@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.aliyun.com/repository/public")
     }
 }
 
@@ -20,3 +22,4 @@ include(":lib_utils")
 include(":lib_api")
 include(":language")
 include(":voice")
+include(":identify")
