@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.libsDirectory
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -39,10 +41,11 @@ android {
 
 dependencies {
 
-    //添加retrofit依赖
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//添加Gson转换器，把数据解析成对象。
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(project(":lib_utils"))
+    implementation(project(":lib_api"))
+
 
 
     implementation("androidx.core:core-ktx:1.12.0")

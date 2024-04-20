@@ -1,11 +1,11 @@
-package com.lytmoon.identify;
+package com.example.api.orc;
 
 import android.os.Build;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.example.api.orc.dataBean.DataClass;
+import com.example.api.orc.dataBean.JsonParse;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -29,19 +29,28 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * author : 29364
- * date: 2024/4/19 12:17
+ * author : lytMoon
+ * date: 2024/4/19 12:52
  * version : 1.0
- * description :请通过OCR.getInstance()方法获取实例，并且传入一个参数图片通过base64编码后的String
+ * description : 请通过OCR.getInstance()方法获取实例，并且传入一个参数图片通过base64编码后的String
  * 通过 val result = OCR.getInstance().getOCRResult 获取最终返回的数据
+ * saying : 这世界天才那么多，也不缺我一个
  */
 public class OCR {
 
+    public static String requestUrl;
+    public static String appID;
+    public static String apiSecret;
+
+    static {
+        requestUrl = "https://api.xf-yun.com/v1/private/hh_ocr_recognize_doc";
+        appID = "82d5a760";
+        apiSecret = "OGY2M2FhMGJiMTMxN2QzMWRiYTZjMzc5";
+    }
+
     private String imageBase64;
-    private String requestUrl = "https://api.xf-yun.com/v1/private/hh_ocr_recognize_doc";
-    private String appid = "82d5a760";
-    private String apiSecret = "OGY2M2FhMGJiMTMxN2QzMWRiYTZjMzc5";
-    private static Gson json = new Gson();
+
+    private static final Gson json = new Gson();
 
     private static volatile OCR ocrInstance;
 
@@ -71,11 +80,9 @@ public class OCR {
         try {
             String resp = doRequest();
             JsonParse myJsonParse = json.fromJson(resp, JsonParse.class);
-            String base64String = myJsonParse.payload.recognizeDocumentRes.text;
+            String base64String = myJsonParse.getPayload().getRecognizeDocumentRes().getText();
             String decodedString = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                decodedString = new String(Base64.getDecoder().decode(base64String));
-            }
+            decodedString = new String(Base64.getDecoder().decode(base64String));
             Gson gson = new Gson();
 
             return gson.fromJson(decodedString, DataClass.class);
@@ -104,7 +111,7 @@ public class OCR {
 
         OutputStream out = httpURLConnection.getOutputStream();
         String params = buildParam();
-        //System.out.println("params=>"+params);
+
         out.write(params.getBytes());
         out.flush();
         InputStream is = null;
@@ -121,32 +128,27 @@ public class OCR {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String buildRequestUrl() {
         URL url = null;
-        // 替换调schema前缀 ，原因是URL库不支持解析包含ws,wss schema的url
         String httpRequestUrl = requestUrl.replace("ws://", "http://").replace("wss://", "https://");
         try {
             url = new URL(httpRequestUrl);
-            //获取当前日期并格式化
+
             SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("GMT"));
             String date = format.format(new Date());
             String host = url.getHost();
-			/*if (url.getPort()!=80 && url.getPort() !=443){
-				host = host +":"+String.valueOf(url.getPort());
-			}*/
-            StringBuilder builder = new StringBuilder("host: ").append(host).append("\n").//
-                    append("date: ").append(date).append("\n").//
-                    append("POST ").append(url.getPath()).append(" HTTP/1.1");
+
+
+            String builder = "host: " + host + "\n" +
+                    "date: " + date + "\n" +
+                    "POST " + url.getPath() + " HTTP/1.1";
 
             Charset charset = StandardCharsets.UTF_8;
             Mac mac = Mac.getInstance("hmacsha256");
             SecretKeySpec spec = new SecretKeySpec(apiSecret.getBytes(charset), "hmacsha256");
             mac.init(spec);
-            byte[] hexDigits = mac.doFinal(builder.toString().getBytes(charset));
+            byte[] hexDigits = mac.doFinal(builder.getBytes(charset));
             String sha = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                sha = Base64.getEncoder().encodeToString(hexDigits);
-            }
-
+            sha = Base64.getEncoder().encodeToString(hexDigits);
             String apiKey = "7a1bbccf7648b6a20218ea30eb529db5";
             String authorization = String.format("api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"", apiKey, "hmac-sha256", "host date request-line", sha);
             String authBase = null;
@@ -157,19 +159,13 @@ public class OCR {
         }
     }
 
-    /**
-     * 组装请求参数
-     * 直接使用示例参数，
-     * 替换部分值
-     *
-     * @return 参数字符串
-     */
+
     private String buildParam() throws Exception {
         String param = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             param = "{" +
                     "    \"header\": {" +
-                    "        \"app_id\": \"" + appid + "\"," +
+                    "        \"app_id\": \"" + appID + "\"," +
                     "        \"status\": 3" +
                     "    }," +
                     "    \"parameter\": {" +
@@ -199,167 +195,6 @@ public class OCR {
         return br.lines().collect(Collectors.joining(System.lineSeparator()));
     }
 
-
-    class JsonParse {
-        public Header header;
-        public Payload payload;
-
-        public JsonParse(Header header, Payload payload) {
-            this.header = header;
-            this.payload = payload;
-        }
-
-        public Header getHeader() {
-            return header;
-        }
-
-        public void setHeader(Header header) {
-            this.header = header;
-        }
-
-        public Payload getPayload() {
-            return payload;
-        }
-
-        public void setPayload(Payload payload) {
-            this.payload = payload;
-        }
-
-        @Override
-        public String toString() {
-            return "JsonParse{" +
-                    "header=" + header +
-                    ", payload=" + payload +
-                    '}';
-        }
-    }
-
-    class Header {
-        public int code;
-        public String message;
-        public String sid;
-
-        public Header(int code, String message, String sid) {
-            this.code = code;
-            this.message = message;
-            this.sid = sid;
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public String getSid() {
-            return sid;
-        }
-
-        public void setSid(String sid) {
-            this.sid = sid;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "Header{" +
-                    "code=" + code +
-                    ", message='" + message + '\'' +
-                    ", sid='" + sid + '\'' +
-                    '}';
-        }
-    }
-
-    class Payload {
-        public Result recognizeDocumentRes;
-
-        public Payload(Result recognizeDocumentRes) {
-            this.recognizeDocumentRes = recognizeDocumentRes;
-        }
-
-        public Result getRecognizeDocumentRes() {
-            return recognizeDocumentRes;
-        }
-
-        public void setRecognizeDocumentRes(Result recognizeDocumentRes) {
-            this.recognizeDocumentRes = recognizeDocumentRes;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "Payload{" +
-                    "recognizeDocumentRes=" + recognizeDocumentRes +
-                    '}';
-        }
-    }
-
-    class Result {
-        public String compress;
-        public String encoding;
-        public String format;
-        public String text;
-
-        public Result(String compress, String encoding, String format, String text) {
-            this.compress = compress;
-            this.encoding = encoding;
-            this.format = format;
-            this.text = text;
-        }
-
-        public String getCompress() {
-            return compress;
-        }
-
-        public void setCompress(String compress) {
-            this.compress = compress;
-        }
-
-        public String getEncoding() {
-            return encoding;
-        }
-
-        public void setEncoding(String encoding) {
-            this.encoding = encoding;
-        }
-
-        public String getFormat() {
-            return format;
-        }
-
-        public void setFormat(String format) {
-            this.format = format;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return "Result{" +
-                    "compress='" + compress + '\'' +
-                    ", encoding='" + encoding + '\'' +
-                    ", format='" + format + '\'' +
-                    ", text='" + text + '\'' +
-                    '}';
-        }
-    }
 
 }
 
