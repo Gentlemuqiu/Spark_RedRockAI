@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_class"
+        android:icon="@drawable/ic_class"
+        android:title="课程" />
+    <item
+        android:id="@+id/bottom_life"
+        android:icon="@drawable/ic_life"
+        android:title="动态" />
+    <item
+        android:id="@+id/bottom_message"
+        android:icon="@drawable/ic_message"
+        android:title="消息" />
+
+    <item
+        android:id="@+id/bottom_mine"
+        android:icon="@drawable/ic_mine"
+        android:title="我的" />
+
+</menu>

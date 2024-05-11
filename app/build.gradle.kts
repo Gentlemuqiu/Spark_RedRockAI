@@ -7,12 +7,19 @@ android {
     namespace = "com.example.redrockai"
     compileSdk = 34
 
+
+    viewBinding {
+        enable = true
+    }
+
     defaultConfig {
         applicationId = "com.example.redrockai"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk {
