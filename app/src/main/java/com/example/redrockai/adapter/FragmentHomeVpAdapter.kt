@@ -24,12 +24,7 @@ open class FragmentHomeVpAdapter(
         return this
     }
 
-    override fun getItemCount(): Int {
-        return mFragments.size
-    }
-
-    override fun createFragment(position: Int): Fragment {
-        return mFragments[position].invoke()
-    }
+    override fun getItemCount() = mFragments.size
+    override fun createFragment(position: Int) = mFragments[position].invoke()
 
 }

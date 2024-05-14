@@ -9,14 +9,22 @@ import com.example.redrockai.databinding.FragmentMessageBinding
 
 class MessageFragment : Fragment() {
 
-    private lateinit var mBinding: FragmentMessageBinding
+    private var _mBinding: FragmentMessageBinding? = null
+    private val mBinding: FragmentMessageBinding
+        get() = _mBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentMessageBinding.inflate(inflater, container, false)
+        _mBinding = FragmentMessageBinding.inflate(inflater, container, false)
         return mBinding.root
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _mBinding = null
     }
 
 

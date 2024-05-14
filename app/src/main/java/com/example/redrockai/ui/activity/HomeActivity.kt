@@ -1,7 +1,6 @@
 package com.example.redrockai.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.redrockai.R
 import com.example.redrockai.adapter.FragmentHomeVpAdapter
 import com.example.redrockai.databinding.ActivityHomeBinding
@@ -33,6 +32,7 @@ class HomeActivity : BaseActivity() {
                 add { MineFragment() }
             }
             vp2.isUserInputEnabled = false
+            bottomNavigationView.itemIconTintList = null
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
                     R.id.bottom_class -> mBinding.vp2.currentItem = 0
@@ -42,6 +42,7 @@ class HomeActivity : BaseActivity() {
                 }
                 return@setOnItemSelectedListener true
             }
+
         }
     }
 
