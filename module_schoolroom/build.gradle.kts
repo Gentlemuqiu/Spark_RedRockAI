@@ -1,37 +1,26 @@
 plugins {
-    id("com.android.application")
+//    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.example.redrockai"
+    namespace = "com.example.redrockai.module.schoolroom"
     compileSdk = 34
-
 
     viewBinding {
         enable = true
     }
 
-    defaultConfig {
-        applicationId = "com.example.redrockai"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        vectorDrawables.useSupportLibrary = true
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters.apply {
-                add("armeabi")
-                add("armeabi-v7a")
-                add("x86")
-                add("mips")
-            }
-        }
-    }
-
+//    defaultConfig {
+//        applicationId = "com.example.redrockai.module.schoolroom"
+//        minSdk = 24
+//        targetSdk = 34
+//        versionCode = 1
+//        versionName = "1.0"
+//
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//    }
 
     buildTypes {
         release {
@@ -54,11 +43,9 @@ android {
 dependencies {
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
-    implementation(project(":module_schoolroom"))
-    implementation(files("libs/SparkChain.aar"))
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

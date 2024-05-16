@@ -5,7 +5,7 @@ import com.example.redrockai.R
 import com.example.redrockai.adapter.FragmentHomeVpAdapter
 import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
-import com.example.redrockai.ui.fragment.ClassFragment
+import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
 import com.example.redrockai.ui.fragment.LifeFragment
 import com.example.redrockai.ui.fragment.MessageFragment
 import com.example.redrockai.ui.fragment.MineFragment
