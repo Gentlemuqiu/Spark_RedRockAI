@@ -1,4 +1,4 @@
-package com.example.redrockai.module.schoolroom.ui.fragment.Bean
+package com.example.redrockai.module.schoolroom.bean
 
 import com.google.gson.annotations.SerializedName
 

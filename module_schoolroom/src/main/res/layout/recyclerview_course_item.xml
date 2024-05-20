@@ -1,19 +1,47 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/course_item_cardview"
+    android:layout_width="167dp"
+    android:layout_height="240dp"
+    android:layout_marginStart="20dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp">
 
-    <ImageView
-        android:id="@+id/banner_image"
-        android:layout_width="200dp"
-        android:layout_height="230dp"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </ImageView>
+        <com.example.redrockai.lib.utils.view.RoundedImageView
+            android:id="@+id/banner_image"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="-2dp" />
+
+        <TextView
+            android:id="@+id/course_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/course_item_descr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textSize="10sp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
+
+

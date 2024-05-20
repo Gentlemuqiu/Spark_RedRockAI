@@ -1,34 +1,34 @@
-package com.example.redrockai.module.schoolroom.ui.fragment.viewModel
+package com.example.redrockai.module.schoolroom.viewModel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.redrockai.module.schoolroom.ui.fragment.Bean.CateGoryBean
-import com.example.redrockai.module.schoolroom.ui.fragment.net.SchoolRoomNet
+import com.example.redrockai.module.schoolroom.bean.RelatedCategoryBean
+import com.example.redrockai.module.schoolroom.net.SchoolRoomNet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
+class IntroduceViewModel() : ViewModel() {
+    private val _relatedCategoryData = MutableLiveData<RelatedCategoryBean>()
+    val relatedCategoryData: LiveData<RelatedCategoryBean> get() = _relatedCategoryData
 
-class CateGoryViewModel() : ViewModel() {
-    private val _cateGoryData = MutableLiveData<CateGoryBean>()
-    val cateGoryData: LiveData<CateGoryBean> get() = _cateGoryData
-    fun getCateGory() {
+    fun getRelatedCategoryData(id: Int) {
         viewModelScope.launch {
             flow {
-                val list = SchoolRoomNet.getCategories()
+                val list = SchoolRoomNet.getIntroduce(id)
                 emit(list)
             }.flowOn(Dispatchers.IO)
                 .catch { e ->
                     e.printStackTrace()
-                    Log.d("hui", "getCateGory: ${e}")
+                    Log.d("hui", "getMonthRanking:${e} ")
                 }
                 .collect {
-                    _cateGoryData.value = it
+                    _relatedCategoryData.value = it
                 }
         }
     }
