@@ -1,29 +1,35 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.redrockai.lib.utils.adapter.FragmentVpAdapter
-import com.example.redrockai.module.schoolroom.R
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redrockai.module.schoolroom.databinding.FragmentClassBinding
-import com.example.redrockai.module.schoolroom.ui.fragment.schooltabs.CommunityFragment
-import com.example.redrockai.module.schoolroom.ui.fragment.schooltabs.DailyFragment
-import com.example.redrockai.module.schoolroom.ui.fragment.schooltabs.FindFragment
-import com.example.redrockai.module.schoolroom.ui.fragment.schooltabs.RecommendFragment
+import com.example.redrockai.module.schoolroom.ui.fragment.Bean.CateGoryBean
+import com.example.redrockai.module.schoolroom.ui.fragment.adapter.RelatedIntroduceAdapter
+import com.example.redrockai.module.schoolroom.ui.fragment.viewModel.CateGoryViewModel
+import com.example.redrockai.module.schoolroom.ui.fragment.viewModel.IntroduceViewModel
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 
 
 class ClassFragment : Fragment() {
 
-
+    private lateinit var tabLayout: TabLayout
     private var _mBinding: FragmentClassBinding? = null
     private val mBinding: FragmentClassBinding
         get() = _mBinding!!
-
-
+    private val newFollowViewModel by lazy {
+        ViewModelProvider(this)[CateGoryViewModel::class.java]
+    }
+    private val introduceViewModel by lazy {
+        ViewModelProvider(this)[IntroduceViewModel::class.java]
+    }
+    private lateinit var adapter: RelatedIntroduceAdapter
+    private lateinit var list: List<CateGoryBean.CateGoryBeanItem>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,52 +41,44 @@ class ClassFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        newFollowViewModel.getCateGory()
         iniTabLayout()
+        adapter = RelatedIntroduceAdapter()
+        newFollowViewModel.cateGoryData.observe(viewLifecycleOwner) {
+            val categories = it
+            list = categories
+            categories.forEach { category ->
+                // 在这里处理每个元素，
+                val tab = tabLayout.newTab()
+                tab.text = category.name
+                tabLayout.addTab(tab)
+            }
+        }
+        introduceViewModel.relatedCategoryData.observe(viewLifecycleOwner) {
+            adapter.submitList(it.itemList)
+        }
+        mBinding.recyclerviewIntroduce.layoutManager = LinearLayoutManager(this.context,LinearLayoutManager.HORIZONTAL, false)
+        mBinding.recyclerviewIntroduce.adapter = adapter
+
     }
 
     private fun iniTabLayout() {
         mBinding.apply {
-            classViewpager2.adapter = FragmentVpAdapter(requireActivity())
-                .add { FindFragment() }
-                .add { RecommendFragment() }
-                .add { DailyFragment() }
-                .add { CommunityFragment() }
-            TabLayoutMediator(classTablayout, classViewpager2) { tab, position ->
-                when (position) {
-                    0 -> tab.text = "发现"
-                    1 -> tab.text = "推荐"
-                    2 -> tab.text = "日报"
-                    else -> tab.text = "社区"
-                }
-            }.attach()
-            //让初始化的第一个先变色
-            (classTablayout.getChildAt(0) as ViewGroup).getChildAt(0)
-                .setBackgroundResource(R.drawable.ic_tab_shape_selected)
-            //设置其他icon颜色
-            for (i in 1 until classTablayout.tabCount) {
-                val tab = (classTablayout.getChildAt(0) as ViewGroup).getChildAt(i)
-                tab.setBackgroundResource(R.drawable.ic_tab_shape)
-            }
-            //设置间距
-            for (i in 0 until classTablayout.tabCount) {
-                val tab = (classTablayout.getChildAt(0) as ViewGroup).getChildAt(i)
-                val params = tab.layoutParams as ViewGroup.MarginLayoutParams
-                params.setMargins(10, params.topMargin, 10, params.bottomMargin)
-                tab.requestLayout()
-            }
-            /**
-             * 实现滑动到特定区域和没有的颜色区分
-             */
-            classTablayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    tab.view.setBackgroundResource(R.drawable.ic_tab_shape_selected)
+            tabLayout = classTablayout
+            tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    val selectedTabIndex = tab?.position ?: -1
+                    introduceViewModel.getRelatedCategoryData(list[selectedTabIndex].tagId)
+
                 }
 
-                override fun onTabUnselected(tab: TabLayout.Tab) {
-                    tab.view.setBackgroundResource(R.drawable.ic_tab_shape)
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    // 当Tab取消选中时的处理
                 }
 
-                override fun onTabReselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    // 当Tab重新选中时的处理
+                }
             })
 
         }

@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.fragment.ClassFragment">
+    android:layout_height="match_parent">
 
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/class_tablayout"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="20dp"
-        app:tabIndicatorColor="@null"
-        app:tabIndicatorFullWidth="false"
-        app:tabIndicatorHeight="0dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabMode="scrollable"
         app:tabRippleColor="@null"
         app:tabSelectedTextColor="#4F4AE9"
         app:tabTextAppearance="@style/uFieldMyTextStyle"
         app:tabTextColor="#9915315B" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/class_viewpager2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_introduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/class_tablayout" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
