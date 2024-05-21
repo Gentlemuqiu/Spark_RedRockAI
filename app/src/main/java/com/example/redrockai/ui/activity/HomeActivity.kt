@@ -1,6 +1,7 @@
 package com.example.redrockai.ui.activity
 
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import com.example.redrockai.R
 import com.example.redrockai.adapter.FragmentHomeVpAdapter
 import com.example.redrockai.databinding.ActivityHomeBinding
@@ -9,6 +10,7 @@ import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
 import com.example.redrockai.ui.fragment.LifeFragment
 import com.example.redrockai.ui.fragment.MessageFragment
 import com.example.redrockai.ui.fragment.MineFragment
+
 
 class HomeActivity : BaseActivity() {
 
@@ -19,7 +21,16 @@ class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
+        initWindow()
         initBottomNavigation()
+    }
+
+    private fun initWindow() {
+       //状态栏不沉浸
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        /* 隐藏导航栏
+        *getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        * */
     }
 
 
