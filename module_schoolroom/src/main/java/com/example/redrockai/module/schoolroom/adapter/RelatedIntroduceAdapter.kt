@@ -49,6 +49,8 @@ class RelatedIntroduceAdapter :
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+
         init {
             view.setOnClickListener {
                 mItemClick?.invoke(getItem(adapterPosition))

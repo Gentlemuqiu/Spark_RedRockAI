@@ -55,10 +55,12 @@ class ClassFragment : Fragment() {
         iniView()
         iniTabLayout()
         initSchoolRoomRv()
+        initClickListener()
 
 
 
     }
+
 
     /**
      * 初始化一些操作
@@ -85,10 +87,6 @@ class ClassFragment : Fragment() {
                 GlobalScope.launch {
                     historyRecordDao.insertOrUpdate(record)
                 }
-
-                startActivity(Intent(requireContext(), HistoryRecordActivity::class.java))
-
-
             }
         }
         newFollowViewModel.cateGoryData.observe(viewLifecycleOwner) {
@@ -121,11 +119,21 @@ class ClassFragment : Fragment() {
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
                     // 当Tab取消选中时的处理
                 }
+
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     // 当Tab重新选中时的处理
                 }
             })
         }
+    }
+
+    private fun initClickListener() {
+        mBinding.apply {
+            coursePast.setOnClickListener {
+                startActivity(Intent(requireContext(), HistoryRecordActivity::class.java))
+            }
+        }
+
     }
 
 

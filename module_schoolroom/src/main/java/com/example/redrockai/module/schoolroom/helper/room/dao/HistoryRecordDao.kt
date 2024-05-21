@@ -41,11 +41,19 @@ interface HistoryRecordDao {
 
 
     @Query("SELECT * FROM history_records WHERE newsId = :newsId")
-    fun getRecordByNewsId(newsId: Int): HistoryRecord?
+    suspend fun getRecordByNewsId(newsId: Int): HistoryRecord?
 
 
     //按照时间戳的降序排列（也就是由新到旧）
     @Query("SELECT * FROM history_records ORDER BY timestamp DESC")
-    fun getAllRecords(): List<HistoryRecord>
+    suspend fun getAllRecords(): List<HistoryRecord>
+
+    // 按照id查询记录，返回值可能为空
+    @Query("SELECT * FROM history_records WHERE newsId = :newsId")
+    suspend fun getRecordById(newsId: Long): HistoryRecord?
+
+    //模糊搜索，根据标题的关键字
+    @Query("SELECT * FROM history_records WHERE title LIKE '%' || :keyword || '%' ORDER BY timestamp DESC")
+    suspend fun getRecordsByTitleKeyword(keyword: String): List<HistoryRecord>
 
 }

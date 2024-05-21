@@ -4,6 +4,8 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
+        maven(url = "https://jitpack.io") // 添加 JitPack 仓库
+
     }
 }
 dependencyResolutionManagement {
@@ -12,6 +14,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://maven.aliyun.com/repository/public")
+        maven(url = "https://jitpack.io") // 添加 JitPack 仓库
+
     }
 }
 

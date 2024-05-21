@@ -1,13 +1,13 @@
 package com.example.redrockai.module.schoolroom.ui.activity
 
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redrockai.lib.utils.BaseActivity
-import com.example.redrockai.module.schoolroom.R
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
-import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
+import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
+import com.example.redrockai.module.schoolroom.databinding.ActivityHistoryBinding
+import com.example.redrockai.module.schoolroom.viewModel.HistoryRecordViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -20,20 +20,75 @@ import kotlinx.coroutines.launch
  */
 class HistoryRecordActivity : BaseActivity() {
 
-    //历史消息room的dao接口
-    private lateinit var historyRecordDao: HistoryRecordDao
+
+    private val mBinding: ActivityHistoryBinding by lazy {
+        ActivityHistoryBinding.inflate(layoutInflater)
+    }
+
+
+    private val mViewModel: HistoryRecordViewModel by viewModels()
+    private val mAdapter: PastCourseRvAdapter by lazy { PastCourseRvAdapter() }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
-        iniRoom()
-
-
+        setContentView(mBinding.root)
+        initRv()
+        initListener()
 
 
     }
 
-    private fun iniRoom() {
-        historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
+
+    /**
+     * 展示历史数据列表
+     */
+    private fun initRv() {
+
+        mBinding.apply {
+            pastRv.adapter = mAdapter.apply {
+
+            }
+            pastRv.layoutManager = LinearLayoutManager(this@HistoryRecordActivity)
+        }
+
+        lifecycleScope.launch {
+            mViewModel.historyRecords.collect {
+                mAdapter.submitList(it)
+            }
+        }
     }
+
+    private fun initListener() {
+
+        mBinding.apply {
+            historyBack.setOnClickListener { finish() }
+            historySearchView.apply {
+                setOnQueryTextListener(object :
+                    androidx.appcompat.widget.SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        if (query.isNotEmpty()) {
+                            //搜索操作
+                            mViewModel.getSearchData(query)
+                            historySearchView.clearFocus()
+                        }
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        return false
+                    }
+                })
+            }
+
+            historySearchCard.setOnClickListener {
+                historySearchView.isIconified = false
+            }
+
+
+        }
+
+    }
+
+
 }

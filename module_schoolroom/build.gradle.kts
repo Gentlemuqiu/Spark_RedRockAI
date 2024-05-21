@@ -50,9 +50,16 @@ dependencies {
     //使用room
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
-    testImplementation ("androidx.room:room-testing:2.6.1")
+    testImplementation("androidx.room:room-testing:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 
+    //使用floatSetchView
+    implementation("com.github.arimorty:floatingsearchview:2.0.3")
+
+    //语法糖kts插件
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.activity:activity-ktx:1.6.1")
 
 
     implementation("androidx.core:core-ktx:1.13.1")
