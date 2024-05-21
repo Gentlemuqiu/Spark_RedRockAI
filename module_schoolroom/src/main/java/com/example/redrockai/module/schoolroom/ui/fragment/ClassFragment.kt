@@ -1,13 +1,18 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
 import com.example.redrockai.module.schoolroom.adapter.RelatedIntroduceAdapter
 import com.example.redrockai.module.schoolroom.bean.CateGoryBean
 import com.example.redrockai.module.schoolroom.databinding.FragmentClassBinding
@@ -16,6 +21,7 @@ import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
 import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
 import com.example.redrockai.module.schoolroom.ui.activity.HistoryRecordActivity
 import com.example.redrockai.module.schoolroom.viewModel.CateGoryViewModel
+import com.example.redrockai.module.schoolroom.viewModel.ImageViewModel
 import com.example.redrockai.module.schoolroom.viewModel.IntroduceViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -35,6 +41,9 @@ class ClassFragment : Fragment() {
     private val introduceViewModel by lazy {
         ViewModelProvider(this)[IntroduceViewModel::class.java]
     }
+    private val imageViewModel by lazy {
+        ViewModelProvider(this)[ImageViewModel::class.java]
+    }
     private lateinit var adapter: RelatedIntroduceAdapter
     private lateinit var list: List<CateGoryBean.CateGoryBeanItem>
 
@@ -50,15 +59,28 @@ class ClassFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         iniView()
         iniTabLayout()
         initSchoolRoomRv()
         initClickListener()
+        initImage()
 
 
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initImage() {
+        imageViewModel.getImage()
+        imageViewModel.imageDate.observe(viewLifecycleOwner) {
+            Glide.with(this).load(it.data.urls.get(11)).into(mBinding.ivBing)
+            mBinding.tvDetail.text = it.data.title
+
+
+            mBinding.tvData.text = formatDateStringWithLocalDate(it.data.time)
+        }
     }
 
 
@@ -87,6 +109,10 @@ class ClassFragment : Fragment() {
                 GlobalScope.launch {
                     historyRecordDao.insertOrUpdate(record)
                 }
+
+                startActivity(Intent(requireContext(), HistoryRecordActivity::class.java))
+
+
             }
         }
         newFollowViewModel.cateGoryData.observe(viewLifecycleOwner) {
