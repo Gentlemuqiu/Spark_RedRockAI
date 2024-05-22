@@ -1,6 +1,9 @@
 package com.example.redrockai.lib.utils
 
 import android.content.Context
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 /**
  *  author : lytMoon
@@ -12,21 +15,47 @@ import android.content.Context
  */
 object StudyTimeUtils {
 
+    //学习时间
+    private val _studiedTime = MutableStateFlow<Long>(0)
+    val studiedTime: StateFlow<Long> = _studiedTime.asStateFlow()
+
     private const val studyTime = "STUDY_TIME"
+    private const val lastDay = "LAST_DAY"
+    private const val lastStudiedTime = "LAST_STUDIED_TIME"
 
     private val sharedPreferences =
         BaseApp.getAppContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
 
 
     @Synchronized
-    fun saveStudyTime(value: String) {
-        sharedPreferences.edit().putString(studyTime, value).apply()
+    fun saveLastStudiedTime(value: String) {
+        sharedPreferences.edit().putString(lastStudiedTime, value).apply()
     }
 
     @Synchronized
-    fun getStudyTime(): String {
-        return sharedPreferences.getString(studyTime, "0")!!
+    fun getLastStudiedTime() = sharedPreferences.getString(lastStudiedTime, "0")!!
+
+    @Synchronized
+    fun saveLastDay(value: String) {
+        sharedPreferences.edit().putString(lastDay, value).apply()
     }
+
+
+    /**
+     * 上一天的信息
+     */
+    @Synchronized
+    fun getLastDay(): String {
+        return sharedPreferences.getString(lastDay, "1621769124000")!!
+    }
+
+    fun saveStudiedTime(value: Long) {
+        _studiedTime.value = value
+    }
+
+
+    //把时间戳变成分钟单位
+    fun convertTimestampToMinutes(timestamp: Long) = timestamp / (1000 * 60)
 
 
 }

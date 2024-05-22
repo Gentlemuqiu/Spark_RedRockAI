@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.redrockai.lib.utils.StudyTimeUtils
+import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
 import com.example.redrockai.module.schoolroom.adapter.RelatedIntroduceAdapter
 import com.example.redrockai.module.schoolroom.bean.CateGoryBean
@@ -111,7 +114,6 @@ class ClassFragment : Fragment() {
                     historyRecordDao.insertOrUpdate(record)
                 }
 
-                startActivity(Intent(requireContext(), HistoryRecordActivity::class.java))
 
 
             }
@@ -164,9 +166,19 @@ class ClassFragment : Fragment() {
     }
 
     private fun initStudiedTime() {
-        mBinding.apply {
-            courseStudiedTime.text = "今日已经学习"
+
+        lifecycleScope.launch {
+            StudyTimeUtils.studiedTime.collect {
+                mBinding.apply {
+                    courseStudiedTime.text =
+                        "今天已学习".plus(convertTimestampToMinutes(it).toString()).plus("分钟")
+                            .plus("/60分钟")
+                }
+
+            }
         }
+
+
     }
 
 
