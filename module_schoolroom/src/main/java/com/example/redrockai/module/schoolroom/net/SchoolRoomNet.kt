@@ -21,4 +21,10 @@ object SchoolRoomNet {
             .create<ImageService>()
             .getImage()
             .await()
+
+    suspend fun getSentence() =
+        ServiceCreator
+            .create<SentenceService>()
+            .getSentence()
+            .await()
 }

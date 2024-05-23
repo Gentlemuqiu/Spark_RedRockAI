@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/lib_api" />
             <option value="$PROJECT_DIR$/lib_net" />
             <option value="$PROJECT_DIR$/lib_utils" />
+            <option value="$PROJECT_DIR$/module_playVideo" />
             <option value="$PROJECT_DIR$/module_schoolroom" />
             <option value="$PROJECT_DIR$/voice" />
           </set>

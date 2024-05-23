@@ -24,9 +24,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
+            android:minLines="2"
             android:layout_marginStart="5dp"
             android:layout_marginTop="15dp"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
@@ -36,9 +37,19 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="5dp"
             android:maxLines="3"
+            android:minLines="3"
             android:ellipsize="end"
             android:textSize="10sp" />
-
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/course_item_time"
+            android:text="你好"
+            android:textSize="10sp"
+            android:textColor="@color/dark_gray"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"/>
 
     </LinearLayout>
 

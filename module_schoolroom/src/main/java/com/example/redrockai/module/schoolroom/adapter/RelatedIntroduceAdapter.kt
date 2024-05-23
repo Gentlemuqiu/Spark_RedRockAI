@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.redrockai.lib.utils.formatNumberToTime
 import com.example.redrockai.module.schoolroom.R
 import com.example.redrockai.module.schoolroom.bean.RelatedCategoryBean
 
@@ -60,13 +61,14 @@ class RelatedIntroduceAdapter :
         private val playImage: ImageView = view.findViewById(R.id.banner_image)
         private val itemTitle: TextView = view.findViewById(R.id.course_item_title)
         private val itemDesc: TextView = view.findViewById(R.id.course_item_descr)
+        private val itemTime: TextView = view.findViewById(R.id.course_item_time)
 
 
         fun bind(itemData: RelatedCategoryBean.Item) {
 
             itemTitle.text = itemData.data.content.data.title
             itemDesc.text = itemData.data.content.data.description
-
+            itemTime.text=formatNumberToTime(itemData.data.content.data.duration)
             Glide.with(itemView).load(itemData.data.content.data.cover.detail).into(playImage)
         }
 

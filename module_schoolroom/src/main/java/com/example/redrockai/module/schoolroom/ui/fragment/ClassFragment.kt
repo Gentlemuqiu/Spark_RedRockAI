@@ -1,5 +1,6 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.example.redrockai.module.schoolroom.ui.activity.HistoryRecordActivity
 import com.example.redrockai.module.schoolroom.viewModel.CateGoryViewModel
 import com.example.redrockai.module.schoolroom.viewModel.ImageViewModel
 import com.example.redrockai.module.schoolroom.viewModel.IntroduceViewModel
+import com.example.redrockai.module.schoolroom.viewModel.SentenceViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -46,8 +48,12 @@ class ClassFragment : Fragment() {
     private val imageViewModel by lazy {
         ViewModelProvider(this)[ImageViewModel::class.java]
     }
+    private val sentenceViewModel by lazy {
+        ViewModelProvider(this)[SentenceViewModel::class.java]
+    }
     private lateinit var adapter: RelatedIntroduceAdapter
     private lateinit var list: List<CateGoryBean.CateGoryBeanItem>
+    private lateinit var word: String
 
     //历史消息room的dao接口
     private lateinit var historyRecordDao: HistoryRecordDao
@@ -94,7 +100,22 @@ class ClassFragment : Fragment() {
     private fun iniView() {
         newFollowViewModel.getCateGory()
         historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
+        mBinding.mcClick.setOnClickListener { showDialog() }
+        sentenceViewModel.getSentence()
+        sentenceViewModel.sentenceData.observe(viewLifecycleOwner) {
+            word = it.data.content
+        }
+    }
 
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(this.context)
+        builder.setTitle("一言")
+        builder.setMessage(word)
+        builder.setPositiveButton("希望满满!!!") { dialog, which ->
+        }
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
