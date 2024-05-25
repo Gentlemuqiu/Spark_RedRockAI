@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.redrockai.lib.utils.StudyTimeUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
+import com.example.redrockai.module.schoolroom.R
 import com.example.redrockai.module.schoolroom.adapter.RelatedIntroduceAdapter
 import com.example.redrockai.module.schoolroom.bean.CateGoryBean
 import com.example.redrockai.module.schoolroom.databinding.FragmentClassBinding
@@ -134,7 +135,6 @@ class ClassFragment : Fragment() {
                 GlobalScope.launch {
                     historyRecordDao.insertOrUpdate(record)
                 }
-
 
 
             }

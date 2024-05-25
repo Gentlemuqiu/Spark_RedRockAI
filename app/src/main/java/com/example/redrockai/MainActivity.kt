@@ -93,12 +93,8 @@ class MainActivity : BaseActivity() {
         val llmConfig: LLMConfig = LLMConfig.builder()
         llmConfig.domain("generalv3.5")
         llmConfig.url("ws(s)://spark-api.xf-yun.com/v3.5/chat") //必填
-        //memory有两种，windows_memory和tokens_memory，二选一即可
         val window_memory: Memory = Memory.windowMemory(5)
         llm = LLM(llmConfig, window_memory)
-
-//        Memory tokens_memory = Memory.tokenMemory(8192);
-//        llm = new LLM(llmConfig,tokens_memory);
         llm!!.registerLLMCallbacks(llmCallbacks)
     }
 
