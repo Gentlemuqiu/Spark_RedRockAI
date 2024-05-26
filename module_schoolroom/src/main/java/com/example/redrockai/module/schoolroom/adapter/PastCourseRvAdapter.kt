@@ -32,9 +32,9 @@ class PastCourseRvAdapter : ListAdapter<HistoryRecord, PastCourseRvAdapter.ViewH
 }
 ) {
 
-    private var mItemClick: (() -> Unit)? = null
+    private var mItemClick: ((HistoryRecord) -> Unit)? = null
 
-    fun setOnClassItemClickListener(cl: (() -> Unit)) {
+    fun setOnClassItemClickListener(cl: ((HistoryRecord) -> Unit)) {
         mItemClick = cl
     }
 
@@ -52,7 +52,8 @@ class PastCourseRvAdapter : ListAdapter<HistoryRecord, PastCourseRvAdapter.ViewH
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                mItemClick?.invoke()
+
+                mItemClick?.invoke(currentList[adapterPosition])
             }
         }
 

@@ -17,8 +17,11 @@ data class HistoryRecord(
     val newsId: Int, //主键!!
     val title: String,
     val timestamp: Long,
-    val url: String,
+    val playerUrl: String,
     val description: String,
-    val coverDetail: String
-
-)
+    val coverDetail: String,
+    val category: String,
+    val shareCount: Int,
+    val likeCount: Int,
+    val commentCount: Int,
+    )

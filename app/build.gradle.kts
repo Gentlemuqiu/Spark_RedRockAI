@@ -22,14 +22,14 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-       ndk {
-           abiFilters.apply {
-               add("armeabi")
-               add("armeabi-v7a")
-               add("x86")
-               add("mips")
-           }
-       }
+//       ndk {
+//           abiFilters.apply {
+//               add("armeabi")
+//               add("armeabi-v7a")
+//               add("x86")
+//               add("mips")
+//           }
+//       }
     }
 
 

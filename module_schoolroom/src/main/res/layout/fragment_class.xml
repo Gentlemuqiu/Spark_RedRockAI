@@ -48,26 +48,46 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/mc_click"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.666">
 
-
-        <TextView
-            android:id="@+id/course_studied_time"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:text="今日已学习"
-            android:textColor="#6C6C6C"
-            android:textSize="18sp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/course_studied_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="今日已学"
+                android:textColor="#6C6C6C"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/course_exactly_edit_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="60分钟"
+                android:textColor="#6C6C6C"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
 
         <ImageView
             android:id="@+id/course_change_study_time"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="end|center"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="25dp"
             android:src="@drawable/ic_edit_time" />
 
 

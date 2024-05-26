@@ -22,6 +22,7 @@ object StudyTimeUtils {
     private const val studyTime = "STUDY_TIME"
     private const val lastDay = "LAST_DAY"
     private const val lastStudiedTime = "LAST_STUDIED_TIME"
+    private const val want = "WANT"
 
     private val sharedPreferences =
         BaseApp.getAppContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
@@ -52,6 +53,14 @@ object StudyTimeUtils {
     fun saveStudiedTime(value: Long) {
         _studiedTime.value = value
     }
+
+    @Synchronized
+    fun saveWantedStudiedTime(value: String) {
+        sharedPreferences.edit().putString(want, value).apply()
+    }
+
+    @Synchronized
+    fun getWantedStudiedTime(): String = sharedPreferences.getString(want, "60")!!
 
 
     //把时间戳变成分钟单位

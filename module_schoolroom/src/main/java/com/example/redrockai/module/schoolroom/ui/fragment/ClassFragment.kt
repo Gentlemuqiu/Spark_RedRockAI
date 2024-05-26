@@ -1,5 +1,6 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
@@ -14,10 +15,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
+import com.example.redrockai.lib.utils.BaseUtils.shortToast
 import com.example.redrockai.lib.utils.StudyTimeUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
+import com.example.redrockai.lib.utils.StudyTimeUtils.getWantedStudiedTime
+import com.example.redrockai.lib.utils.StudyTimeUtils.saveWantedStudiedTime
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
-import com.example.redrockai.module.schoolroom.R
+import com.example.redrockai.lib.utils.view.EditDialog
 import com.example.redrockai.module.schoolroom.adapter.RelatedIntroduceAdapter
 import com.example.redrockai.module.schoolroom.bean.CateGoryBean
 import com.example.redrockai.module.schoolroom.databinding.FragmentClassBinding
@@ -78,8 +82,40 @@ class ClassFragment : Fragment() {
         initClickListener()
         initImage()
         initStudiedTime()
+        initChangeStudiedTime()
 
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initChangeStudiedTime() {
+        mBinding.apply {
+            courseChangeStudyTime.setOnClickListener {
+                EditDialog.Builder(
+                    requireContext(),
+                    EditDialog.DataImpl(
+                        content = "",
+                        hint = "分钟",
+                        width = 255,
+                        height = 207
+                    )
+                ).setPositiveClick {
+                    //正整数
+                    if (isPositiveInteger(getInput())) {
+                        saveWantedStudiedTime(getInput())
+                        courseExactlyEditTime.text = getWantedStudiedTime().plus("分钟")
+                        shortToast("设置成功")
+                        dismiss()
+                    } else {
+                        shortToast("输入不合理,请输入正整数时间")
+                    }
+
+                }.setNegativeClick {
+                    dismiss()
+                }.show()
+
+            }
+        }
     }
 
 
@@ -129,9 +165,14 @@ class ClassFragment : Fragment() {
                     newsId = it.data.content.data.id,
                     title = it.data.content.data.title,
                     timestamp = System.currentTimeMillis(),
-                    url = it.data.content.data.playUrl,
+                    playerUrl = it.data.content.data.playUrl,
                     description = it.data.content.data.description,
-                    coverDetail = it.data.content.data.cover.detail
+                    coverDetail = it.data.content.data.cover.detail,
+                    category = it.data.content.data.category,
+                    shareCount = it.data.content.data.consumption.shareCount,
+                    likeCount = it.data.content.data.consumption.realCollectionCount,
+                    commentCount = it.data.content.data.consumption.replyCount
+
                 )
                 GlobalScope.launch {
                     historyRecordDao.insertOrUpdate(record)
@@ -140,7 +181,7 @@ class ClassFragment : Fragment() {
                 ARouter.getInstance().build("/play/PlayActivity/")
                     .withString("playUrl", it.data.content.data.playUrl)
                     .withString("title", it.data.content.data.title)
-                    .withString("description",it.data.content.data.description)
+                    .withString("description", it.data.content.data.description)
                     .withString("category", it.data.content.data.category)
                     .withInt("shareCount", it.data.content.data.consumption.shareCount)
                     .withInt("likeCount", it.data.content.data.consumption.realCollectionCount)
@@ -202,12 +243,13 @@ class ClassFragment : Fragment() {
             StudyTimeUtils.studiedTime.collect {
                 mBinding.apply {
                     courseStudiedTime.text =
-                        "今天已学习".plus(convertTimestampToMinutes(it).toString()).plus("分钟")
-                            .plus("/60分钟")
+                        "今日已学".plus(convertTimestampToMinutes(it).toString()).plus("/")
                 }
 
             }
         }
+
+        mBinding.courseExactlyEditTime.text = getWantedStudiedTime().plus("分钟")
 
 
     }

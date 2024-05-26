@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
 import com.example.redrockai.module.schoolroom.databinding.ActivityHistoryBinding
@@ -47,6 +48,18 @@ class HistoryRecordActivity : BaseActivity() {
 
         mBinding.apply {
             pastRv.adapter = mAdapter.apply {
+                setOnClassItemClickListener {
+                    ARouter.getInstance().build("/play/PlayActivity/")
+                        .withString("playUrl", it.playerUrl)
+                        .withString("title", it.title)
+                        .withString("description", it.description)
+                        .withString("category", it.category)
+                        .withInt("shareCount", it.shareCount)
+                        .withInt("likeCount", it.likeCount)
+                        .withInt("commentCount", it.commentCount)
+                        .withInt("id", it.newsId)
+                        .navigation(this@HistoryRecordActivity)
+                }
 
             }
             pastRv.layoutManager = LinearLayoutManager(this@HistoryRecordActivity)

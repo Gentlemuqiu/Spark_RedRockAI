@@ -3,6 +3,9 @@ package com.example.redrockai.ini
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import com.example.redrockai.lib.utils.StudyTimeUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveLastStudiedTime
@@ -20,6 +23,24 @@ import java.util.Date
 class AppUsageTimeTracker(private val application: Application) {
 
 
+    private val handler: Handler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+
+            totalTime = StudyTimeUtils.getLastStudiedTime()
+                .toLong() + (System.currentTimeMillis() - startTime)
+            startTime = System.currentTimeMillis()
+            //flow更新ui
+            saveStudiedTime(totalTime)
+            //更新上次学习时间
+            saveLastStudiedTime(totalTime.toString())
+
+
+            sendEmptyMessageDelayed(0, 1000)
+        }
+
+    }
+
+    //计时的起点
     private var startTime: Long = 0
 
     private var totalTime: Long = 0
@@ -27,6 +48,7 @@ class AppUsageTimeTracker(private val application: Application) {
     init {
         checkNeedReset()
         registerAppLifecycleCallbacks()
+        handler.sendEmptyMessageDelayed(0, 1000)
     }
 
     /**
@@ -108,7 +130,7 @@ class AppUsageTimeTracker(private val application: Application) {
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-
+                handler.removeCallbacksAndMessages(null)
             }
 
         })
