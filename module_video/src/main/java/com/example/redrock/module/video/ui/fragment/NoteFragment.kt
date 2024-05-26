@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.model.play.Adapter.TopAdapter
 import com.example.model.play.ViewModel.RelatedViewModel
-import com.example.redrock.module.video.R
-import com.example.redrock.module.video.databinding.ActivityMainBinding
+import com.example.redrock.module.video.ViewModel.IdViewModel
 import com.example.redrock.module.video.databinding.FragmentNoteBinding
 
 
@@ -20,10 +19,14 @@ class NoteFragment : Fragment() {
         FragmentNoteBinding.inflate(layoutInflater)
     }
     private val relatedViewModel by lazy { ViewModelProvider(this)[RelatedViewModel::class.java] }
+    private lateinit var idViewModel: IdViewModel
+
     private lateinit var topAdapter: TopAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        idViewModel = ViewModelProvider(requireActivity()).get(IdViewModel::class.java)
+
     }
 
     override fun onCreateView(
@@ -35,15 +38,15 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val id = 8810
-        relatedViewModel.getRelated(id)
+        idViewModel.id.observe(viewLifecycleOwner) {
+            relatedViewModel.getRelated(it)
+        }
         topAdapter = TopAdapter()
         relatedViewModel.relatedData.observe(viewLifecycleOwner) {
             val list = it.itemList.filter { element ->
                 element.type == "videoSmallCard"
             }
 
-            Log.d("hui", "onViewCreated: ${it}")
             topAdapter.submitList(list)
         }
 

@@ -1,6 +1,7 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -9,13 +10,14 @@ android {
     viewBinding {
         enable = true
     }
+    dataBinding{
+        enable=true
+    }
 
     defaultConfig {
-        applicationId = "com.example.redrock.module.video"
+       //  applicationId = "com.example.redrock.module.video"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,11 +39,18 @@ android {
         jvmTarget = "1.8"
     }
 }
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
 
 dependencies {
     implementation(project(":lib_api"))
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
+
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -56,6 +65,8 @@ dependencies {
     implementation("xyz.doikki.android.dkplayer:player-exo:3.3.6")
     implementation("xyz.doikki.android.dkplayer:player-ijk:3.3.6")
     implementation("xyz.doikki.android.dkplayer:dkplayer-ui:3.3.6")
+    implementation("xyz.doikki.android.dkplayer:videocache:3.3.7")
+
     //解析图片
     implementation("com.github.bumptech.glide:glide:4.13.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
@@ -76,5 +87,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    kapt ("com.alibaba:arouter-compiler:1.5.2")
+    implementation ("com.alibaba:arouter-api:1.5.2")
 
 }

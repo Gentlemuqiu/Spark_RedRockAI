@@ -37,6 +37,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
+    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -46,6 +51,7 @@ dependencies {
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
+    implementation(project(":module_video"))
 
     //使用room
     implementation("androidx.room:room-runtime:2.6.1")

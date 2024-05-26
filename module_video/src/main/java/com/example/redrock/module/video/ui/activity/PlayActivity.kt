@@ -1,20 +1,17 @@
 package com.example.redrock.module.video.ui.activity
 
-import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
-import com.example.model.play.Adapter.TopAdapter
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.model.play.ViewModel.RelatedViewModel
 import com.example.redrock.module.video.R
-import com.example.redrock.module.video.databinding.ActivityMainBinding
+import com.example.redrock.module.video.ViewModel.IdViewModel
+import com.example.redrock.module.video.databinding.ActivityPlayBinding
 import com.example.redrock.module.video.ui.fragment.HomeWorkFragment
 import com.example.redrock.module.video.ui.fragment.NoteFragment
 import com.example.redrock.module.video.ui.fragment.StudyHelperFragment
@@ -27,13 +24,16 @@ import xyz.doikki.videocontroller.component.ErrorView
 import xyz.doikki.videocontroller.component.GestureView
 import xyz.doikki.videocontroller.component.VodControlView
 import xyz.doikki.videoplayer.player.VideoView
+import kotlin.properties.Delegates
 
+@Route(path = "/play/PlayActivity/")
 class PlayActivity : AppCompatActivity() {
 
     private lateinit var title: String
-    private val mBinding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+    private val mBinding: ActivityPlayBinding by lazy {
+        ActivityPlayBinding.inflate(layoutInflater)
     }
+    private val idViewModel by lazy { ViewModelProvider(this)[IdViewModel::class.java] }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,32 +46,25 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun initVp2() {
-        mBinding.playHomeVp2.adapter = FragmentVpAdapter(this)
+        mBinding.playVp2.adapter = FragmentVpAdapter(this)
             .add { NoteFragment() }       // whichPageIsIn = 0
             .add { StudyHelperFragment() }          // whichPageIsIn = 1
             .add { HomeWorkFragment() }    // whichPageIsIn = 2
         // 因为第一页有左滑删除，所以禁止 vp 滑动
-        mBinding.playHomeVp2.isUserInputEnabled = false
+        mBinding.playVp2.isUserInputEnabled = false
 
     }
 
     private fun initDate() {
-        //  val playUrl = intent.getStringExtra("playUrl")
-        //  val title = intent.getStringExtra("title")
-        //  val description = intent.getStringExtra("description")
-        //  val category = intent.getStringExtra("category")
-
-        val playUrl =
-            "http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8810&resourceType=video&editionType=default&source=aliyun&playUrlType=url_oss&udid="
-        title = "你好"
-        val description = "很好"
-        val category = "我也好"
-
+        val playUrl = intent.getStringExtra("playUrl")
+        val description = intent.getStringExtra("description")
+        val category = intent.getStringExtra("category")
+        title = intent.getStringExtra("title").toString()
         val shareCount = intent.getIntExtra("shareCount", 0)
         val likeCount = intent.getIntExtra("likeCount", 0)
         val commentCount = intent.getIntExtra("commentCount", 0)
-        var id = intent.getIntExtra("id", 0)
-
+        val id = intent.getIntExtra("id", 0)
+        idViewModel.id.value = id
         mBinding.apply {
             tvPlayTitle.text = title
             tvPlayDescription.text = description
@@ -92,13 +85,13 @@ class PlayActivity : AppCompatActivity() {
             "作业"
         )
         TabLayoutMediator(
-            mBinding.classTablayout,
-            mBinding.playHomeVp2
+            mBinding.playTablayout,
+            mBinding.playVp2
         ) { tab, position -> tab.text = tabs[position] }.attach()
 
-        val tab1 = mBinding.classTablayout.getTabAt(0)
-        val tab2 = mBinding.classTablayout.getTabAt(1)
-        val tab3 = mBinding.classTablayout.getTabAt(2)
+        val tab1 = mBinding.playTablayout.getTabAt(0)
+        val tab2 = mBinding.playTablayout.getTabAt(1)
+        val tab3 = mBinding.playTablayout.getTabAt(2)
 
         //设置三个tab的自定义View
         val tab1View = LayoutInflater.from(this).inflate(R.layout.play_note_select_tab, null)
@@ -166,7 +159,7 @@ class PlayActivity : AppCompatActivity() {
                 }
             }
         }
-        mBinding.classTablayout.addOnTabSelectedListener(onTabSelectedListener)
+        mBinding.playTablayout.addOnTabSelectedListener(onTabSelectedListener)
     }
 
     private fun initWindow() {
@@ -185,6 +178,7 @@ class PlayActivity : AppCompatActivity() {
         controller.addControlComponent(VodControlView(this)) //点播控制视图
         mBinding.player.setVideoController(controller) //设置控制器
         mBinding.player.setScreenScaleType(VideoView.SCREEN_SCALE_16_9)
+        mBinding.player.setLooping(true)
         mBinding.player.setUrl(url) //设置视频地址
         mBinding.player.release()
         mBinding.player.start() //开始播放，不调用则不自动播放

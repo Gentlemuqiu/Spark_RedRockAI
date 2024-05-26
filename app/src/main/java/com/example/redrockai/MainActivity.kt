@@ -11,7 +11,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.redrockai.lib.utils.BaseActivity
-import com.example.redrockai.lib.utils.BaseUtils
 import com.iflytek.sparkchain.core.LLM
 import com.iflytek.sparkchain.core.LLMCallbacks
 import com.iflytek.sparkchain.core.LLMConfig

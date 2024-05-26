@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.bumptech.glide.Glide
 import com.example.redrockai.lib.utils.StudyTimeUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
@@ -136,7 +137,16 @@ class ClassFragment : Fragment() {
                     historyRecordDao.insertOrUpdate(record)
                 }
 
-
+                ARouter.getInstance().build("/play/PlayActivity/")
+                    .withString("playUrl", it.data.content.data.playUrl)
+                    .withString("title", it.data.content.data.title)
+                    .withString("description",it.data.content.data.description)
+                    .withString("category", it.data.content.data.category)
+                    .withInt("shareCount", it.data.content.data.consumption.shareCount)
+                    .withInt("likeCount", it.data.content.data.consumption.realCollectionCount)
+                    .withInt("commentCount", it.data.content.data.consumption.replyCount)
+                    .withInt("id", it.data.content.data.id)
+                    .navigation(context)
             }
         }
         newFollowViewModel.cateGoryData.observe(viewLifecycleOwner) {
