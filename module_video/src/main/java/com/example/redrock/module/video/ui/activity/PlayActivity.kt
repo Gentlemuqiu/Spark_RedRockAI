@@ -22,6 +22,7 @@ import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.CompleteView
 import xyz.doikki.videocontroller.component.ErrorView
 import xyz.doikki.videocontroller.component.GestureView
+import xyz.doikki.videocontroller.component.PrepareView
 import xyz.doikki.videocontroller.component.VodControlView
 import xyz.doikki.videoplayer.player.VideoView
 import kotlin.properties.Delegates
@@ -171,11 +172,13 @@ class PlayActivity : AppCompatActivity() {
     private fun initPlayer(url: String) {
         val controller = StandardVideoController(this)
         controller.addDefaultControlComponent(title, false)
+        //根据屏幕方向自动进入/退出全屏
         controller.setEnableOrientation(false)
         controller.addControlComponent(CompleteView(this)) //自动完成播放界面
         controller.addControlComponent(ErrorView(this)) //错误界面
         controller.addControlComponent(GestureView(this))//滑动控制视图
         controller.addControlComponent(VodControlView(this)) //点播控制视图
+        controller.addControlComponent()
         mBinding.player.setVideoController(controller) //设置控制器
         mBinding.player.setScreenScaleType(VideoView.SCREEN_SCALE_16_9)
         mBinding.player.setLooping(true)

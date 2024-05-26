@@ -8,7 +8,11 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
 import com.example.redrockai.module.schoolroom.databinding.ActivityHistoryBinding
+import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
+import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
+import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
 import com.example.redrockai.module.schoolroom.viewModel.HistoryRecordViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -29,8 +33,6 @@ class HistoryRecordActivity : BaseActivity() {
 
     private val mViewModel: HistoryRecordViewModel by viewModels()
     private val mAdapter: PastCourseRvAdapter by lazy { PastCourseRvAdapter() }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
@@ -45,7 +47,6 @@ class HistoryRecordActivity : BaseActivity() {
      * 展示历史数据列表
      */
     private fun initRv() {
-
         mBinding.apply {
             pastRv.adapter = mAdapter.apply {
                 setOnClassItemClickListener {
@@ -83,12 +84,13 @@ class HistoryRecordActivity : BaseActivity() {
                         if (query.isNotEmpty()) {
                             //搜索操作
                             mViewModel.getSearchData(query)
-                            historySearchView.clearFocus()
                         }
                         return false
                     }
 
                     override fun onQueryTextChange(newText: String): Boolean {
+                        //搜索操作
+                        mViewModel.getSearchData(newText)
                         return false
                     }
                 })

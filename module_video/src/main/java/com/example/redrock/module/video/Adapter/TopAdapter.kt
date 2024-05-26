@@ -15,6 +15,11 @@ import com.example.redrock.module.video.Bean.Related
 import com.example.redrock.module.video.ui.activity.PlayActivity
 import com.example.redrock.module.video.R
 import com.example.redrockai.lib.utils.formatNumberToTime
+import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
+import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
+import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class TopAdapter() :
@@ -35,6 +40,9 @@ class TopAdapter() :
             }
         }
     ) {
+
+    private lateinit var historyRecordDao: HistoryRecordDao
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val coverIV: ImageView
@@ -44,6 +52,8 @@ class TopAdapter() :
         val relatedCL: ConstraintLayout
 
         init {
+            historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
+
             view.run {
                 coverIV = findViewById(R.id.iv_cover)
                 timeTV = findViewById(R.id.tv_time)
@@ -54,6 +64,22 @@ class TopAdapter() :
             relatedCL.setOnClickListener {
                 val intent = Intent(view.context, PlayActivity::class.java)
                 getItem(absoluteAdapterPosition).run {
+                    val record = HistoryRecord(
+                        newsId = data.id,
+                        title = data.title,
+                        timestamp = System.currentTimeMillis(),
+                        playerUrl = data.playUrl,
+                        description = data.description,
+                        coverDetail = data.cover.detail,
+                        category = data.category,
+                        shareCount = data.consumption.shareCount,
+                        likeCount = data.consumption.realCollectionCount,
+                        commentCount = data.consumption.replyCount
+
+                    )
+                    GlobalScope.launch {
+                        historyRecordDao.insertOrUpdate(record)
+                    }
                     intent.putExtra("playUrl", data.playUrl)
                     intent.putExtra("title", data.title)
                     intent.putExtra("description", data.description)
