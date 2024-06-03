@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":lib_api"))
     implementation(project(":module_video"))
     implementation(project(":module_schoolroom"))
+    implementation(project(":module_life"))
     implementation(files("libs/SparkChain.aar"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
