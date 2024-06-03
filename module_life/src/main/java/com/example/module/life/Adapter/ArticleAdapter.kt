@@ -11,11 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.paging.PagingDataAdapter
 import com.example.module.life.R
 import com.example.module.life.bean.ArticleResponse
+import com.example.module.life.ui.Activity.SearchActivity
+import com.example.module.life.ui.Activity.WebActivity
 
 class ArticleAdapter : PagingDataAdapter<ArticleResponse.Data.Article, ArticleAdapter.ViewHolder>(ARTICLE_COMPARATOR) {
 
@@ -31,17 +34,19 @@ class ArticleAdapter : PagingDataAdapter<ArticleResponse.Data.Article, ArticleAd
 
     }
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        init {
-            view.setOnClickListener {
-
-            }
-        }
 
         private val itemAuthor: TextView = view.findViewById(R.id.tv_author)
         private val itemTime: TextView = view.findViewById(R.id.tv_time)
         private val itemTitle: TextView = view.findViewById(R.id.tv_content)
         private val itemCategory: TextView = view.findViewById(R.id.tv_category)
 
+        init{
+            itemView.setOnClickListener {
+                getItem(absoluteAdapterPosition)?.run {
+                    WebActivity.startAction(it.context, link)
+                }
+            }
+        }
 
         fun bind(itemData:ArticleResponse.Data.Article ) {
             if(itemData.author!=""){
@@ -52,7 +57,9 @@ class ArticleAdapter : PagingDataAdapter<ArticleResponse.Data.Article, ArticleAd
             itemCategory.text=itemData.chapterName
             itemTime.text=itemData.niceShareDate
             itemTitle.text=itemData.title
-
+            itemView.setOnClickListener {
+                WebActivity.startAction(it.context, itemData.link)
+            }
         }
 
 

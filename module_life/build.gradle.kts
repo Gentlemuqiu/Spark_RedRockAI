@@ -9,15 +9,15 @@ android {
     namespace = "com.example.module.life"
     compileSdk = 34
 
-  //  defaultConfig {
-  //      applicationId = "com.example.module.life"
-  //      minSdk = 24
-  //      targetSdk = 34
-  //      versionCode = 1
-  //      versionName = "1.0"
-//
-  //      testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  //  }
+   defaultConfig {
+       //applicationId = "com.example.module.life"
+       minSdk = 24
+       targetSdk = 34
+      // versionCode = 1
+       //versionName = "1.0"
+
+       testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+   }
 
     viewBinding {
         enable = true
@@ -43,6 +43,13 @@ android {
 
 dependencies {
 
+
+    implementation(project(":lib_net"))
+    implementation(project(":lib_utils"))
+    implementation(project(":lib_api"))
+
+
+    implementation ("com.google.android:flexbox:1.1.0")
 
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation ("androidx.paging:paging-runtime-ktx:3.1.1")

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/search_activity_search_img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_ic_back"
+            android:layout_marginStart="18.91dp"
+            android:layout_marginTop="18.19dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6.34dp"
+            android:layout_marginTop="10.15dp"
+            android:layout_marginEnd="11.42dp"
+            app:layout_constraintEnd_toStartOf="@+id/search_activity_search_tv_search"
+            app:layout_constraintStart_toEndOf="@+id/search_activity_search_img_back"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/search_activity_search_et_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/search_shape_et_bg"
+                android:hint="请输入关键词搜索"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingStart="47.79dp"
+                android:paddingTop="8.04dp"
+                android:paddingBottom="8.49dp"
+                android:textColorHint="@color/search_tv_hint_color"
+                android:textSize="13.53sp"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="18.19dp"
+                android:src="@drawable/life_search"
+                app:layout_constraintStart_toStartOf="@+id/search_activity_search_et_search" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/search_activity_search_tv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索"
+            android:textSize="15.65sp"
+            android:textColor="#0F40F5"
+            android:layout_marginTop="16.92dp"
+            android:layout_marginEnd="17.36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_activity_search_linear_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="历史记录"
+                android:textStyle="bold"
+                android:textSize="15.65sp"
+                android:layout_marginTop="18.19dp"
+                android:layout_marginStart="18.91dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/search_activity_search_tv_clear_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18.19dp"
+                android:layout_marginEnd="16dp"
+                android:text="清空"
+                android:textSize="14.7sp"
+                android:visibility="gone"
+
+                android:textColor="@color/search_history_text_clear_all"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintEnd_toStartOf="@+id/search_activity_search_tv_complete"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="|"
+                android:visibility="gone"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/search_activity_search_tv_clear_all"
+                app:layout_constraintEnd_toStartOf="@+id/search_activity_search_tv_complete"
+                app:layout_constraintStart_toEndOf="@+id/search_activity_search_tv_clear_all"
+                app:layout_constraintTop_toTopOf="@+id/search_activity_search_tv_clear_all" />
+            <TextView
+                android:id="@+id/search_activity_search_tv_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18.19dp"
+                android:layout_marginEnd="17dp"
+                android:text="完成"
+                android:textSize="14.7sp"
+                android:visibility="gone"
+                android:textColor="#0F40F5"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/search_activity_search_img_garbage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_ic_garbage"
+                android:textColor="#333333"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_activity_search_rv_history"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="4.73dp"
+                android:layout_marginStart="11.855dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

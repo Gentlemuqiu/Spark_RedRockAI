@@ -1,5 +1,6 @@
 package com.example.module.life.ui.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.example.module.life.ViewModel.ArticleViewModel
 import com.example.module.life.ViewModel.ArticleViewModelFactory
 import com.example.module.life.databinding.FragmentLifeBinding
 import com.example.module.life.net.ApiService
+import com.example.module.life.ui.Activity.SearchActivity
+import com.example.module.life.ui.Activity.WebActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -29,9 +32,12 @@ class LifeFragment : Fragment() {
     private lateinit var loadingStateAdapter: LoadingStateAdapter
 
 
-    private val articleViewModel by lazy { ViewModelProvider(this,ArticleViewModelFactory(apiService))[ArticleViewModel::class.java] }
-
-
+    private val articleViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ArticleViewModelFactory(apiService)
+        )[ArticleViewModel::class.java]
+    }
 
 
     private val apiService: ApiService by lazy {
@@ -54,8 +60,8 @@ class LifeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView=mBinding.lifeRv
-        mBinding.lifeRv.layoutManager=LinearLayoutManager(this.context)
+        val recyclerView = mBinding.lifeRv
+        mBinding.lifeRv.layoutManager = LinearLayoutManager(this.context)
         articleAdapter = ArticleAdapter()
         loadingStateAdapter = LoadingStateAdapter { articleAdapter.retry() }
         val concatAdapter = articleAdapter.withLoadStateFooter(footer = loadingStateAdapter)
@@ -74,8 +80,12 @@ class LifeFragment : Fragment() {
             if (loadState.refresh is LoadState.Loading) {
                 mBinding.swipeRefreshLayout.isRefreshing = true
             } else {
-               mBinding.swipeRefreshLayout.isRefreshing = false
+                mBinding.swipeRefreshLayout.isRefreshing = false
             }
+        }
+        mBinding.lifeSearch.setOnClickListener{
+            val intent = Intent(context,SearchActivity::class.java)
+            context?.startActivity(intent)
         }
     }
 
@@ -86,8 +96,4 @@ class LifeFragment : Fragment() {
     }
 
 
-
-
-
-
-    }
+}

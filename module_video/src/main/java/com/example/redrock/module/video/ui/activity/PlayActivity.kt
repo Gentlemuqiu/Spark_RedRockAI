@@ -15,6 +15,7 @@ import com.example.redrock.module.video.databinding.ActivityPlayBinding
 import com.example.redrock.module.video.ui.fragment.HomeWorkFragment
 import com.example.redrock.module.video.ui.fragment.NoteFragment
 import com.example.redrock.module.video.ui.fragment.StudyHelperFragment
+import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.lib.utils.adapter.FragmentVpAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -28,7 +29,7 @@ import xyz.doikki.videoplayer.player.VideoView
 import kotlin.properties.Delegates
 
 @Route(path = "/play/PlayActivity/")
-class PlayActivity : AppCompatActivity() {
+class PlayActivity : BaseActivity() {
 
     private lateinit var title: String
     private val mBinding: ActivityPlayBinding by lazy {
