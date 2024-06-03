@@ -57,9 +57,6 @@ class ArticleAdapter : PagingDataAdapter<ArticleResponse.Data.Article, ArticleAd
             itemCategory.text=itemData.chapterName
             itemTime.text=itemData.niceShareDate
             itemTitle.text=itemData.title
-            itemView.setOnClickListener {
-                WebActivity.startAction(it.context, itemData.link)
-            }
         }
 
 
