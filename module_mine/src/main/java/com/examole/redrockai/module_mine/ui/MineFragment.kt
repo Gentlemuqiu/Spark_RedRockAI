@@ -1,15 +1,11 @@
-package com.example.redrockai.ui.fragment
+package com.examole.redrockai.module_mine.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.redrockai.R
-import com.example.redrockai.databinding.FragmentMineBinding
-import com.example.redrockai.lib.utils.adapter.FragmentVpAdapter
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import com.examole.redrockai.module_mine.databinding.FragmentMineBinding
 
 
 class MineFragment : Fragment() {

@@ -9,7 +9,7 @@ import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
 import com.example.redrockai.ui.fragment.MessageFragment
-import com.example.redrockai.ui.fragment.MineFragment
+import com.examole.redrockai.module_mine.ui.MineFragment
 
 
 class HomeActivity : BaseActivity() {
@@ -48,8 +48,8 @@ class HomeActivity : BaseActivity() {
                 when (it.itemId) {
                     R.id.bottom_class -> mBinding.vp2.currentItem = 0
                     R.id.bottom_life -> mBinding.vp2.currentItem = 1
-                    R.id.bottom_message -> mBinding.vp2.currentItem = 1
-                    R.id.bottom_mine -> mBinding.vp2.currentItem = 1
+                    R.id.bottom_message -> mBinding.vp2.currentItem = 2
+                    R.id.bottom_mine -> mBinding.vp2.currentItem = 3
                 }
                 return@setOnItemSelectedListener true
             }
