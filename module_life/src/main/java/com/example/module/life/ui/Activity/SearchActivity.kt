@@ -1,20 +1,21 @@
 package com.example.module.life.ui.Activity
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
-import androidx.annotation.ColorRes
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.module.life.Adapter.LoadingStateAdapter
+import com.example.module.life.Adapter.SearchAdapter
 import com.example.module.life.Adapter.SearchHistoryAdapter
 import com.example.module.life.R
-import com.example.module.life.ViewModel.SearchActivityViewModel
+import com.example.module.life.ViewModel.SearchViewModel
+import com.example.module.life.ViewModel.SearchViewModelFactory
 import com.example.module.life.databinding.ActivitySearchBinding
+import com.example.module.life.net.ApiService
 import com.example.module.life.ui.dialog.ReminderDialog
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.lib.utils.gsonSaveToSp
@@ -23,15 +24,31 @@ import com.example.redrockai.lib.utils.view.gone
 import com.example.redrockai.lib.utils.view.visible
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.material.tabs.TabLayout
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : BaseActivity() {
     private val mBinding by lazy {
         ActivitySearchBinding.inflate(layoutInflater)
     }
-    private val mViewModel by viewModels<SearchActivityViewModel>()
     private lateinit var mAdapter: SearchHistoryAdapter
     private val historyList by lazy { LinkedHashSet<String>() }
+    private val searchViewModel by lazy {
+        ViewModelProvider(
+            this,
+            SearchViewModelFactory(apiService)
+        )[SearchViewModel::class.java]
+    }
+    private lateinit var searchAdapter: SearchAdapter
+
+
+    private val apiService: ApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://www.wanandroid.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApiService::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +57,22 @@ class SearchActivity : BaseActivity() {
         initHistory()
         initEditText()
         initSearch()
+        initRV()
+    }
+
+    private fun initRV() {
+        searchAdapter = SearchAdapter()
+        val recyclerView: RecyclerView =mBinding.searchRv
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = searchAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter { searchAdapter.retry() }
+        )
+
+        searchViewModel.articles.observe(this) {
+            searchAdapter.submitData(lifecycle, it)
+        }
+
+
     }
 
     private fun initBack() {
@@ -176,7 +209,7 @@ class SearchActivity : BaseActivity() {
             setHistoryList()
         }
         saveHistoryList()
-        mViewModel.setSearchContent(content)
+        searchViewModel.searchArticles(content)
     }
 
     private fun saveHistoryList() {
@@ -184,11 +217,13 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun showResult() {
+        mBinding.searchRv.visible()
         mBinding.searchActivitySearchLinearHistory.gone()
     }
 
     private fun showHistory() {
         mBinding.searchActivitySearchLinearHistory.visible()
+        mBinding.searchRv.gone()
     }
 
 
