@@ -1,5 +1,6 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -21,13 +22,12 @@ import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
 import com.example.redrockai.lib.utils.StudyTimeUtils.getWantedStudiedTime
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveWantedStudiedTime
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
+import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
+import com.example.redrockai.lib.utils.room.db.AppDatabase
 import com.example.redrockai.lib.utils.view.EditDialog
 import com.example.redrockai.module.schoolroom.adapter.RelatedIntroduceAdapter
 import com.example.redrockai.module.schoolroom.bean.CateGoryBean
 import com.example.redrockai.module.schoolroom.databinding.FragmentClassBinding
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
-import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
 import com.example.redrockai.module.schoolroom.ui.activity.HistoryRecordActivity
 import com.example.redrockai.module.schoolroom.viewModel.CateGoryViewModel
 import com.example.redrockai.module.schoolroom.viewModel.ImageViewModel

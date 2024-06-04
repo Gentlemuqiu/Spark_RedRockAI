@@ -1,5 +1,4 @@
-package com.example.redrockai.module.schoolroom.helper.room.bean
-
+package com.example.redrockai.lib.utils.room.bean
 import androidx.room.Entity
 
 /**

@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import com.example.redrockai.module.schoolroom.R
 import com.example.redrockai.module.schoolroom.helper.date.DateTransformer.formatTimestamp
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
 
 /**
  *  author : lytMoon
@@ -52,7 +52,6 @@ class PastCourseRvAdapter : ListAdapter<HistoryRecord, PastCourseRvAdapter.ViewH
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-
                 mItemClick?.invoke(currentList[adapterPosition])
             }
         }

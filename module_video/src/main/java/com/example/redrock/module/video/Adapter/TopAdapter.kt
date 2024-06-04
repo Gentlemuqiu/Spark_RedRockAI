@@ -15,9 +15,9 @@ import com.example.redrock.module.video.Bean.Related
 import com.example.redrock.module.video.ui.activity.PlayActivity
 import com.example.redrock.module.video.R
 import com.example.redrockai.lib.utils.formatNumberToTime
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
-import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
+import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
+import com.example.redrockai.lib.utils.room.db.AppDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

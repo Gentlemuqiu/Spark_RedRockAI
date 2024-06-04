@@ -2,9 +2,9 @@ package com.example.redrockai.module.schoolroom.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
-import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
+import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
+import com.example.redrockai.lib.utils.room.db.AppDatabase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

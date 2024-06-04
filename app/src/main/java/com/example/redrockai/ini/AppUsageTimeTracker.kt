@@ -9,6 +9,7 @@ import android.os.Message
 import android.util.Log
 import com.example.redrockai.lib.utils.StudyTimeUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveLastStudiedTime
+import com.example.redrockai.lib.utils.StudyTimeUtils.saveMineStudyAllTime
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveStudiedTime
 import java.util.Date
 
@@ -87,6 +88,8 @@ class AppUsageTimeTracker(private val application: Application) {
             StudyTimeUtils.saveLastDay(System.currentTimeMillis().toString())
             //上次学习时间为0(这个是间隔)
             saveLastStudiedTime("0")
+            //mine模块的学习总时间更新
+            saveMineStudyAllTime(StudyTimeUtils.getLastStudiedTime().toLong())
             Log.d("ewfwefwe", "测试数据bu同一天")
 
         }
@@ -107,6 +110,7 @@ class AppUsageTimeTracker(private val application: Application) {
             override fun onActivityResumed(activity: Activity) {
                 //更新为上次的时间
                 saveStudiedTime(StudyTimeUtils.getLastStudiedTime().toLong())
+                saveMineStudyAllTime(StudyTimeUtils.getLastStudiedTime().toLong())
 
             }
 

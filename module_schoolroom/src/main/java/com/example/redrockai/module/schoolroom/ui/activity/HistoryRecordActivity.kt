@@ -8,9 +8,6 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
 import com.example.redrockai.module.schoolroom.databinding.ActivityHistoryBinding
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
-import com.example.redrockai.module.schoolroom.helper.room.db.AppDatabase
 import com.example.redrockai.module.schoolroom.viewModel.HistoryRecordViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

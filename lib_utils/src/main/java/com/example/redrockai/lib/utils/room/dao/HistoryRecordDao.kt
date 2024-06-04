@@ -1,12 +1,11 @@
-package com.example.redrockai.module.schoolroom.helper.room.dao
-
+package com.example.redrockai.lib.utils.room.dao
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
 
 /**
  *  author : lytMoon

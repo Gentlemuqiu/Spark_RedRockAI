@@ -1,5 +1,5 @@
-package com.example.redrockai.module.schoolroom.helper.room.db
-
+package com.example.redrockai.lib.utils.room.db
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import android.content.ContentValues
 import android.util.Log
 import androidx.room.Database
@@ -7,8 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.redrockai.lib.utils.BaseApp
-import com.example.redrockai.module.schoolroom.helper.room.bean.HistoryRecord
-import com.example.redrockai.module.schoolroom.helper.room.dao.HistoryRecordDao
+import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
 
 /**
  *  author : lytMoon
