@@ -48,6 +48,12 @@ dependencies {
     implementation(project(":lib_api"))
     implementation(project(":module_video"))
 
+    //统计时间并画图展示
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    //每日签到
+    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
+
+
     //使用room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-android:2.8.1")
