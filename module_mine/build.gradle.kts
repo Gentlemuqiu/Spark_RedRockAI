@@ -52,6 +52,8 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     //每日签到
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
+    //UC crop裁剪
+    implementation("com.github.yalantis:ucrop:2.2.6")
 
 
     //使用room

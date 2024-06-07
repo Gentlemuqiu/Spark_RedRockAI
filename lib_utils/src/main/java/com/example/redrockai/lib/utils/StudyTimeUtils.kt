@@ -19,6 +19,11 @@ object StudyTimeUtils {
     private val _studiedTime = MutableStateFlow<Long>(0)
     val studiedTime: StateFlow<Long> = _studiedTime.asStateFlow()
 
+    //设置时间
+    private val _wishedTime = MutableStateFlow<Long>(0)
+    val wishedTime: StateFlow<Long> = _studiedTime.asStateFlow()
+
+
     private const val studyTime = "STUDY_TIME"
     private const val lastDay = "LAST_DAY"
     private const val lastStudiedTime = "LAST_STUDIED_TIME"

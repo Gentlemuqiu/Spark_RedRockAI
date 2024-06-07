@@ -1,11 +1,15 @@
 package com.examole.redrockai.module_mine.ui
 
+import android.app.Activity
 import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +18,12 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.examole.redrockai.module_mine.SignInActivity
 import com.examole.redrockai.module_mine.MineViewModel
+import com.examole.redrockai.module_mine.SignInActivity
 import com.examole.redrockai.module_mine.databinding.FragmentMineBinding
+import com.example.redrockai.lib.utils.BaseApp
 import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
+import com.example.redrockai.lib.utils.getStringList
 import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
 import com.example.redrockai.lib.utils.room.db.AppDatabase
 import com.github.mikephil.charting.charts.LineChart
@@ -26,7 +32,9 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.Calendar
 
 
@@ -38,6 +46,15 @@ class MineFragment : Fragment() {
 
     private var _mBinding: FragmentMineBinding? = null
     private val mBinding get() = _mBinding!!
+    private val sharedPreferences =
+        BaseApp.getAppContext().getSharedPreferences("SignInPrefs", Context.MODE_PRIVATE)
+
+
+    private val REQUEST_CODE_PICK_IMAGE = 1
+    private val REQUEST_CODE_CROP_IMAGE = 2
+    private val PREFS_NAME = "MineFragmentPrefs"
+    private val PREF_IMAGE_URI = "imageUri"
+
 
 
     override fun onCreateView(
@@ -57,8 +74,76 @@ class MineFragment : Fragment() {
         initObserve()
         initLineChart()
         mBinding.ivMineLogo.setOnClickListener {
+            openGallery()
+        }
+        loadSavedImageLogo()
+        mBinding.tvDk.setOnClickListener {
             startActivity(Intent(requireActivity(), SignInActivity::class.java))
         }
+        mBinding.textView.setOnClickListener {
+            startActivity(Intent(requireActivity(), SignInActivity::class.java))
+        }
+    }
+
+    private fun loadSavedImageLogo() {
+        //加载已经有的
+        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE)
+        val savedImageUri = prefs.getString(PREF_IMAGE_URI, null)
+        savedImageUri?.let {
+            mBinding.ivMineLogo.setImageURI(Uri.parse(it))
+        }
+    }
+
+
+    //相当于跳转到了UCropActivity
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_CODE_PICK_IMAGE -> {
+                    data?.data?.let { uri ->
+                        startCrop(uri)
+                    }
+                }
+
+                UCrop.REQUEST_CROP -> {
+                    data?.let {
+                        val resultUri = UCrop.getOutput(it)
+                        resultUri?.let { uri ->
+                            mBinding.ivMineLogo.setImageURI(uri)
+                            saveImageUri(uri)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun startCrop(uri: Uri) {
+        //必须要设置为System.currentTimeMillis()保证唯一性，否则第二次裁剪会无效
+        val destinationUri =
+            Uri.fromFile(File(requireContext().cacheDir, "${System.currentTimeMillis()}.jpg"))
+        val options = UCrop.Options().apply {
+            setFreeStyleCropEnabled(false)
+            setCompressionFormat(Bitmap.CompressFormat.PNG)
+        }
+        UCrop.of(uri, destinationUri)
+            .withAspectRatio(1f, 1f)
+            .withOptions(options)
+            .start(requireContext(), this)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.GINGERBREAD)
+    private fun saveImageUri(uri: Uri) {
+        val prefs = requireActivity().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE).edit()
+        prefs.putString(PREF_IMAGE_URI, uri.toString())
+        prefs.apply()
     }
 
 
@@ -177,6 +262,8 @@ class MineFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             initLineChart()
         }
+        val dateList = sharedPreferences.getStringList("signed_dates")
+        mBinding.tvDk.text = dateList.size.toString().plus("次")
     }
 
     override fun onDestroyView() {

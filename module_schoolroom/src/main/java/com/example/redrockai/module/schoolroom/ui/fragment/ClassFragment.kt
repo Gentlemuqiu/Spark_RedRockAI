@@ -1,6 +1,5 @@
 package com.example.redrockai.module.schoolroom.ui.fragment
 
-import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -22,6 +21,7 @@ import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
 import com.example.redrockai.lib.utils.StudyTimeUtils.getWantedStudiedTime
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveWantedStudiedTime
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
 import com.example.redrockai.lib.utils.room.db.AppDatabase
 import com.example.redrockai.lib.utils.view.EditDialog
@@ -239,8 +239,9 @@ class ClassFragment : Fragment() {
 
     private fun initStudiedTime() {
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             StudyTimeUtils.studiedTime.collect {
+
                 mBinding.apply {
                     courseStudiedTime.text =
                         "今日已学".plus(convertTimestampToMinutes(it).toString()).plus("/")
@@ -252,6 +253,11 @@ class ClassFragment : Fragment() {
         mBinding.courseExactlyEditTime.text = getWantedStudiedTime().plus("分钟")
 
 
+    }
+
+    override fun onResume() {
+        mBinding.courseExactlyEditTime.text = getWantedStudiedTime().plus("分钟")
+        super.onResume()
     }
 
 
