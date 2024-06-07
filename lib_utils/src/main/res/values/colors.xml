@@ -52,4 +52,8 @@
     <!--    按钮渐变终止颜色-->
     <color name="config_button_gradient_end_color">#5D5DF7</color>
 
+    <!--    日历选中颜色-->
+    <color name="config_calendar_selected">#E5DBCF</color>
+
+
 </resources>

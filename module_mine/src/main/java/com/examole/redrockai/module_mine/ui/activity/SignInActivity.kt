@@ -1,13 +1,17 @@
-package com.examole.redrockai.module_mine
+package com.examole.redrockai.module_mine.ui.activity
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.examole.redrockai.module_mine.R
 import com.example.redrockai.lib.utils.BaseActivity
+import com.example.redrockai.lib.utils.BaseApp
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
 import com.example.redrockai.lib.utils.SighInUtils
 import com.example.redrockai.lib.utils.StudyTimeUtils
@@ -152,9 +156,16 @@ class SignInActivity : BaseActivity() {
             view?.addSpan(
                 DotSpan(
                     8f,
-                    getColor(com.example.redrockai.lib.utils.R.color.config_button_gradient_end_color)
+                    getColor(com.example.redrockai.lib.utils.R.color.config_calendar_selected)
                 )
             )
+            val drawable: Drawable? = ContextCompat.getDrawable(
+                BaseApp.getAppContext(),
+                R.drawable.custom_signin_background
+            )
+            drawable?.let {
+                view?.setBackgroundDrawable(it)
+            }
         }
     }
 

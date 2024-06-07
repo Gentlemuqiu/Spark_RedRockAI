@@ -35,7 +35,10 @@ class AppUsageTimeTracker(private val application: Application) {
             //更新上次学习时间
             saveLastStudiedTime(totalTime.toString())
 
+            //记录每天的学习时间，用于各天展示
+            StudyTimeUtils.saveDaysUsageTime(totalTime)
 
+            //开启下一次的循环
             sendEmptyMessageDelayed(0, 1000)
         }
 

@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.examole.redrockai.module_mine.ui.MineFragment">
+    android:fitsSystemWindows="true"
+    tools:context="com.examole.redrockai.module_mine.ui.fragment.MineFragment">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginLeft="10dp"
@@ -20,13 +21,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_mine_logo"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            app:cardCornerRadius="90dp"
+            app:cardElevation="0dp">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/iv_mine_logo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/ic_image_edit_logo" />
+
+
+    </FrameLayout>
 
 
     <TextView
@@ -107,8 +123,9 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="270dp"
         android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="130dp"
         app:cardBackgroundColor="?android:attr/colorBackground"
@@ -116,29 +133,30 @@
         app:cardElevation="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="我的学习时长"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:text="我的学习时长"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
+
+
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_chart"
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/line_chart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.cardview.widget.CardView>

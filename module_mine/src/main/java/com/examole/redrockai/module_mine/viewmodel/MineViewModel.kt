@@ -1,4 +1,4 @@
-package com.examole.redrockai.module_mine
+package com.examole.redrockai.module_mine.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

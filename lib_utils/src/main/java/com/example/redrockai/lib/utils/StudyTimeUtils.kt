@@ -1,16 +1,21 @@
 package com.example.redrockai.lib.utils
 
 import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  *  author : lytMoon
  *  email : yytds@foxmail.com
  *  date: 2024/5/21 21:53
  *  version : 1.0
- *  description :管理学习时间埋点
+ *  description :管理学习时间埋点、每天学习时间统计、各天时间统计
  *  saying : 这世界天才那么多，也不缺我一个
  */
 object StudyTimeUtils {
@@ -32,6 +37,32 @@ object StudyTimeUtils {
 
     private val sharedPreferences =
         BaseApp.getAppContext().getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+
+
+    private var daysUsageTime = mutableMapOf<String, Long>()
+
+
+    @Synchronized
+    fun saveDaysUsageTime(usageTime: Long) {
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        // 获取已存储的时间数据
+        daysUsageTime = getDaysUsageTime()
+        //添加使用时间
+        daysUsageTime[today] = usageTime
+        val jsonString = Gson().toJson(daysUsageTime)
+        sharedPreferences.edit().putString("daysUsageTime", jsonString).apply()
+    }
+
+    @Synchronized
+    fun getDaysUsageTime(): MutableMap<String, Long> {
+        val jsonString = sharedPreferences.getString("daysUsageTime", null)
+        // 将JSON字符串转换回Map
+        return if (jsonString != null) {
+            Gson().fromJson(jsonString, object : TypeToken<MutableMap<String, Long>>() {}.type)
+        } else {
+            mutableMapOf()
+        }
+    }
 
 
     @Synchronized
