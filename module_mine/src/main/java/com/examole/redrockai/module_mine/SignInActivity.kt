@@ -3,7 +3,6 @@ package com.examole.redrockai.module_mine
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
@@ -64,7 +63,6 @@ class SignInActivity : BaseActivity() {
         lifecycleScope.launch {
             StudyTimeUtils.studiedTime.collect {
                 val today = CalendarDay.today()
-                Log.d("wefawef", "测试数据${today}")
                 if (convertTimestampToMinutes(it) >= getWantedStudiedTime().toLong() && SighInUtils.haveToast == false) {
                     //签到成功
                     shortToast("恭喜您打卡成功")

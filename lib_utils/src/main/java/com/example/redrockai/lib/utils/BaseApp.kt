@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.alibaba.android.arouter.launcher.ARouter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 
 open class BaseApp : Application() {
@@ -14,6 +17,9 @@ open class BaseApp : Application() {
         fun getAppContext(): Context {
             return instance!!.applicationContext
         }
+        // 创建一个全局的协程作用域
+        val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     }
 
     override fun onCreate() {

@@ -1,6 +1,7 @@
 package com.example.redrockai
 
 import com.alibaba.android.arouter.launcher.ARouter
+import com.example.redrockai.ini.AppSignInTracker
 import com.example.redrockai.ini.AppUsageTimeTracker
 import com.example.redrockai.lib.utils.BaseApp
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
@@ -18,7 +19,9 @@ class App : BaseApp() {
         initArouter()
         initSDK()
         initStudyTime()
+        initAppSighInTracker()
     }
+
 
     private fun initArouter() {
         mContext = this
@@ -51,6 +54,11 @@ class App : BaseApp() {
     //初始化时间学习埋点
     private fun initStudyTime() {
         AppUsageTimeTracker(this)
+    }
+
+    //全局检测是否打卡成功
+    private fun initAppSighInTracker() {
+        AppSignInTracker()
     }
 
 
