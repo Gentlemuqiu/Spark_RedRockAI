@@ -196,7 +196,15 @@ class MineFragment : Fragment() {
     // 显示应用使用时间柱状图
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun displayBarChart() {
-        val daysUsageTime = StudyTimeUtils.getDaysUsageTime()
+
+        //选择最近的7天作为展示的数据
+        val originalMap: MutableMap<String, Long> = StudyTimeUtils.getDaysUsageTime()// 你的原始map
+        val daysUsageTime: Map<String, Long> = if (originalMap.size > 7) {
+            originalMap.toList().takeLast(7).toMap()
+        } else {
+            originalMap.toMap()
+        }
+
         val entries = ArrayList<BarEntry>()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val sortedDates = daysUsageTime.keys.sorted().map { dateFormat.parse(it) }
@@ -205,13 +213,15 @@ class MineFragment : Fragment() {
             val calendar = Calendar.getInstance()
             calendar.time = date
             val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toFloat()
-            val usageTime =
-                daysUsageTime[dateFormat.format(date)]?.div(60000)?.toFloat() ?: 0f // 转为分钟
+            val usageTime = String.format(
+                "%.2f",
+                (daysUsageTime[dateFormat.format(date)]?.div(3600000)?.toFloat() ?: 0f)
+            ).toFloat()//小时，保留两位小数
             entries.add(BarEntry(dayOfMonth - 1, usageTime))
         }
 
         val barChart: BarChart = mBinding.barChart
-        val dataSet = BarDataSet(entries, "每日使用时间/分钟").apply {
+        val dataSet = BarDataSet(entries, "每日使用时间/小时").apply {
 
         }
         val barData = BarData(dataSet).apply {
@@ -235,7 +245,7 @@ class MineFragment : Fragment() {
         }
         xAxis.granularity = 1f
         xAxis.labelCount = sortedDates.size
-        xAxis.setDrawGridLines(true)
+        xAxis.setDrawGridLines(false)
 
 
         // 配置Y轴

@@ -21,7 +21,6 @@
             <option value="$PROJECT_DIR$/module_playVideo" />
             <option value="$PROJECT_DIR$/module_schoolroom" />
             <option value="$PROJECT_DIR$/module_video" />
-            <option value="$PROJECT_DIR$/voice" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

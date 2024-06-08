@@ -1,20 +1,17 @@
 package com.example.redrock.module.video.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.example.model.play.ViewModel.RelatedViewModel
 import com.example.redrock.module.video.R
 import com.example.redrock.module.video.ViewModel.IdViewModel
 import com.example.redrock.module.video.databinding.ActivityPlayBinding
 import com.example.redrock.module.video.ui.fragment.HomeWorkFragment
+import com.example.redrock.module.video.ui.fragment.RecommendFragment
 import com.example.redrock.module.video.ui.fragment.NoteFragment
-import com.example.redrock.module.video.ui.fragment.StudyHelperFragment
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.lib.utils.adapter.FragmentVpAdapter
 import com.google.android.material.tabs.TabLayout
@@ -23,10 +20,8 @@ import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.CompleteView
 import xyz.doikki.videocontroller.component.ErrorView
 import xyz.doikki.videocontroller.component.GestureView
-import xyz.doikki.videocontroller.component.PrepareView
 import xyz.doikki.videocontroller.component.VodControlView
 import xyz.doikki.videoplayer.player.VideoView
-import kotlin.properties.Delegates
 
 @Route(path = "/play/PlayActivity/")
 class PlayActivity : BaseActivity() {
@@ -49,8 +44,8 @@ class PlayActivity : BaseActivity() {
 
     private fun initVp2() {
         mBinding.playVp2.adapter = FragmentVpAdapter(this)
-            .add { NoteFragment() }       // whichPageIsIn = 0
-            .add { StudyHelperFragment() }          // whichPageIsIn = 1
+            .add { RecommendFragment() }       // whichPageIsIn = 0
+            .add { NoteFragment() }          // whichPageIsIn = 1
             .add { HomeWorkFragment() }    // whichPageIsIn = 2
         // 因为第一页有左滑删除，所以禁止 vp 滑动
         mBinding.playVp2.isUserInputEnabled = false
