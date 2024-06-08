@@ -1,42 +1,31 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.example.redrockai"
+    namespace = "com.example.redrockai.module.message"
     compileSdk = 34
-
 
     viewBinding {
         enable = true
     }
 
     defaultConfig {
-        applicationId = "com.example.redrockai"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-       ndk {
-           abiFilters.apply {
-               add("armeabi")
-               add("armeabi-v7a")
-               add("x86")
-               add("mips")
-           }
-       }
-
-        sourceSets {
-            named("main") {
-                jniLibs.srcDirs("libs")
+        ndk {
+            abiFilters.apply {
+                add("armeabi")
+                add("armeabi-v7a")
+                add("x86")
+                add("mips")
             }
         }
 
+        consumerProguardFiles("consumer-rules.pro")
     }
 
 
@@ -59,21 +48,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
-    implementation(project(":module_video"))
-    implementation(project(":module_schoolroom"))
-    implementation(project(":module_life"))
-    implementation(project(":module_mine"))
-    implementation(project(":module_message"))
     implementation(files("libs/SparkChain.aar"))
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    //每日签到
-    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
-
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

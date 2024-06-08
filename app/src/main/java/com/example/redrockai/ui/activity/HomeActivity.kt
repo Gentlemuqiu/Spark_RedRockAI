@@ -8,8 +8,8 @@ import com.example.redrockai.adapter.FragmentHomeVpAdapter
 import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
-import com.example.redrockai.ui.fragment.MessageFragment
-import com.examole.redrockai.module_mine.ui.fragment.MineFragment
+import com.examole.redrockai.module_mine.ui.MineFragment
+import com.example.redrockai.module.message.MessageFragment
 
 
 class HomeActivity : BaseActivity() {

@@ -14,15 +14,15 @@ android {
         enable = true
     }
 
-//    defaultConfig {
+    defaultConfig {
 //        applicationId = "com.examole.redrockai.module_mine"
-//        minSdk = 24
-//        targetSdk = 34
+        minSdk = 24
+        targetSdk = 34
 //        versionCode = 1
 //        versionName = "1.0"
 //
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//    }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
     buildTypes {
         release {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="aigc_chat_hint_text_color">#666666</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#32000000</color>
+    <color name="light_black">#03A9F4</color>
+</resources>
