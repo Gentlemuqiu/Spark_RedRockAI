@@ -82,8 +82,8 @@ class PlayActivity : BaseActivity() {
 
     private fun initTabLayout() {
         val tabs = arrayOf(
+            "推荐",
             "笔记",
-            "学习助手",
             "作业"
         )
         TabLayoutMediator(

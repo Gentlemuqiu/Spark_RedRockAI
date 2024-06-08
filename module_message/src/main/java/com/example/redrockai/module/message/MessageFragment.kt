@@ -69,10 +69,6 @@ class MessageFragment : Fragment() {
 
     private val language = "zh_cn" //识别语言
 
-
-
-    private lateinit var  btnStart: Button //开始识别
-
     private val resultType = "json" //结果内容数据格式
 
 
