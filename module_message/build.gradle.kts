@@ -45,6 +45,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    sourceSets {
+        named("main") {
+            jniLibs.srcDirs("libs")
+        }
+    }
 }
 
 dependencies {
@@ -52,6 +57,7 @@ dependencies {
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
     implementation(files("libs/SparkChain.aar"))
+    implementation(files("libs\\Msc.jar"))
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

@@ -5,6 +5,8 @@ import com.example.redrockai.ini.AppSignInTracker
 import com.example.redrockai.ini.AppUsageTimeTracker
 import com.example.redrockai.lib.utils.BaseApp
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
+import com.iflytek.cloud.SpeechConstant
+import com.iflytek.cloud.SpeechUtility
 import com.iflytek.sparkchain.core.SparkChain
 import com.iflytek.sparkchain.core.SparkChainConfig
 
@@ -15,6 +17,7 @@ class App : BaseApp() {
 
     private var isDebugARouter = true//ARouter调试开关
     override fun onCreate() {
+        SpeechUtility.createUtility(this, SpeechConstant.APPID+"=da2f95cc")
         super.onCreate()
         initArouter()
         initSDK()

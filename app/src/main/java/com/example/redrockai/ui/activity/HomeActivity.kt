@@ -2,13 +2,13 @@ package com.example.redrockai.ui.activity
 
 import android.os.Bundle
 import androidx.core.view.WindowCompat
+import com.examole.redrockai.module_mine.ui.fragment.MineFragment
 import com.example.module.life.ui.Fragment.LifeFragment
 import com.example.redrockai.R
 import com.example.redrockai.adapter.FragmentHomeVpAdapter
 import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
-import com.examole.redrockai.module_mine.ui.MineFragment
 import com.example.redrockai.module.message.MessageFragment
 
 
