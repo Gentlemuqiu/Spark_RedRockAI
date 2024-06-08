@@ -213,13 +213,13 @@ class NoteFragment : Fragment() {
         binding.actionInsertAudio.setOnClickListener {
             mEditor.insertAudio("https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3")
         }
-
-        binding.actionInsertVideo.setOnClickListener {
-            mEditor.insertVideo(
-                "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_10MB.mp4",
-                360
-            )
-        }
+//
+//        binding.actionInsertVideo.setOnClickListener {
+//            mEditor.insertVideo(
+//                "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_10MB.mp4",
+//                360
+//            )
+//        }
 
         binding.actionInsertLink.setOnClickListener {
             mEditor.insertLink("https://github.com/wasabeef", "wasabeef")

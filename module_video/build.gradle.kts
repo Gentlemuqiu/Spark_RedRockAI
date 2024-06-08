@@ -20,6 +20,15 @@ android {
         targetSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.apply {
+                add("armeabi")
+                add("armeabi-v7a")
+                add("x86")
+                add("mips")
+            }
+        }
     }
 
     buildTypes {
@@ -83,6 +92,8 @@ dependencies {
 
     //笔记
     implementation("jp.wasabeef:richeditor-android:2.0.0")
+
+    implementation(files("libs/SparkChain.aar"))
 
     //UC crop裁剪
     implementation("com.github.yalantis:ucrop:2.2.6")

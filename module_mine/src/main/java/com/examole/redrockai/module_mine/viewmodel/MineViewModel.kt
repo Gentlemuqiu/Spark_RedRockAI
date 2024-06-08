@@ -24,7 +24,7 @@ class MineViewModel : ViewModel() {
     //room
     private lateinit var historyRecordDao: HistoryRecordDao
 
-    var studyCourseNum: Int? = 0
+    private var studyCourseNum: Int? = 0
     private var studyAllTime: Long? = 0
 
 
