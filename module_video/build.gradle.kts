@@ -81,14 +81,20 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
 
+    //笔记
+    implementation("jp.wasabeef:richeditor-android:2.0.0")
+
+    //UC crop裁剪
+    implementation("com.github.yalantis:ucrop:2.2.6")
+
     //语法糖kts插件
     implementation("androidx.fragment:fragment-ktx:1.5.5")
 
     implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    kapt ("com.alibaba:arouter-compiler:1.5.2")
-    implementation ("com.alibaba:arouter-api:1.5.2")
+    kapt("com.alibaba:arouter-compiler:1.5.2")
+    implementation("com.alibaba:arouter-api:1.5.2")
 
     //使用room
     implementation("androidx.room:room-runtime:2.6.1")

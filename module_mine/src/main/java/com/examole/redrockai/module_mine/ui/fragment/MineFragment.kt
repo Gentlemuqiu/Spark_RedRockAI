@@ -2,8 +2,6 @@ package com.examole.redrockai.module_mine.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.usage.UsageStats
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -11,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +33,14 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.iflytek.sparkchain.core.LLM
+import com.iflytek.sparkchain.core.LLMCallbacks
+import com.iflytek.sparkchain.core.LLMConfig
+import com.iflytek.sparkchain.core.LLMError
+import com.iflytek.sparkchain.core.LLMEvent
+import com.iflytek.sparkchain.core.LLMResult
+import com.iflytek.sparkchain.core.Memory
+import com.iflytek.sparkchain.core.SparkChain
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.launch
 import java.io.File
@@ -53,12 +60,20 @@ class MineFragment : Fragment() {
     private val sharedPreferences =
         BaseApp.getAppContext().getSharedPreferences("SignInPrefs", Context.MODE_PRIVATE)
 
+    private var studyTime: String? = null
+
+
+    private val TAG = "AEE"
+    private var sessionFinished = true
+    private lateinit var llm: LLM
+    private val accumulatedContent = StringBuilder()
+    private var temporaryMessageIndex: Int? = null
+
 
     private val REQUEST_CODE_PICK_IMAGE = 1
     private val REQUEST_CODE_CROP_IMAGE = 2
     private val PREFS_NAME = "MineFragmentPrefs"
     private val PREF_IMAGE_URI = "imageUri"
-
 
 
     override fun onCreateView(
@@ -87,6 +102,8 @@ class MineFragment : Fragment() {
         mBinding.textView.setOnClickListener {
             startActivity(Intent(requireActivity(), SignInActivity::class.java))
         }
+        //建议初始化
+        setLLMConfig()
     }
 
 
@@ -165,31 +182,61 @@ class MineFragment : Fragment() {
                     tvKc.text = it.studyCourseNum.toString().plus("个")
                     //学习时间
                     tvSj.text = convertTimestampToMinutes(it.studyTimeAll!!).toString().plus("分钟")
+                    studyTime = convertTimestampToMinutes(it.studyTimeAll!!).toString().plus("分钟")
 
                 }
             }
         }
     }
 
+    private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
+        override fun onLLMResult(llmResult: LLMResult, usrContext: Any?) {
+            val content: String = llmResult.content
+            val status: Int = llmResult.status
+
+            activity?.runOnUiThread {
+                accumulatedContent.append(content)
+                mBinding.chatAdvice.append(content)
+                sessionFinished = true
+
+            }
+        }
+
+        override fun onLLMEvent(event: LLMEvent, usrContext: Any?) {
+            Log.d(TAG, "onLLMEvent\n")
+        }
+
+        override fun onLLMError(error: LLMError, usrContext: Any?) {
+            Log.d(TAG, "onLLMError\n")
+            sessionFinished = true
+        }
+    }
 
 
+    private fun setLLMConfig() {
+        val llmConfig: LLMConfig = LLMConfig.builder()
+        llmConfig.domain("generalv3.5")
+        llmConfig.url("ws(s)://spark-api.xf-yun.com/v3.5/chat")
+        llmConfig.maxToken(8192)
+        val window_memory: Memory = Memory.windowMemory(5)
+        llm = LLM(llmConfig, window_memory)
+        llm.registerLLMCallbacks(llmCallbacks)
+        startChat()
+    }
 
-    // 获取当天每小时的应用使用时间
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun getUsageStats(context: Context): List<UsageStats> {
-        val usageStatsManager =
-            context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        val startTime = calendar.timeInMillis
-        val endTime = System.currentTimeMillis()
-        return usageStatsManager.queryUsageStats(
-            UsageStatsManager.INTERVAL_DAILY,
-            startTime,
-            endTime
-        )
+    private fun startChat() {
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val usrInputText =
+                "给我一点学习建议，我的累计打卡次数是${sharedPreferences.getStringList("signed_dates").size},我的学习课程数量是${historyRecordDao.getAllRecords().size},我的学习时间是${studyTime}"
+            val myContext = "只能回答教育相关的问题"
+            val ret: Int = llm.arun(usrInputText, myContext)
+            if (ret != 0) {
+                Log.e(TAG, "SparkChain failed:\n$ret")
+            }
+            sessionFinished = false
+        }
+
     }
 
 
@@ -276,6 +323,7 @@ class MineFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        SparkChain.getInst().unInit()
         _mBinding = null
     }
 
