@@ -18,7 +18,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="学习助手"
+        android:text="笔记"
         android:layout_marginStart="5dp"
         android:textColor="#0F40F5"
         app:layout_constraintBottom_toBottomOf="@+id/imageView5"
