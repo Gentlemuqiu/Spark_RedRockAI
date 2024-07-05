@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.alibaba.android.arouter.launcher.ARouter
 import com.examole.redrockai.module_mine.databinding.FragmentMineBinding
 import com.examole.redrockai.module_mine.ui.activity.SignInActivity
 import com.examole.redrockai.module_mine.viewmodel.MineViewModel
@@ -105,6 +106,18 @@ class MineFragment : Fragment() {
         }
         //建议初始化
         setLLMConfig()
+        mBinding.apply {
+            textView2.setOnClickListener {
+                intentToHistory()
+            }
+            tvKc.setOnClickListener {
+                intentToHistory()
+            }
+        }
+    }
+
+    private fun intentToHistory() {
+        ARouter.getInstance().build("/schoolroom/historyactivity/").navigation()
     }
 
 
