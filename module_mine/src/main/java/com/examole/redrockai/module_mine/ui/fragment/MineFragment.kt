@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.alibaba.android.arouter.launcher.ARouter
 import com.examole.redrockai.module_mine.databinding.FragmentMineBinding
 import com.examole.redrockai.module_mine.ui.activity.SignInActivity
 import com.examole.redrockai.module_mine.viewmodel.MineViewModel
@@ -44,8 +45,9 @@ import com.iflytek.sparkchain.core.SparkChain
 import com.yalantis.ucrop.UCrop
 import kotlinx.coroutines.launch
 import java.io.File
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 
@@ -104,6 +106,18 @@ class MineFragment : Fragment() {
         }
         //建议初始化
         setLLMConfig()
+        mBinding.apply {
+            textView2.setOnClickListener {
+                intentToHistory()
+            }
+            tvKc.setOnClickListener {
+                intentToHistory()
+            }
+        }
+    }
+
+    private fun intentToHistory() {
+        ARouter.getInstance().build("/schoolroom/historyactivity/").navigation()
     }
 
 
@@ -243,39 +257,33 @@ class MineFragment : Fragment() {
     // 显示应用使用时间柱状图
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun displayBarChart() {
-
-        //选择最近的7天作为展示的数据
-        val originalMap: MutableMap<String, Long> = StudyTimeUtils.getDaysUsageTime()// 你的原始map
+        // 选择最近的7天作为展示的数据
+        val originalMap: MutableMap<String, Long> = StudyTimeUtils.getDaysUsageTime() // 你的原始map
         val daysUsageTime: Map<String, Long> = if (originalMap.size > 7) {
             originalMap.toList().takeLast(7).toMap()
         } else {
             originalMap.toMap()
         }
-
         val entries = ArrayList<BarEntry>()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val sortedDates = daysUsageTime.keys.sorted().map { dateFormat.parse(it) }
 
         sortedDates.forEachIndexed { index, date ->
-            val calendar = Calendar.getInstance()
-            calendar.time = date
-            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH).toFloat()
-            val usageTime = String.format(
-                "%.2f",
-                (daysUsageTime[dateFormat.format(date)]?.div(3600000)?.toFloat() ?: 0f)
-            ).toFloat()//小时，保留两位小数
-            entries.add(BarEntry(dayOfMonth - 1, usageTime))
+            val usageMillis = daysUsageTime[dateFormat.format(date)] ?: 0L
+            val usageHours =
+                BigDecimal(usageMillis).divide(BigDecimal(3600000), 2, RoundingMode.HALF_UP)
+                    .toFloat()
+            entries.add(BarEntry(index.toFloat(), usageHours))
         }
 
         val barChart: BarChart = mBinding.barChart
-        val dataSet = BarDataSet(entries, "每日使用时间/小时").apply {
-
-        }
+        val dataSet = BarDataSet(entries, "每日使用时间/小时").apply { }
         val barData = BarData(dataSet).apply {
             if (sortedDates.size < 3) {
                 barWidth = 0.2f // 如果数据点小于 3 个,设置柱状图宽度为 0.3
             }
         }
+
         barChart.data = barData
 
         // 配置X轴
@@ -285,15 +293,17 @@ class MineFragment : Fragment() {
             @SuppressLint("ConstantLocale")
             private val monthFormat = SimpleDateFormat("M月d号", Locale.getDefault())
             override fun getFormattedValue(value: Float): String {
-                val calendar = Calendar.getInstance()
-                calendar.set(Calendar.DAY_OF_MONTH, value.toInt() + 1)
-                return monthFormat.format(calendar.time)
+                val index = value.toInt()
+                if (index >= 0 && index < sortedDates.size) {
+                    val date = sortedDates[index]
+                    return monthFormat.format(date)
+                }
+                return ""
             }
         }
         xAxis.granularity = 1f
         xAxis.labelCount = sortedDates.size
         xAxis.setDrawGridLines(false)
-
 
         // 配置Y轴
         val yAxisLeft: YAxis = barChart.axisLeft

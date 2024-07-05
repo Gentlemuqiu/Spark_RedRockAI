@@ -60,6 +60,11 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
 
+
+    //使用Arouter
+    kapt("com.alibaba:arouter-compiler:1.5.2")
+    implementation("com.alibaba:arouter-api:1.5.2")
+
     //使用floatSetchView
     implementation("com.github.arimorty:floatingsearchview:2.0.3")
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
  *  description :历史记录activity
  *  saying : 这世界天才那么多，也不缺我一个
  */
+@Route(path = "/schoolroom/historyactivity/")
 class HistoryRecordActivity : BaseActivity() {
 
 

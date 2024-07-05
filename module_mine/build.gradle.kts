@@ -48,6 +48,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
+    }
+
 }
 
 dependencies {
@@ -55,6 +61,12 @@ dependencies {
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
     implementation(project(":module_video"))
+
+    //使用Arouter
+    implementation("com.alibaba:arouter-api:1.5.2")
+    kapt("com.alibaba:arouter-compiler:1.5.2")
+
+
 
     //统计时间并画图展示
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
