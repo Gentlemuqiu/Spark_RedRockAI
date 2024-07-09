@@ -53,10 +53,13 @@ android {
 }
 
 dependencies {
+    implementation ("com.hjq:xxpermissions:8.2")
+    //implementation(files("libs/SparkChain1.aar"))
+
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
-    implementation(files("libs/SparkChain.aar"))
+    implementation(files("libs/SparkChain1.aar"))
     implementation(files("libs\\Msc.jar"))
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
