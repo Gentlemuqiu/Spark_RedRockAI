@@ -5,23 +5,31 @@ import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.example.redrock.module.video.R
 import com.example.redrock.module.video.ViewModel.IdViewModel
 import com.example.redrock.module.video.databinding.ActivityPlayBinding
 import com.example.redrock.module.video.ui.fragment.HomeWorkFragment
-import com.example.redrock.module.video.ui.fragment.RecommendFragment
 import com.example.redrock.module.video.ui.fragment.NoteFragment
+import com.example.redrock.module.video.ui.fragment.RecommendFragment
 import com.example.redrockai.lib.utils.BaseActivity
+import com.example.redrockai.lib.utils.BaseUtils.shortToast
 import com.example.redrockai.lib.utils.adapter.FragmentVpAdapter
+import com.example.redrockai.lib.utils.room.bean.HistoryRecord
+import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
+import com.example.redrockai.lib.utils.room.db.AppDatabase
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import xyz.doikki.videocontroller.StandardVideoController
 import xyz.doikki.videocontroller.component.CompleteView
 import xyz.doikki.videocontroller.component.ErrorView
 import xyz.doikki.videocontroller.component.GestureView
 import xyz.doikki.videocontroller.component.VodControlView
 import xyz.doikki.videoplayer.player.VideoView
+
+
 
 @Route(path = "/play/PlayActivity/")
 class PlayActivity : BaseActivity() {
@@ -32,6 +40,9 @@ class PlayActivity : BaseActivity() {
     }
     private val idViewModel by lazy { ViewModelProvider(this)[IdViewModel::class.java] }
 
+    //历史消息room的dao接口
+    private lateinit var historyRecordDao: HistoryRecordDao
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +51,41 @@ class PlayActivity : BaseActivity() {
         initTabLayout()
         initWindow()
         initDate()
+        initCliCK()
+    }
+
+    private fun initCliCK() {
+        historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
+        mBinding.apply {
+            btStudyCourse.setOnClickListener {
+                val coverDetail = intent.getStringExtra("coverDetail").toString()
+                // 生成一条记录
+                val record = HistoryRecord(
+                    newsId = id!!,
+                    title = title,
+                    timestamp = System.currentTimeMillis(),
+                    playerUrl = playUrl!!,
+                    description = description!!,
+                    coverDetail = coverDetail,
+                    category = category!!,
+                    shareCount = shareCount!!,
+                    likeCount = likeCount!!,
+                    commentCount = commentCount!!
+
+                )
+
+                lifecycleScope.launch {
+                    if (historyRecordDao.getRecordByNewsId(id!!) == null) {
+                        historyRecordDao.insertOrUpdate(record)
+                        shortToast("成功添加到学习课程中")
+                    } else {
+                        shortToast("已经学习该课程，请勿重复添加哦")
+                    }
+                }
+
+
+            }
+        }
     }
 
     private fun initVp2() {
@@ -52,15 +98,24 @@ class PlayActivity : BaseActivity() {
 
     }
 
+
+    private var playUrl: String? = null
+    private var description: String? = null
+    private var category: String? = null
+    private var shareCount: Int? = null
+    private var likeCount: Int? = null
+    private var commentCount: Int? = null
+    private var id: Int? = null
+
     private fun initDate() {
-        val playUrl = intent.getStringExtra("playUrl")
-        val description = intent.getStringExtra("description")
-        val category = intent.getStringExtra("category")
+        playUrl = intent.getStringExtra("playUrl")
+        description = intent.getStringExtra("description")
+        category = intent.getStringExtra("category")
         title = intent.getStringExtra("title").toString()
-        val shareCount = intent.getIntExtra("shareCount", 0)
-        val likeCount = intent.getIntExtra("likeCount", 0)
-        val commentCount = intent.getIntExtra("commentCount", 0)
-        val id = intent.getIntExtra("id", 0)
+        shareCount = intent.getIntExtra("shareCount", 0)
+        likeCount = intent.getIntExtra("likeCount", 0)
+        commentCount = intent.getIntExtra("commentCount", 0)
+        id = intent.getIntExtra("id", 0)
         idViewModel.id.value = id
         mBinding.apply {
             tvPlayTitle.text = title

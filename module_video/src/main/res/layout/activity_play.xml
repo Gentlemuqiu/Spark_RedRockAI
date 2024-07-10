@@ -126,4 +126,15 @@
 
 
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/bt_study_course"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"
+        android:text="学习课程" />
 </RelativeLayout>
