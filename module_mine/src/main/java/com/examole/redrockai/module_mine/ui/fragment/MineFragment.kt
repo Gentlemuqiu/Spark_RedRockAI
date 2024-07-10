@@ -73,7 +73,6 @@ class MineFragment : Fragment() {
 
 
     private val REQUEST_CODE_PICK_IMAGE = 1
-    private val REQUEST_CODE_CROP_IMAGE = 2
     private val PREFS_NAME = "MineFragmentPrefs"
     private val PREF_IMAGE_URI = "imageUri"
 

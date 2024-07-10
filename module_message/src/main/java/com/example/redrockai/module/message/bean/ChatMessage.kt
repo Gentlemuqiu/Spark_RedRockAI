@@ -1,4 +1,4 @@
-package com.example.redrockai.module.message
+package com.example.redrockai.module.message.bean
 
 /**
  * @Author      : Severus (Li XiaoHui)

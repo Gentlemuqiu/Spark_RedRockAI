@@ -1,4 +1,4 @@
-package com.example.redrockai.module.message
+package com.example.redrockai.module.message.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.FragmentTransaction
+import com.example.redrockai.module.message.R
 import com.example.redrockai.module.message.databinding.FragmentMainBinding
 
 

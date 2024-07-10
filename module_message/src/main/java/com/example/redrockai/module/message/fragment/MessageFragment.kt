@@ -1,21 +1,17 @@
-package com.example.redrockai.module.message
+package com.example.redrockai.module.message.fragment
 
 import android.Manifest
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Environment
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +19,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redrockai.lib.utils.JsonParser.parseIatResult
+import com.example.redrockai.module.message.adapter.MessageAdapter
+import com.example.redrockai.module.message.bean.ChatMessage
 import com.example.redrockai.module.message.databinding.FragmentMessageBinding
 import com.iflytek.cloud.ErrorCode
 import com.iflytek.cloud.InitListener
@@ -72,7 +70,6 @@ class MessageFragment : Fragment() {
     private val resultType = "json" //结果内容数据格式
 
 
-
     private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
         override fun onLLMResult(llmResult: LLMResult, usrContext: Any?) {
             val content: String = llmResult.content
@@ -84,7 +81,8 @@ class MessageFragment : Fragment() {
                     // 状态为2，拼接完成，添加新消息
                     if (temporaryMessageIndex != null) {
                         // 如果已经有临时消息，更新它
-                        messages[temporaryMessageIndex!!] = ChatMessage(accumulatedContent.toString(), false)
+                        messages[temporaryMessageIndex!!] =
+                            ChatMessage(accumulatedContent.toString(), false)
                         chatAdapter.notifyItemChanged(temporaryMessageIndex!!)
                         temporaryMessageIndex = null
                     } else {
@@ -103,7 +101,8 @@ class MessageFragment : Fragment() {
                         chatAdapter.notifyItemInserted(temporaryMessageIndex!!)
                     } else {
                         // 如果已经有临时消息，更新它
-                        messages[temporaryMessageIndex!!] = ChatMessage(accumulatedContent.toString(), false)
+                        messages[temporaryMessageIndex!!] =
+                            ChatMessage(accumulatedContent.toString(), false)
                         chatAdapter.notifyItemChanged(temporaryMessageIndex!!)
                     }
                     toEnd()
@@ -118,7 +117,12 @@ class MessageFragment : Fragment() {
         override fun onLLMError(error: LLMError, usrContext: Any?) {
             Log.d(TAG, "onLLMError\n")
             activity?.runOnUiThread {
-                messages.add(ChatMessage("错误: err:${error.getErrCode()} errDesc:${error.getErrMsg()}", false))
+                messages.add(
+                    ChatMessage(
+                        "错误: err:${error.getErrCode()} errDesc:${error.getErrMsg()}",
+                        false
+                    )
+                )
                 chatAdapter.notifyItemInserted(messages.size - 1)
                 toEnd()
             }
@@ -137,12 +141,14 @@ class MessageFragment : Fragment() {
         _mBinding = FragmentMessageBinding.inflate(inflater, container, false)
         return mBinding.root
     }
+
     private val mInitListener = InitListener { code ->
         Log.d(TAG, "SpeechRecognizer init() code = $code")
         if (code != ErrorCode.SUCCESS) {
             showMsg("初始化失败，错误码：$code,请点击网址https://www.xfyun.cn/document/error-code查询解决方案")
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
@@ -194,6 +200,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun initView() {
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         chatAdapter = MessageAdapter(messages)
         mBinding.aigcFragmentAigcRvMessage.apply {
             layoutManager = LinearLayoutManager(context)
@@ -315,6 +322,7 @@ class MessageFragment : Fragment() {
         }
         mBinding.aigcFragmentAigcEt.setText(resultBuffer.toString())//听写结果显示
     }
+
     private val mRecognizerDialogListener: RecognizerDialogListener =
         object : RecognizerDialogListener {
             override fun onResult(results: RecognizerResult?, isLast: Boolean) {
@@ -359,7 +367,11 @@ class MessageFragment : Fragment() {
         }
         val tmpList = arrayOfNulls<String>(toApplyList.size)
         if (toApplyList.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this.requireActivity(), toApplyList.toArray(tmpList), 123)
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                toApplyList.toArray(tmpList),
+                123
+            )
         }
     }
 }

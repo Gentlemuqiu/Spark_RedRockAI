@@ -54,8 +54,8 @@ android {
 
 dependencies {
     implementation ("com.hjq:xxpermissions:8.2")
-    //implementation(files("libs/SparkChain1.aar"))
-
+    //UC crop裁剪
+    implementation("com.github.yalantis:ucrop:2.2.6")
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))

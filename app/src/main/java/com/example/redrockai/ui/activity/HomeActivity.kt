@@ -9,7 +9,7 @@ import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
 import com.examole.redrockai.module_mine.ui.fragment.MineFragment
-import com.example.redrockai.module.message.MainFragment
+import com.example.redrockai.module.message.fragment.MainFragment
 
 
 class HomeActivity : BaseActivity() {

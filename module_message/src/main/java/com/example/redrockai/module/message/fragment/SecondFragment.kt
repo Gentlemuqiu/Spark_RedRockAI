@@ -1,24 +1,18 @@
-package com.example.redrockai.module.message
+package com.example.redrockai.module.message.fragment
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
+import com.example.redrockai.module.message.R
 import com.example.redrockai.module.message.databinding.FragmentSecondBinding
 import com.iflytek.sparkchain.core.LLM
-import com.iflytek.sparkchain.core.LLMCallbacks
-import com.iflytek.sparkchain.core.LLMError
-import com.iflytek.sparkchain.core.LLMEvent
 import com.iflytek.sparkchain.core.LLMFactory
 import com.iflytek.sparkchain.core.LLMOutput
-import com.iflytek.sparkchain.core.LLMResult
 
 
 class SecondFragment : Fragment(), View.OnClickListener {
@@ -127,10 +121,6 @@ class SecondFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun showImage(bytes: ByteArray) {
-
-
-    }
 
     private fun showInfo(text: String) {
         activity?.runOnUiThread(Runnable { mBinding.tvResult.text = text })

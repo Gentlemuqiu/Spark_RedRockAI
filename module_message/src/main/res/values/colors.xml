@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#32000000</color>
     <color name="light_black">#03A9F4</color>
+    <color name="tran">#00000000</color>
+
 </resources>
