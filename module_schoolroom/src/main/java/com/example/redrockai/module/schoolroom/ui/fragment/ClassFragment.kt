@@ -21,7 +21,6 @@ import com.example.redrockai.lib.utils.StudyTimeUtils.convertTimestampToMinutes
 import com.example.redrockai.lib.utils.StudyTimeUtils.getWantedStudiedTime
 import com.example.redrockai.lib.utils.StudyTimeUtils.saveWantedStudiedTime
 import com.example.redrockai.lib.utils.formatDateStringWithLocalDate
-import com.example.redrockai.lib.utils.room.bean.HistoryRecord
 import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
 import com.example.redrockai.lib.utils.room.db.AppDatabase
 import com.example.redrockai.lib.utils.view.EditDialog
@@ -35,7 +34,6 @@ import com.example.redrockai.module.schoolroom.viewModel.IntroduceViewModel
 import com.example.redrockai.module.schoolroom.viewModel.SentenceViewModel
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -160,29 +158,30 @@ class ClassFragment : Fragment() {
     private fun initSchoolRoomRv() {
         adapter = RelatedIntroduceAdapter().apply {
             setOnClassItemClickListener {
-                // 生成一条记录
-                val record = HistoryRecord(
-                    newsId = it.data.content.data.id,
-                    title = it.data.content.data.title,
-                    timestamp = System.currentTimeMillis(),
-                    playerUrl = it.data.content.data.playUrl,
-                    description = it.data.content.data.description,
-                    coverDetail = it.data.content.data.cover.detail,
-                    category = it.data.content.data.category,
-                    shareCount = it.data.content.data.consumption.shareCount,
-                    likeCount = it.data.content.data.consumption.realCollectionCount,
-                    commentCount = it.data.content.data.consumption.replyCount
-
-                )
-                GlobalScope.launch {
-                    historyRecordDao.insertOrUpdate(record)
-                }
+//                // 生成一条记录
+//                val record = HistoryRecord(
+//                    newsId = it.data.content.data.id,
+//                    title = it.data.content.data.title,
+//                    timestamp = System.currentTimeMillis(),
+//                    playerUrl = it.data.content.data.playUrl,
+//                    description = it.data.content.data.description,
+//                    coverDetail = it.data.content.data.cover.detail,
+//                    category = it.data.content.data.category,
+//                    shareCount = it.data.content.data.consumption.shareCount,
+//                    likeCount = it.data.content.data.consumption.realCollectionCount,
+//                    commentCount = it.data.content.data.consumption.replyCount
+//
+//                )
+//                GlobalScope.launch {
+//                    historyRecordDao.insertOrUpdate(record)
+//                }
 
                 ARouter.getInstance().build("/play/PlayActivity/")
                     .withString("playUrl", it.data.content.data.playUrl)
                     .withString("title", it.data.content.data.title)
                     .withString("description", it.data.content.data.description)
                     .withString("category", it.data.content.data.category)
+                    .withString("coverDetail", it.data.content.data.cover.detail)
                     .withInt("shareCount", it.data.content.data.consumption.shareCount)
                     .withInt("likeCount", it.data.content.data.consumption.realCollectionCount)
                     .withInt("commentCount", it.data.content.data.consumption.replyCount)
