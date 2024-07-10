@@ -9,7 +9,7 @@ import com.example.redrockai.databinding.ActivityHomeBinding
 import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.ui.fragment.ClassFragment
 import com.examole.redrockai.module_mine.ui.fragment.MineFragment
-import com.example.redrockai.module.message.MessageFragment
+import com.example.redrockai.module.message.MainFragment
 
 
 class HomeActivity : BaseActivity() {
@@ -39,7 +39,7 @@ class HomeActivity : BaseActivity() {
             vp2.adapter = FragmentHomeVpAdapter(this@HomeActivity).apply {
                 add { ClassFragment() }
                 add { LifeFragment() }
-                add { MessageFragment() }
+                add { MainFragment() }
                 add { MineFragment() }
             }
             vp2.isUserInputEnabled = false

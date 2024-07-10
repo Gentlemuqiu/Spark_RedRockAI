@@ -15,6 +15,8 @@ dependencyResolutionManagement {
         mavenCentral()
         maven(url = "https://maven.aliyun.com/repository/public")
         maven(url = "https://jitpack.io") // 添加 JitPack 仓库
+        maven(url = uri("https://maven.google.com"))
+        maven(url = uri("https://maven.aliyun.com/repository/jcenter"))
 
     }
 }

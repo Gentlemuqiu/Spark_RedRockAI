@@ -93,7 +93,7 @@ dependencies {
     //笔记
     implementation("jp.wasabeef:richeditor-android:2.0.0")
 
-    implementation(files("libs/SparkChain.aar"))
+    implementation(files("libs/SparkChain1.aar"))
 
     //UC crop裁剪
     implementation("com.github.yalantis:ucrop:2.2.6")

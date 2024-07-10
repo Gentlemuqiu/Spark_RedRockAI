@@ -39,11 +39,9 @@ class MainActivity : BaseActivity() {
             val content: String = llmResult.getContent()
             Log.e(TAG, "onLLMResult:$content")
             val status: Int = llmResult.getStatus()
-            if (content != null) {
-                runOnUiThread {
-                    chatText!!.append(content)
-                    toEnd()
-                }
+            runOnUiThread {
+                chatText.append(content)
+                toEnd()
             }
             if (usrContext != null) {
                 val context = usrContext as String

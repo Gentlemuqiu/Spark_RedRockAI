@@ -22,62 +22,63 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-       ndk {
-           abiFilters.apply {
-               add("armeabi")
-               add("armeabi-v7a")
-               add("x86")
-               add("mips")
+        ndk {
+            abiFilters.apply {
+                add("armeabi")
+                add("armeabi-v7a")
+                add("x86")
+                add("mips")
 
 
-       }
+            }
+        }
 
+
+        buildTypes {
+            release {
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            }
+        }
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_1_8
+            targetCompatibility = JavaVersion.VERSION_1_8
+        }
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
         sourceSets {
             named("main") {
                 jniLibs.srcDirs("libs")
             }
         }
-
     }
 
+    dependencies {
+        implementation(project(":lib_utils"))
+        implementation(project(":lib_api"))
+        implementation(project(":module_video"))
+        implementation(project(":module_schoolroom"))
+        implementation(project(":module_life"))
+        implementation(project(":module_mine"))
+        implementation(project(":module_message"))
+        implementation("com.hjq:xxpermissions:8.2")
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        implementation(files("libs/SparkChain1.aar"))
+        implementation("androidx.core:core-ktx:1.12.0")
+        implementation("androidx.appcompat:appcompat:1.6.1")
+        implementation("com.google.android.material:material:1.11.0")
+        //每日签到
+        implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
+
+        implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+        testImplementation("junit:junit:4.13.2")
+        androidTestImplementation("androidx.test.ext:junit:1.1.5")
+        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+        implementation(files("libs\\Msc.jar"))
+
     }
 }
-
-dependencies {
-    implementation(project(":lib_utils"))
-    implementation(project(":lib_api"))
-    implementation(project(":module_video"))
-    implementation(project(":module_schoolroom"))
-    implementation(project(":module_life"))
-    implementation(project(":module_mine"))
-    implementation(project(":module_message"))
-    implementation(files("libs/SparkChain.aar"))
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    //每日签到
-    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
-
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation(files("libs\\Msc.jar"))
-
-}}
