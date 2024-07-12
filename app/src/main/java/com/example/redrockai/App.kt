@@ -45,12 +45,7 @@ class App : BaseApp() {
         val sparkChainConfig: SparkChainConfig = SparkChainConfig.builder()
         sparkChainConfig.appID("da2f95cc").apiKey("fac412ab739047c09f08d5360592cb1c")
             .apiSecret("YTNiNzQ1ZDk5ZTY1ZGJiZTQ5ODRmN2Ni").logLevel(0)
-        val ret: Int = SparkChain.getInst().init(applicationContext, sparkChainConfig)
-        if (ret == 0) {
-            shortToast("SDK初始化成功：$ret")
-        } else {
-            shortToast("SDK初始化失败-其他错误：$ret")
-        }
+        SparkChain.getInst().init(applicationContext, sparkChainConfig)
     }
 
 
