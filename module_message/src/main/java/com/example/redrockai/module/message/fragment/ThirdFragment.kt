@@ -318,7 +318,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
         if (id == R.id.aigc_fragment_aigc_plus) {
             openGallery()
         } else if (id == R.id.aigc_fragment_aigc_recommend_photo) {
-            if (flag) {
+            if (checkAndRequestPermissions()) {
                 openCamera()
             } else {
                 shortToast("请打开相机权限")
