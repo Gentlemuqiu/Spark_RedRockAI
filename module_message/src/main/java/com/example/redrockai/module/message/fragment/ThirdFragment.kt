@@ -69,7 +69,6 @@ class ThirdFragment : Fragment(), View.OnClickListener {
     private val messages = mutableListOf<ChatMessage>()
     private val accumulatedContent = StringBuilder()
     private var temporaryMessageIndex: Int? = null
-    private var flag: Boolean = false
     private var imagePath: String? = null
     private var token = 0
     private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
@@ -212,7 +211,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
         }
         mBinding.aigcFragmentAigcPlus.setOnClickListener(this)
         mBinding.aigcFragmentAigcRecommendPhoto.setOnClickListener(this)
-        flag = checkAndRequestPermissions()
+        checkAndRequestPermissions()
     }
 
     //相当于跳转到了UCropActivity
@@ -318,7 +317,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
         if (id == R.id.aigc_fragment_aigc_plus) {
             openGallery()
         } else if (id == R.id.aigc_fragment_aigc_recommend_photo) {
-            if (checkAndRequestPermissions()) {
+            if (!checkAndRequestPermissions()) {
                 openCamera()
             } else {
                 shortToast("请打开相机权限")
