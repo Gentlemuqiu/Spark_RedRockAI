@@ -57,7 +57,7 @@ public class OCR {
     /**
      * 传入图片的base64解码后的String
      */
-    public static OCR getInstance(String imageBase64) {
+    public static OCR getInsance(String imageBase64) {
         if (ocrInstance == null) {
             synchronized (OCR.class) {
                 if (ocrInstance == null) {

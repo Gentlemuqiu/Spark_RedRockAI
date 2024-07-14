@@ -1,14 +1,21 @@
 package com.example.redrock.module.video.ui.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.redrock.module.video.R
+import com.example.redrockai.lib.utils.BaseApp
+import com.example.redrockai.lib.utils.view.gone
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.DoubleBounce
 import com.iflytek.sparkchain.core.LLM
 import com.iflytek.sparkchain.core.LLMCallbacks
 import com.iflytek.sparkchain.core.LLMConfig
@@ -22,24 +29,35 @@ import kotlinx.coroutines.launch
 class HomeWorkFragment : Fragment() {
 
     private lateinit var mHomeWork: TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var remind: TextView
 
+    private var homeworkId: String? = "lxh"
 
     private val TAG = "AEE"
     private var sessionFinished = true
     private lateinit var llm: LLM
     private val accumulatedContent = StringBuilder()
-    private var temporaryMessageIndex: Int? = null
 
 
     private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
         override fun onLLMResult(llmResult: LLMResult, usrContext: Any?) {
             val content: String = llmResult.content
             val status: Int = llmResult.status
-
             activity?.runOnUiThread {
-                accumulatedContent.append(content)
-                mHomeWork.append(content)
-                sessionFinished = true
+                if (status == 2) {
+                    mHomeWork.text = accumulatedContent.toString()
+                    sessionFinished = true
+                    mHomeWork.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                    remind.visibility = View.GONE
+                    saveNoteToPreferences(homeworkId!!, accumulatedContent.toString())
+                } else {
+                    accumulatedContent.append(content)
+                    mHomeWork.visibility = View.GONE
+                    progressBar.visibility = View.VISIBLE
+                    remind.visibility = View.VISIBLE
+                }
 
             }
         }
@@ -70,8 +88,28 @@ class HomeWorkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mHomeWork = view.findViewById(R.id.homework)
+        remind = view.findViewById(R.id.remind)
         //建议初始化
         setLLMConfig()
+        progressBar = view.findViewById(R.id.loading)
+        val doubleBounce: Sprite = DoubleBounce()
+        progressBar.indeterminateDrawable = doubleBounce
+        initSave()
+    }
+
+    private fun initSave() {
+        homeworkId = requireActivity().intent.getIntExtra("id", 0).toString()
+        homeworkId += "hui"
+        val homeWorkContent = readNoteFromPreferences(homeworkId!!)
+        if (homeWorkContent != null) {
+            mHomeWork.text = homeWorkContent
+            mHomeWork.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            remind.visibility = View.GONE
+        } else {
+            startChat()
+        }
+
     }
 
     private fun setLLMConfig() {
@@ -82,7 +120,6 @@ class HomeWorkFragment : Fragment() {
         val window_memory: Memory = Memory.windowMemory(5)
         llm = LLM(llmConfig, window_memory)
         llm.registerLLMCallbacks(llmCallbacks)
-        startChat()
     }
 
     private fun startChat() {
@@ -103,6 +140,20 @@ class HomeWorkFragment : Fragment() {
 
     }
 
+    //将作业保存起来
+    fun saveNoteToPreferences(homeworkId: String, content: String) {
+        val sharedPreferences: SharedPreferences =
+            BaseApp.getAppContext().getSharedPreferences("homeworkId", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString(homeworkId, content)
+        editor.apply()
+    }
+
+    private fun readNoteFromPreferences(homeworkId: String): String? {
+        val sharedPreferences: SharedPreferences =
+            BaseApp.getAppContext().getSharedPreferences("homeworkId", Context.MODE_PRIVATE)
+        return sharedPreferences.getString(homeworkId, null)
+    }
 
 }
 

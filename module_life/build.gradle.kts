@@ -9,15 +9,15 @@ android {
     namespace = "com.example.module.life"
     compileSdk = 34
 
-   defaultConfig {
-       //applicationId = "com.example.module.life"
-       minSdk = 24
-       targetSdk = 34
-      // versionCode = 1
-       //versionName = "1.0"
+    defaultConfig {
+        //applicationId = "com.example.module.life"
+        minSdk = 24
+        targetSdk = 34
+        // versionCode = 1
+        //versionName = "1.0"
 
-       testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-   }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
     viewBinding {
         enable = true
@@ -49,17 +49,16 @@ dependencies {
     implementation(project(":lib_api"))
 
 
-    implementation ("com.google.android:flexbox:1.1.0")
-
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation ("androidx.paging:paging-runtime-ktx:3.1.1")
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.android:flexbox:1.1.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.fragment:fragment:1.7.1")
 
     // Lifecycle
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")

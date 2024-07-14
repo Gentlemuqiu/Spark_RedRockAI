@@ -26,7 +26,6 @@ include(":app")
 
 include(":lib_utils")
 include(":lib_api")
-include(":identify")
 include(":module_schoolroom")
 include(":lib_net")
 include(":module_playVideo")

@@ -53,14 +53,14 @@ android {
 }
 
 dependencies {
+
     implementation ("com.hjq:xxpermissions:8.2")
     //UC crop裁剪
     implementation("com.github.yalantis:ucrop:2.2.6")
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
     implementation(project(":lib_api"))
-    implementation(files("libs/SparkChain1.aar"))
-    implementation(files("libs\\Msc.jar"))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

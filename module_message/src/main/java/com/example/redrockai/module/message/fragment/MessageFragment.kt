@@ -3,7 +3,6 @@ package com.example.redrockai.module.message.fragment
 import android.Manifest
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Rect
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -43,7 +42,7 @@ import org.json.JSONObject
 
 
 class MessageFragment : Fragment() {
-    private val TAG = "AEE"
+    private val TAG = "hui"
     private var sessionFinished = true
     private lateinit var llm: LLM
     private lateinit var chatAdapter: MessageAdapter

@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":lib_net"))
     implementation(project(":lib_utils"))
 
+    implementation ("com.github.ybq:Android-SpinKit:1.4.0")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -93,7 +94,7 @@ dependencies {
     //笔记
     implementation("jp.wasabeef:richeditor-android:2.0.0")
 
-    implementation(files("libs/SparkChain1.aar"))
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar"))))
 
     //UC crop裁剪
     implementation("com.github.yalantis:ucrop:2.2.6")
