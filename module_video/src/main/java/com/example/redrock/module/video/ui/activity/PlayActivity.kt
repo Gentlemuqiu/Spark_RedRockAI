@@ -2,6 +2,7 @@ package com.example.redrock.module.video.ui.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
@@ -47,15 +48,26 @@ class PlayActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
+        historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
         initVp2()
         initTabLayout()
         initWindow()
         initDate()
+        initCheckLearned()
         initCliCK()
     }
 
+    private fun initCheckLearned() {
+        lifecycleScope.launch {
+            if (historyRecordDao.getRecordByNewsId(id!!) != null) {
+                mBinding.btStudyCourse.visibility = View.GONE
+            }
+        }
+
+
+    }
+
     private fun initCliCK() {
-        historyRecordDao = AppDatabase.getDatabaseSingleton().historyRecordDao()
         mBinding.apply {
             btStudyCourse.setOnClickListener {
                 val coverDetail = intent.getStringExtra("coverDetail").toString()
@@ -78,6 +90,7 @@ class PlayActivity : BaseActivity() {
                     if (historyRecordDao.getRecordByNewsId(id!!) == null) {
                         historyRecordDao.insertOrUpdate(record)
                         shortToast("成功添加到学习课程中")
+                        mBinding.btStudyCourse.visibility=View.GONE
                     } else {
                         shortToast("已经学习该课程，请勿重复添加哦")
                     }

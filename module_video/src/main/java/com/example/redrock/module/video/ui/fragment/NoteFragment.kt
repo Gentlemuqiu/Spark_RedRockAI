@@ -1,6 +1,7 @@
 package com.example.redrock.module.video.ui.fragment
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -18,13 +19,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.redrock.module.video.databinding.FragmentNoteBinding
 import com.example.redrockai.lib.utils.BaseApp
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.DoubleBounce
+import com.iflytek.sparkchain.core.LLM
+import com.iflytek.sparkchain.core.LLMCallbacks
+import com.iflytek.sparkchain.core.LLMConfig
+import com.iflytek.sparkchain.core.LLMError
+import com.iflytek.sparkchain.core.LLMEvent
+import com.iflytek.sparkchain.core.LLMResult
+import com.iflytek.sparkchain.core.Memory
 import com.yalantis.ucrop.UCrop
 import jp.wasabeef.richeditor.RichEditor
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
@@ -33,7 +46,9 @@ class NoteFragment : Fragment() {
     private val binding: FragmentNoteBinding get() = _noteBinding!!
     private lateinit var mEditor: RichEditor
 
+    private lateinit var progressBar: ProgressBar
 
+    private lateinit var llm: LLM
     private var noteId: String? = "lyt"
 
     private val REQUEST_CODE_PICK_IMAGE = 1
@@ -58,6 +73,40 @@ class NoteFragment : Fragment() {
         }
     }
 
+    private val accumulatedContent = StringBuilder()
+
+    private var llmCallbacks: LLMCallbacks = object : LLMCallbacks {
+        override fun onLLMResult(llmResult: LLMResult, usrContext: Any?) {
+            val content: String = llmResult.content
+            val status: Int = llmResult.status
+            activity?.runOnUiThread {
+                if (status == 2) {
+                    //这里拿到最终的答案
+                    val result = accumulatedContent.toString()
+                    Log.d("weafwefawfewe", "测试数据${result}")
+                    saveNoteToPreferences(noteId!!, accumulatedContent.toString())
+                    //停止加载，显示出来相关的布局
+                    stopLoading()
+                    //保存相关的笔记
+                    saveAINote(noteId!!, result)
+                    //停止生成动画
+                    stopLoading()
+                } else {
+                    accumulatedContent.append(content)
+                }
+
+            }
+        }
+
+        override fun onLLMEvent(event: LLMEvent, usrContext: Any?) {
+            Log.d(TAG, "onLLMEvent\n")
+        }
+
+        override fun onLLMError(error: LLMError, usrContext: Any?) {
+            Log.d(TAG, "onLLMError\n")
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,19 +118,70 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         noteId = requireActivity().intent.getIntExtra("id", 0).toString()
         initNoteView()
-        // 读取本地笔记内容
-        val noteContent = readNoteFromPreferences(noteId!!)
-        noteContent?.let {
-            binding.editor.html = it
+        val sharedPreferences: SharedPreferences =
+            BaseApp.getAppContext().getSharedPreferences("aiNotes", Context.MODE_PRIVATE)
+        val haveMakeAiNote = sharedPreferences.getString(noteId, null) == "1"
+        if (!haveMakeAiNote) {
+            //没有生成过笔记的话
+            showLoading()
+            setLLMConfig()
+            startChat()
+        } else {
+            // 读取本地笔记内容
+            val noteContent = readNoteFromPreferences(noteId!!)
+            noteContent?.let {
+                binding.editor.html = it
+            }
+            //2秒后开始笔记的自动保存
+            handler.sendEmptyMessageDelayed(0, 2000)
         }
 
-        //2秒后开始笔记的自动保存
-        handler.sendEmptyMessageDelayed(0, 2000)
 
+    }
 
+    private fun startChat() {
+        val description = requireActivity().intent.getStringExtra("description")
+        val title = requireActivity().intent.getStringExtra("title").toString()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val usrInputText =
+                "帮我生成一些课程笔记，我的课程标题是${title},课程描述是${description}，帮我生成网页可以加载的html，直接给出答案就行，我要的是直接可以赋值粘贴的答案，请用 <body>标签作为回答的第一个字，" +
+                        "也就是直接从<body>标签开始，使用 <p> 标签来表示段落。" +
+                        "使用 <ul> 和 <li> 标签来表示无序列表。"
+
+            val myContext = "只能回答教育相关的问题"
+            val ret: Int = llm.arun(usrInputText, myContext)
+            if (ret != 0) {
+                Log.e(TAG, "SparkChain failed:\n$ret")
+            }
+        }
+
+    }
+
+    private fun stopLoading() {
+        binding.hsTools.visibility = View.VISIBLE
+        binding.editor.visibility = View.VISIBLE
+        binding.csLoading.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        binding.hsTools.visibility = View.INVISIBLE
+        binding.editor.visibility = View.INVISIBLE
+        binding.csLoading.visibility = View.VISIBLE
+        progressBar = binding.loading
+        val doubleBounce: Sprite = DoubleBounce()
+        progressBar.indeterminateDrawable = doubleBounce
+    }
+
+    private fun setLLMConfig() {
+        val llmConfig: LLMConfig = LLMConfig.builder()
+        llmConfig.domain("generalv3.5")
+        llmConfig.url("ws(s)://spark-api.xf-yun.com/v3.5/chat")
+        llmConfig.maxToken(8192)
+        val window_memory: Memory = Memory.windowMemory(5)
+        llm = LLM(llmConfig, window_memory)
+        llm.registerLLMCallbacks(llmCallbacks)
     }
 
     /**
@@ -91,9 +191,10 @@ class NoteFragment : Fragment() {
         mEditor = binding.editor
         mEditor.setEditorHeight(200)
         mEditor.setEditorFontSize(22)
-        mEditor.setEditorFontColor(Color.RED)
+        mEditor.setEditorFontColor(Color.BLACK)
         mEditor.setPadding(10, 10, 10, 10)
         mEditor.setPlaceholder("Insert text here...")
+        mEditor.setTextColor(Color.BLACK)
 
 
 //        mEditor.setOnTextChangeListener { text ->
@@ -240,6 +341,19 @@ class NoteFragment : Fragment() {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
         editor.putString(noteId, content)
         editor.apply()
+    }
+
+    //规定为1的时候ai已经生成过了笔记
+    fun saveAINote(noteId: String, content: String) {
+        val sharedPreferences: SharedPreferences =
+            BaseApp.getAppContext().getSharedPreferences("aiNotes", Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.putString(noteId, "1")
+        editor.apply()
+        mEditor.html = "<p>${content}</p>"
+        //顺便保存起来
+        saveNoteToPreferences(noteId, content)
+
     }
 
     private fun readNoteFromPreferences(noteId: String): String? {
