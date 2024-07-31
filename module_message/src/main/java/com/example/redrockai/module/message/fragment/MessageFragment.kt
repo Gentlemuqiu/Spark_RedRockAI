@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
@@ -88,7 +89,6 @@ class MessageFragment : Fragment() {
                         messages.add(ChatMessage(accumulatedContent.toString(), false))
                         chatAdapter.notifyItemInserted(messages.size - 1)
                     }
-                    toEnd()
                     accumulatedContent.clear()
                     sessionFinished = true
                 } else {
@@ -228,10 +228,29 @@ class MessageFragment : Fragment() {
 
     }
 
-    fun toEnd() {
-        mBinding.aigcFragmentAigcRvMessage.scrollToPosition(messages.size - 1)
-    }
 
+    fun toEnd() {
+        mBinding.aigcFragmentAigcRvMessage.post {
+            val layoutManager = mBinding.aigcFragmentAigcRvMessage.layoutManager as LinearLayoutManager
+            layoutManager.scrollToPosition(messages.size - 1)
+
+            mBinding.aigcFragmentAigcRvMessage.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    mBinding.aigcFragmentAigcRvMessage.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    layoutManager.scrollToPositionWithOffset(messages.size - 1, 0)
+
+                    // 确保滚动到底部
+                    mBinding.aigcFragmentAigcRvMessage.post {
+                        val view = layoutManager.findViewByPosition(messages.size - 1)
+                        if (view != null) {
+                            val offset = mBinding.aigcFragmentAigcRvMessage.height - view.height
+                            layoutManager.scrollToPositionWithOffset(messages.size - 1, offset)
+                        }
+                    }
+                }
+            })
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         if (null != mIat) {

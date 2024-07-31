@@ -22,16 +22,14 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters.apply {
-                add("armeabi")
-                add("armeabi-v7a")
-                add("x86")
-                add("mips")
-
-
-            }
-        }
+       ndk {
+           abiFilters.apply {
+               add("armeabi")
+               add("armeabi-v7a")
+               add("x86")
+               add("mips")
+           }
+       }
 
 
         buildTypes {
@@ -62,7 +60,7 @@ android {
         implementation(project(":lib_api"))
         implementation(project(":module_video"))
         implementation(project(":module_schoolroom"))
-        implementation(project(":module_life"))
+        implementation(project(":module_playground"))
         implementation(project(":module_mine"))
         implementation(project(":module_message"))
         implementation("com.hjq:xxpermissions:8.2")

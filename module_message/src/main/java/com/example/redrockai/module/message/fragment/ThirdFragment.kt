@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -89,7 +90,6 @@ class ThirdFragment : Fragment(), View.OnClickListener {
                         messages.add(ChatMessage(accumulatedContent.toString(), false))
                         chatAdapter.notifyItemInserted(messages.size - 1)
                     }
-                    toEnd()
                     accumulatedContent.clear()
                     sessionFinished = true
                 } else {
@@ -262,6 +262,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
     private fun saveBitmapToFile(bitmap: Bitmap, file: File) {
         try {
             FileOutputStream(file).use { out ->
@@ -271,6 +272,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
             e.printStackTrace()
         }
     }
+
     private fun compressBitmap(bitmap: Bitmap, reqWidth: Int, reqHeight: Int): Bitmap {
         val width = bitmap.width
         val height = bitmap.height
@@ -317,7 +319,7 @@ class ThirdFragment : Fragment(), View.OnClickListener {
         if (id == R.id.aigc_fragment_aigc_plus) {
             openGallery()
         } else if (id == R.id.aigc_fragment_aigc_recommend_photo) {
-            if (!checkAndRequestPermissions()) {
+            if (checkAndRequestPermissions()) {
                 openCamera()
             } else {
                 shortToast("请打开相机权限")
@@ -425,8 +427,28 @@ class ThirdFragment : Fragment(), View.OnClickListener {
 
 
     fun toEnd() {
+
+
         mBinding.rvAnswer.post {
-            mBinding.rvAnswer.scrollToPosition(messages.size - 1)
+            val layoutManager = mBinding.rvAnswer.layoutManager as LinearLayoutManager
+            layoutManager.scrollToPosition(messages.size - 1)
+
+            mBinding.rvAnswer.viewTreeObserver.addOnGlobalLayoutListener(object :
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    mBinding.rvAnswer.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    layoutManager.scrollToPositionWithOffset(messages.size - 1, 0)
+
+                    // 确保滚动到底部
+                    mBinding.rvAnswer.post {
+                        val view = layoutManager.findViewByPosition(messages.size - 1)
+                        if (view != null) {
+                            val offset = mBinding.rvAnswer.height - view.height
+                            layoutManager.scrollToPositionWithOffset(messages.size - 1, offset)
+                        }
+                    }
+                }
+            })
             mBinding.nsScroll.post {
                 mBinding.nsScroll.fullScroll(View.FOCUS_DOWN)
             }
