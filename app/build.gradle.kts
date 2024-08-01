@@ -22,14 +22,14 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-       ndk {
-           abiFilters.apply {
-               add("armeabi")
-               add("armeabi-v7a")
-               add("x86")
-               add("mips")
-           }
-       }
+        ndk {
+            abiFilters.apply {
+                add("armeabi")
+                add("armeabi-v7a")
+                add("x86")
+                add("mips")
+            }
+        }
 
 
         buildTypes {
@@ -64,6 +64,7 @@ android {
         implementation(project(":module_mine"))
         implementation(project(":module_message"))
         implementation("com.hjq:xxpermissions:8.2")
+        implementation("com.airbnb.android:lottie:3.1.0")
 
         implementation("androidx.core:core-ktx:1.12.0")
         implementation("androidx.appcompat:appcompat:1.6.1")
@@ -78,4 +79,10 @@ android {
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     }
+}
+dependencies {
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.activity:activity:1.9.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }

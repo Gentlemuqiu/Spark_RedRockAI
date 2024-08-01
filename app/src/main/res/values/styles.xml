@@ -6,10 +6,7 @@
         <item name="android:textColorSecondary">@color/cardview_light_background</item>
     </style>
 
-
-
-
-
-
-
+    <style name="LoginTextInputStyle" parent="ConfigAppTheme">
+        <item name="colorAccent">@color/config_level_two_font_color</item>
+    </style>
 </resources>
