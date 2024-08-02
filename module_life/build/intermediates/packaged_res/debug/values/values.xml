@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="notification_button_negative_bg_color">#C3D4EE</color>
+    <color name="notification_primary_text_color">#15315B</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="search_et_bg">#F5F6FA</color>
+    <color name="search_follow_end_color">#7DE3CA</color>
+    <color name="search_follow_start_color">#95E2D4</color>
+    <color name="search_follow_text_color">#92E7D2</color>
+    <color name="search_foreground_1_color">#00000000</color>
+    <color name="search_foreground_2_color">#66000000</color>
+    <color name="search_foreground_3_color">#99000000</color>
+    <color name="search_foreground_4_color">#E6000000</color>
+    <color name="search_have_follow_text_color">#FFFFFF</color>
+    <color name="search_history_bg">#F6F5FA</color>
+    <color name="search_history_text_clear_all">#A2A2A2</color>
+    <color name="search_history_text_complete">#666666</color>
+    <color name="search_list_have_follow_bg">#D0D0D0</color>
+    <color name="search_not_found_bg">#F4F5F9</color>
+    <color name="search_not_found_text_color">#666666</color>
+    <color name="search_tab_class_not_select_bg">@android:color/transparent</color>
+    <color name="search_tab_class_select_bg">#2DD6B4</color>
+    <color name="search_tab_no_select_text_color">#646464</color>
+    <color name="search_tab_select_text_color">#FFFFFF</color>
+    <color name="search_tv_color">#6BE2C9</color>
+    <color name="search_tv_hint_color">#AFAFB9</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">module_life</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <style name="Base.Theme.RedRockAI" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Circle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="Theme.RedRockAI" parent="Base.Theme.RedRockAI"/>
+</resources>
