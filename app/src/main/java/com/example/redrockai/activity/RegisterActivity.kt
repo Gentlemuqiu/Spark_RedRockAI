@@ -63,13 +63,19 @@ class RegisterActivity : AppCompatActivity() {
             val password = mBinding.registerEtPassword.text.toString()
 
             if (account.isNotEmpty() && password.isNotEmpty()) {
-                    // 发起注册请求
-                    registerViewModel.register(account, password, "https://example.com/avatar.jpg")
+                // 发起注册请求
+                registerViewModel.register(account, password, "https://example.com/avatar.jpg")
 
             } else {
                 if (account.isEmpty()) shortToast("账号不能为空")
                 if (password.isEmpty()) shortToast("密码不能为空")
             }
+        }
+
+        mBinding.loginTvTouristModeEnter.setOnClickListener {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+
         }
     }
 
