@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +57,7 @@ class ClassFragment : Fragment() {
         ViewModelProvider(this)[SentenceViewModel::class.java]
     }
     private lateinit var adapter: RelatedIntroduceAdapter
-    private lateinit var list: List<CateGoryBean.CateGoryBeanItem>
+    private lateinit var list: List<CateGoryBean.Data>
     private lateinit var word: String
 
     //历史消息room的dao接口
@@ -176,31 +177,28 @@ class ClassFragment : Fragment() {
 //                    historyRecordDao.insertOrUpdate(record)
 //                }
 
-                ARouter.getInstance().build("/play/PlayActivity/")
-                    .withString("playUrl", it.data.content.data.playUrl)
-                    .withString("title", it.data.content.data.title)
-                    .withString("description", it.data.content.data.description)
-                    .withString("category", it.data.content.data.category)
-                    .withString("coverDetail", it.data.content.data.cover.detail)
-                    .withInt("shareCount", it.data.content.data.consumption.shareCount)
-                    .withInt("likeCount", it.data.content.data.consumption.realCollectionCount)
-                    .withInt("commentCount", it.data.content.data.consumption.replyCount)
-                    .withInt("id", it.data.content.data.id)
+               ARouter.getInstance().build("/play/PlayActivity/")
+                    .withString("playUrl", it.playUrl)
+                    .withString("title", it.title)
+                    .withString("description", it.desc)
+                    .withString("coverDetail", it.coverUrl)
+                    .withInt("id", it.tagId)
                     .navigation(context)
             }
         }
         newFollowViewModel.cateGoryData.observe(viewLifecycleOwner) {
             val categories = it
-            list = categories
-            categories.forEach { category ->
+            list = categories.data
+            categories.data.forEach { category ->
                 // 在这里处理每个元素，
                 val tab = tabLayout.newTab()
-                tab.text = category.name
+                tab.text = category.tagName
                 tabLayout.addTab(tab)
+                Log.d("hui", "initSchoolRoomRv: ${category.tagName}")
             }
         }
         introduceViewModel.relatedCategoryData.observe(viewLifecycleOwner) {
-            adapter.submitList(it.itemList)
+            adapter.submitList(it.data)
         }
         mBinding.recyclerviewIntroduce.layoutManager =
             LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)

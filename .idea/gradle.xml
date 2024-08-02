@@ -13,11 +13,13 @@
             <option value="$PROJECT_DIR$/lib_api" />
             <option value="$PROJECT_DIR$/lib_net" />
             <option value="$PROJECT_DIR$/lib_utils" />
+            <option value="$PROJECT_DIR$/module_login" />
             <option value="$PROJECT_DIR$/module_message" />
             <option value="$PROJECT_DIR$/module_mine" />
             <option value="$PROJECT_DIR$/module_playVideo" />
             <option value="$PROJECT_DIR$/module_playground" />
             <option value="$PROJECT_DIR$/module_schoolroom" />
+            <option value="$PROJECT_DIR$/module_teacher" />
             <option value="$PROJECT_DIR$/module_video" />
           </set>
         </option>

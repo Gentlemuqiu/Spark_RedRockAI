@@ -1,6 +1,7 @@
 package com.example.redrockai.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.WindowCompat
 import com.example.module.life.ui.Fragment.LifeFragment
 import com.example.redrockai.adapter.FragmentHomeVpAdapter
@@ -27,10 +28,10 @@ class HomeActivity : BaseActivity() {
 
     private fun initWindow() {
        //状态栏不沉浸
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        /* 隐藏导航栏
-        *getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        * */
+       // WindowCompat.setDecorFitsSystemWindows(window, true)
+        // 隐藏导航栏
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
     }
 
 

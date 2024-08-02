@@ -61,16 +61,21 @@ class LoginActivity : BaseActivity() {
         mBinding.loginBtnLogin.setOnSingleClickListener {
             loginAction()
         }
+        mBinding.loginTvTouristModeEnter.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         mBinding.loginLavCheck.setOnSingleClickListener {
             mBinding.loginLavCheck.playAnimation()
-        //    mViewModel.userAgreementIsCheck = !mViewModel.userAgreementIsCheck
+            //    mViewModel.userAgreementIsCheck = !mViewModel.userAgreementIsCheck
         }
         mBinding.loginLavCheck.addAnimatorUpdateListener {
-          /*  if (it.animatedFraction == 1f && mViewModel.userAgreementIsCheck) {
-                mBinding.loginLavCheck.pauseAnimation()
-            } else if (it.animatedFraction >= mLottieProgress && it.animatedFraction != 1f && !mViewModel.userAgreementIsCheck) {
-                mBinding.loginLavCheck.pauseAnimation()
-            }*/
+            /*  if (it.animatedFraction == 1f && mViewModel.userAgreementIsCheck) {
+                  mBinding.loginLavCheck.pauseAnimation()
+              } else if (it.animatedFraction >= mLottieProgress && it.animatedFraction != 1f && !mViewModel.userAgreementIsCheck) {
+                  mBinding.loginLavCheck.pauseAnimation()
+              }*/
         }
         //设置用户协议和隐私政策的文字
         val spannableString = SpannableStringBuilder()
@@ -111,27 +116,29 @@ class LoginActivity : BaseActivity() {
         val privacySpan = ForegroundColorSpan(Color.parseColor("#2CDEFF"))
         spannableString.setSpan(userAgreementSpan, 2, 8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         spannableString.setSpan(privacySpan, 9, 16, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
-
+        mBinding.loginTvUserAgreement.text = spannableString
+        mBinding.loginTvUserAgreement.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun loginAction() {
-      /*  if (mViewModel.userAgreementIsCheck) {
-            //放下键盘
-            val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (inputMethodManager.isActive) {
-                inputMethodManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
-            }
-            val stuNum = mBinding.loginEtAccount.text?.toString() ?: ""
-            val password = mBinding.loginEtPassword.text?.toString() ?: ""
-            if (checkDataCorrect(stuNum, password)) {
-                changeUiState()
-                mViewModel.login(stuNum, password)
-            }
-        } else {
-            agreeToUserAgreement()
-        }*/
+        /*  if (mViewModel.userAgreementIsCheck) {
+              //放下键盘
+              val inputMethodManager =
+                  getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+              if (inputMethodManager.isActive) {
+                  inputMethodManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
+              }
+              val stuNum = mBinding.loginEtAccount.text?.toString() ?: ""
+              val password = mBinding.loginEtPassword.text?.toString() ?: ""
+              if (checkDataCorrect(stuNum, password)) {
+                  changeUiState()
+                  mViewModel.login(stuNum, password)
+              }
+          } else {
+              agreeToUserAgreement()
+          }*/
     }
+
     private fun checkDataCorrect(stuNum: String, idNum: String): Boolean {
         if (idNum.length < 6) {
             toast("请检查一下密码吧，似乎有点问题")
@@ -139,6 +146,7 @@ class LoginActivity : BaseActivity() {
         }
         return true
     }
+
     // 这个方法可以在登录状态和未登录状态之间切换
     private fun changeUiState() {
         TransitionManager.beginDelayedTransition(mBinding.loginContainer, Explode())

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ResourceName">
+
+    <ScrollView
+        android:id="@+id/ufieldScrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/ufield_card"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ufieldCardview2"
+                android:layout_width="106dp"
+                android:layout_height="106dp"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_choose">
+
+                <ImageView
+                    android:id="@+id/iv_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/plus" />
+
+                <TextView
+                    android:id="@+id/tv_cover"
+                    android:layout_width="106dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="76dp"
+                    android:background="@drawable/ufield_shape_cover"
+                    android:gravity="center"
+                    android:text="上传封面"
+                    android:textColor="#FFFFFF" />
+            </androidx.cardview.widget.CardView>
+
+            <ImageView
+                android:id="@+id/ufield_iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/ufield_ic_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/ufieldTextview3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="课程名称"
+                android:textColor="@color/config_level_three_font_color"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/ufield_et_name"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/ufield_shape_edit"
+                android:gravity="center"
+                android:hint="不超过12个字"
+                android:inputType="text"
+                android:maxLength="12"
+                android:textColor="@color/config_level_three_font_color"
+                android:textColorHint="@color/config_alpha_forty_level_two_font_color"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ufieldTextview3" />
+
+            <EditText
+                android:id="@+id/et_introduce"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ufield_shape_edit_big"
+                android:gravity="top"
+                android:maxLength="100"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/config_level_three_font_color"
+                android:textColorHint="@color/config_alpha_forty_level_two_font_color"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/tv_choose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="请选择"
+                android:textColor="@color/config_choose_dialog_btn_positive"
+                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="创建课程"
+                android:textColor="@color/config_level_three_font_color"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@+id/ufield_iv_back"
+                app:layout_constraintStart_toEndOf="@+id/ufield_iv_back"
+                app:layout_constraintTop_toTopOf="@+id/ufield_iv_back"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="课程类型"
+                android:textColor="@color/config_level_three_font_color"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ufield_et_name" />
+
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="活动简介"
+                android:textColor="@color/config_level_three_font_color"
+                android:textSize="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/ufieldCardview3"
+                app:layout_constraintStart_toStartOf="@+id/ufieldCardview3"
+                app:layout_constraintTop_toBottomOf="@+id/ufieldCardview3" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ufieldCardview3"
+                android:layout_width="106dp"
+                android:layout_height="106dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ufieldCardview2">
+
+                <ImageView
+                    android:id="@+id/iv_cover_video"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/error" />
+
+                <TextView
+                    android:id="@+id/tv_cover_video"
+                    android:layout_width="106dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="76dp"
+                    android:background="@drawable/ufield_shape_cover"
+                    android:gravity="center"
+                    android:text="上传视频"
+                    android:textColor="#FFFFFF" />
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ufield_card"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <Button
+            android:id="@+id/bt_create"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ufield_shape_createbutton"
+            android:stateListAnimator="@null"
+            android:text="创建课程"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

@@ -14,26 +14,26 @@ import com.example.redrockai.module.schoolroom.R
 import com.example.redrockai.module.schoolroom.bean.RelatedCategoryBean
 
 class RelatedIntroduceAdapter :
-    ListAdapter<RelatedCategoryBean.Item, RelatedIntroduceAdapter.ViewHolder>(object :
-        DiffUtil.ItemCallback<RelatedCategoryBean.Item>() {
+    ListAdapter<RelatedCategoryBean.Data, RelatedIntroduceAdapter.ViewHolder>(object :
+        DiffUtil.ItemCallback<RelatedCategoryBean.Data>() {
         override fun areItemsTheSame(
-            oldItem: RelatedCategoryBean.Item, newItem: RelatedCategoryBean.Item
+            oldItem: RelatedCategoryBean.Data, newItem: RelatedCategoryBean.Data
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: RelatedCategoryBean.Item,
-            newItem: RelatedCategoryBean.Item
+            oldItem: RelatedCategoryBean.Data,
+            newItem: RelatedCategoryBean.Data
         ): Boolean {
             return oldItem == newItem
         }
     }
     ) {
 
-    private var mItemClick: ((RelatedCategoryBean.Item) -> Unit)? = null
+    private var mItemClick: ((RelatedCategoryBean.Data) -> Unit)? = null
 
-    fun setOnClassItemClickListener(cl: ((RelatedCategoryBean.Item) -> Unit)) {
+    fun setOnClassItemClickListener(cl: ((RelatedCategoryBean.Data) -> Unit)) {
         mItemClick = cl
     }
 
@@ -61,15 +61,13 @@ class RelatedIntroduceAdapter :
         private val playImage: ImageView = view.findViewById(R.id.banner_image)
         private val itemTitle: TextView = view.findViewById(R.id.course_item_title)
         private val itemDesc: TextView = view.findViewById(R.id.course_item_descr)
-        private val itemTime: TextView = view.findViewById(R.id.course_item_time)
 
 
-        fun bind(itemData: RelatedCategoryBean.Item) {
+        fun bind(itemData: RelatedCategoryBean.Data) {
 
-            itemTitle.text = itemData.data.content.data.title
-            itemDesc.text = itemData.data.content.data.description
-            itemTime.text=formatNumberToTime(itemData.data.content.data.duration)
-            Glide.with(itemView).load(itemData.data.content.data.cover.detail).into(playImage)
+            itemTitle.text = itemData.title
+            itemDesc.text = itemData.desc
+            Glide.with(itemView).load(itemData.coverUrl).into(playImage)
         }
 
 

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.redrock.module.video.Bean.Related
+import com.example.redrock.module.video.Bean.RelatedCategoryBean
 import com.example.redrock.module.video.ui.activity.PlayActivity
 import com.example.redrock.module.video.R
 import com.example.redrockai.lib.utils.formatNumberToTime
@@ -23,18 +23,18 @@ import kotlinx.coroutines.launch
 
 
 class TopAdapter() :
-    ListAdapter<Related.Item, TopAdapter.ViewHolder>(
-        object : DiffUtil.ItemCallback<Related.Item>() {
+    ListAdapter<RelatedCategoryBean.Data, TopAdapter.ViewHolder>(
+        object : DiffUtil.ItemCallback<RelatedCategoryBean.Data>() {
             override fun areItemsTheSame(
-                oldItem: Related.Item,
-                newItem: Related.Item
+                oldItem: RelatedCategoryBean.Data,
+                newItem: RelatedCategoryBean.Data
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: Related.Item,
-                newItem: Related.Item
+                oldItem: RelatedCategoryBean.Data,
+                newItem: RelatedCategoryBean.Data
             ): Boolean {
                 return oldItem == newItem
             }
@@ -64,7 +64,7 @@ class TopAdapter() :
             relatedCL.setOnClickListener {
                 val intent = Intent(view.context, PlayActivity::class.java)
                 getItem(absoluteAdapterPosition).run {
-                    val record = HistoryRecord(
+                  /*  val record = HistoryRecord(
                         newsId = data.id,
                         title = data.title,
                         timestamp = System.currentTimeMillis(),
@@ -73,21 +73,18 @@ class TopAdapter() :
                         coverDetail = data.cover.detail,
                         category = data.category,
                         shareCount = data.consumption.shareCount,
-                        likeCount = data.consumption.realCollectionCount,
+                        likeCount = data.consumption.realCollectionCount
                         commentCount = data.consumption.replyCount
 
-                    )
-                    GlobalScope.launch {
+                    )*/
+                    /*GlobalScope.launch {
                         historyRecordDao.insertOrUpdate(record)
-                    }
-                    intent.putExtra("playUrl", data.playUrl)
+                    }*/
+                  /*  intent.putExtra("playUrl", data.playUrl)
                     intent.putExtra("title", data.title)
                     intent.putExtra("description", data.description)
                     intent.putExtra("category", data.category)
-                    intent.putExtra("shareCount", data.consumption.shareCount)
-                    intent.putExtra("likeCount", data.consumption.realCollectionCount)
-                    intent.putExtra("commentCount", data.consumption.replyCount)
-                    intent.putExtra("id", data.id)
+                    intent.putExtra("id", data.id)*/
                 }
                 view.context.startActivity(intent)
             }
@@ -104,10 +101,8 @@ class TopAdapter() :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.run {
             getItem(position).run {
-                Glide.with(itemView).load(data.cover.detail).into(holder.coverIV)
-                titleTV.text = data.title
-                timeTV.text = formatNumberToTime(data.duration)
-                categoryTV.text = data.category
+                Glide.with(itemView).load(coverUrl).into(holder.coverIV)
+                titleTV.text = title
             }
         }
     }

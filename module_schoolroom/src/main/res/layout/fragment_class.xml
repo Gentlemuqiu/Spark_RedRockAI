@@ -129,15 +129,21 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="20dp"
-        android:background="@null"
+        android:backgroundTint="@android:color/transparent"
+        android:theme="@style/Theme.MaterialComponents"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabMode="scrollable"
-        app:tabRippleColor="@null"
-        app:tabSelectedTextColor="#4F4AE9"
-        app:tabTextAppearance="@style/uFieldMyTextStyle"
-        app:tabTextColor="#9915315B" />
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/ufield_ic_tab_indicator"
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabTextAppearance="@style/tab_style"
+        app:tabTextColor="@color/config_level_one_font_color" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_introduce"

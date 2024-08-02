@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="config_level_two_font_color">#112C57</color>
+    <color name="config_level_three_font_color">#15315B</color>
+    <color name="config_choose_dialog_btn_negative">#C3D4EE</color>
+    <color name="config_choose_dialog_btn_positive">#4A44E4</color>
+    <color name="uField_create_textfield">#40DBDBDB</color>
+    <color name="config_alpha_forty_level_two_font_color">#7015315B</color>
+
+</resources>

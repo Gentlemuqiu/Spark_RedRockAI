@@ -42,11 +42,7 @@ class RecommendFragment : Fragment() {
         }
         topAdapter = TopAdapter()
         relatedViewModel.relatedData.observe(viewLifecycleOwner) {
-            val list = it.itemList.filter { element ->
-                element.type == "videoSmallCard"
-            }
-
-            topAdapter.submitList(list)
+            topAdapter.submitList(it.data)
         }
 
         mBinding.rvPlay.layoutManager = LinearLayoutManager(context)
