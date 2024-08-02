@@ -8,5 +8,5 @@
     <color name="config_choose_dialog_btn_positive">#4A44E4</color>
     <color name="uField_create_textfield">#40DBDBDB</color>
     <color name="config_alpha_forty_level_two_font_color">#7015315B</color>
-
+    <color name="colorPrimaryDark" >#00000000</color>
 </resources>

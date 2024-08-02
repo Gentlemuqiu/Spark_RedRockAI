@@ -154,7 +154,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="活动简介"
+                android:text="课程简介"
                 android:textColor="@color/config_level_three_font_color"
                 android:textSize="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/ufieldCardview3"
