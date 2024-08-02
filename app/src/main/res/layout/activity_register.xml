@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="start"
-        android:text="登录"
+        android:text="注册"
         android:textColor="@color/config_level_two_font_color"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,7 +83,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_et_account"
+            android:id="@+id/register_et_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -115,7 +115,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/login_et_password"
+            android:id="@+id/register_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -136,14 +136,14 @@
 
 
     <Button
-        android:id="@+id/login_btn_login"
+        android:id="@+id/btn_register"
         android:layout_width="0dp"
         android:layout_height="52dp"
         android:layout_marginStart="33dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="33dp"
         android:background="@drawable/login_ic_btn_login_background"
-        android:text="登 录"
+        android:text="注 册"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -153,24 +153,6 @@
         app:layout_constraintVertical_bias="0.11"
         tools:ignore="HardcodedText" />
 
-
-    <Button
-        android:id="@+id/login_btn_register"
-        android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginEnd="33dp"
-        android:background="@drawable/login_ic_btn_login_background"
-        android:text="注 册"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_btn_login"
-        app:layout_constraintVertical_bias="0.167"
-        tools:ignore="HardcodedText" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -183,15 +165,6 @@
 
 
 
-        <TextView
-            android:id="@+id/login_tv_tourist_mode_enter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/login_tv_tourist_mode"
-            android:text="游客模式"
-            android:textColor="@color/login_tv_text_tourist"
-            android:textSize="13sp"
-            tools:ignore="HardcodedText" />
     </RelativeLayout>
 
 

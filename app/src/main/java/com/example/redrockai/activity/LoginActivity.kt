@@ -48,6 +48,14 @@ class LoginActivity : BaseActivity() {
         setContentView(mBinding.root)
         initView()
 
+        mBinding.apply {
+            loginBtnRegister.setOnClickListener {
+                startActivity(Intent(this@LoginActivity,RegisterActivity::class.java))
+            }
+
+
+        }
+
     }
 
     private fun initView() {

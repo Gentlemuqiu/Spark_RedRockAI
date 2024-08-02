@@ -31,4 +31,11 @@ object BaseUtils {
         window.statusBarColor = Color.TRANSPARENT
     }
 
+
+    fun isPasswordValid(password: String): Boolean {
+        return password.length >= 6
+    }
+
+
+
 }
