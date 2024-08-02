@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.redrockai.bean.LoginRequest
 import com.example.redrockai.bean.LoginResponse
 import com.example.redrockai.util.RetrofitClient
+import com.example.redrockai.util.SPUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +35,11 @@ class LoginViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     _loginResult.postValue(response.body())
+                    SPUtils.saveUserName(username)
+                    SPUtils.savePassWord(password)
+                    SPUtils.saveLoginStatus()
+                    SPUtils.saveNickName(SPUtils.getToken())
+
                     Log.d("weafwefawfawef", "测试数据${response.body()}")
                 }
             }

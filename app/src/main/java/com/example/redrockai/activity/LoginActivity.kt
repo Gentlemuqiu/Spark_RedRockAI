@@ -1,41 +1,26 @@
 package com.example.redrockai.activity
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextPaint
-import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.transition.Explode
 import android.transition.TransitionManager
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.activity.viewModels
 import androidx.core.view.get
-import com.airbnb.lottie.LottieAnimationView
-import com.alibaba.android.arouter.launcher.ARouter
-import com.example.redrockai.R
-import com.example.redrockai.databinding.ActivityHomeBinding
+import com.example.redrockai.adapter.LoginViewModel
 import com.example.redrockai.databinding.ActivityLoginBinding
 import com.example.redrockai.lib.utils.BaseActivity
-import com.example.redrockai.lib.utils.appContext
+import com.example.redrockai.lib.utils.BaseUtils.shortToast
 import com.example.redrockai.lib.utils.setOnSingleClickListener
 import com.example.redrockai.lib.utils.toast
+import com.example.redrockai.util.SPUtils
 
 class LoginActivity : BaseActivity() {
     private val mBinding: ActivityLoginBinding by lazy {
@@ -43,17 +28,34 @@ class LoginActivity : BaseActivity() {
     }
     private val mLottieProgress = 0.39f // 点击同意用户协议时的动画的时间
 
+
+    private val loginViewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
         initView()
 
+        //如果已经登录的话,检测之前是否登录
+        if (SPUtils.getLoginStatus()) {
+//            startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
+        }
+
+
+        // 观察登录结果
+        loginViewModel.loginResult.observe(this) { response ->
+            if (response.code == 0) {
+                shortToast("登录成功")
+//                startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
+                finish()
+            } else {
+                shortToast("登录失败")
+            }
+        }
+
         mBinding.apply {
             loginBtnRegister.setOnClickListener {
-                startActivity(Intent(this@LoginActivity,RegisterActivity::class.java))
+                startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             }
-
-
         }
 
     }
@@ -74,23 +76,11 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
             finish()
         }
-        mBinding.loginLavCheck.setOnSingleClickListener {
-            mBinding.loginLavCheck.playAnimation()
-            //    mViewModel.userAgreementIsCheck = !mViewModel.userAgreementIsCheck
-        }
-        mBinding.loginLavCheck.addAnimatorUpdateListener {
-            /*  if (it.animatedFraction == 1f && mViewModel.userAgreementIsCheck) {
-                  mBinding.loginLavCheck.pauseAnimation()
-              } else if (it.animatedFraction >= mLottieProgress && it.animatedFraction != 1f && !mViewModel.userAgreementIsCheck) {
-                  mBinding.loginLavCheck.pauseAnimation()
-              }*/
-        }
+
         //设置用户协议和隐私政策的文字
         val spannableString = SpannableStringBuilder()
         spannableString.append("同意《用户协议》和《隐私权政策》")
-        //解决文字点击后变色
-        mBinding.loginTvUserAgreement.highlightColor =
-            ContextCompat.getColor(this, android.R.color.transparent)
+
         //设置用户协议和隐私权政策点击事件
         val userAgreementClickSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -124,8 +114,6 @@ class LoginActivity : BaseActivity() {
         val privacySpan = ForegroundColorSpan(Color.parseColor("#2CDEFF"))
         spannableString.setSpan(userAgreementSpan, 2, 8, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         spannableString.setSpan(privacySpan, 9, 16, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
-        mBinding.loginTvUserAgreement.text = spannableString
-        mBinding.loginTvUserAgreement.movementMethod = LinkMovementMethod.getInstance()
     }
 
     private fun loginAction() {

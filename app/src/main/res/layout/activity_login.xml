@@ -118,7 +118,6 @@
             android:id="@+id/login_et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:background="@null"
             android:drawablePadding="16dp"
             android:hint="请输入密码"
@@ -142,17 +141,18 @@
         android:layout_marginStart="33dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="33dp"
+        android:layout_marginBottom="212dp"
         android:background="@drawable/login_ic_btn_login_background"
         android:text="登 录"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_tv_user_agreement"
         app:layout_constraintVertical_bias="0.11"
         tools:ignore="HardcodedText" />
-
 
     <Button
         android:id="@+id/login_btn_register"
@@ -195,29 +195,7 @@
     </RelativeLayout>
 
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/login_lav_check"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintHorizontal_bias="0.929"
-        app:layout_constraintStart_toStartOf="@+id/login_iv_password"
-        app:layout_constraintTop_toBottomOf="@+id/login_et_password_container"
-        app:lottie_progress="0.39"
-        app:lottie_rawRes="@raw/lottie_check_login" />
 
-    <TextView
-        android:id="@+id/login_tv_user_agreement"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="同意《用户协议》和《隐私权声明》"
-        android:textSize="11sp"
-        android:textColor="#ABBCD8"
-        app:layout_constraintStart_toEndOf="@+id/login_lav_check"
-        app:layout_constraintTop_toBottomOf="@+id/login_et_password_container"
-        tools:ignore="HardcodedText" />
 
     <!--这个登录时的飞机动画-->
     <com.airbnb.lottie.LottieAnimationView

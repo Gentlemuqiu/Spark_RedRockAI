@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.redrockai.adapter.RegisterViewModel
 import com.example.redrockai.databinding.ActivityRegisterBinding
-import com.example.redrockai.lib.utils.BaseUtils.isPasswordValid
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
 
 class RegisterActivity : AppCompatActivity() {
@@ -28,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         registerViewModel.registerResult.observe(this) { response ->
             if (response.code == 0) {
                 shortToast("注册成功")
-                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+//                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                 finish()
             } else {
                 shortToast("注册失败")
@@ -64,16 +63,11 @@ class RegisterActivity : AppCompatActivity() {
             val password = mBinding.registerEtPassword.text.toString()
 
             if (account.isNotEmpty() && password.isNotEmpty()) {
-                if (isPasswordValid(password)) {
                     // 发起注册请求
                     registerViewModel.register(account, password, "https://example.com/avatar.jpg")
 
-
-                } else {
-                    shortToast("账号格式或者密码格式有问题")
-                }
             } else {
-                if (account.isEmpty()) shortToast("邮箱不能为空")
+                if (account.isEmpty()) shortToast("账号不能为空")
                 if (password.isEmpty()) shortToast("密码不能为空")
             }
         }

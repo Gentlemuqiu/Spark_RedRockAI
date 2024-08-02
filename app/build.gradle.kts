@@ -62,6 +62,7 @@ android {
         implementation(project(":module_schoolroom"))
         implementation(project(":module_playground"))
         implementation(project(":module_mine"))
+//        implementation(project(":module_teacher"))
         implementation(project(":module_message"))
         implementation("com.hjq:xxpermissions:8.2")
         implementation("com.airbnb.android:lottie:3.1.0")
