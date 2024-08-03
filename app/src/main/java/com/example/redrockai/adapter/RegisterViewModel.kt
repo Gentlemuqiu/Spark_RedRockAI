@@ -32,13 +32,8 @@ class RegisterViewModel : ViewModel() {
                 call: Call<RegisterResponse>,
                 response: Response<RegisterResponse>
             ) {
-                if (response.isSuccessful) {
                     _registerResult.postValue(response.body())
-                    Log.d("weafwefawfawef", "测试数据${response.body()}")
-
-                } else {
-                    _registerResult.postValue(RegisterResponse(-1, "Failed", null))
-                }
+                Log.d("6666666666666565656565", "测试数据${response.body()}")
             }
 
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {

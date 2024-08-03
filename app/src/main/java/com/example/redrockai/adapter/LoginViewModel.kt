@@ -25,7 +25,7 @@ class LoginViewModel : ViewModel() {
     val loginResult: LiveData<LoginResponse> get() = _loginResult
 
 
-    fun register(username: String, password: String) {
+    fun login(username: String, password: String) {
         val request = LoginRequest(username, password)
 
         RetrofitClient.instance.login(request).enqueue(object : Callback<LoginResponse> {
@@ -33,15 +33,13 @@ class LoginViewModel : ViewModel() {
                 call: Call<LoginResponse>,
                 response: Response<LoginResponse>
             ) {
-                if (response.isSuccessful) {
                     _loginResult.postValue(response.body())
                     SPUtils.saveUserName(username)
                     SPUtils.savePassWord(password)
                     SPUtils.saveLoginStatus()
                     SPUtils.saveNickName(SPUtils.getToken())
 
-                    Log.d("weafwefawfawef", "测试数据${response.body()}")
-                }
+                    Log.d("6666666666666565656565", "测试数据${response.body()}")
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 Log.d("LogTwefawfewest", "测试数据${t.message.toString()}")

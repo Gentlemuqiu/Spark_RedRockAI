@@ -117,31 +117,16 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun loginAction() {
-        /*  if (mViewModel.userAgreementIsCheck) {
-              //放下键盘
-              val inputMethodManager =
-                  getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-              if (inputMethodManager.isActive) {
-                  inputMethodManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
-              }
-              val stuNum = mBinding.loginEtAccount.text?.toString() ?: ""
-              val password = mBinding.loginEtPassword.text?.toString() ?: ""
-              if (checkDataCorrect(stuNum, password)) {
-                  changeUiState()
-                  mViewModel.login(stuNum, password)
-              }
-          } else {
-              agreeToUserAgreement()
-          }*/
+        val account = mBinding.loginEtAccount.text?.toString() ?: ""
+        val password = mBinding.loginEtPassword.text?.toString() ?: ""
+        if (account.isNotEmpty() && password.isNotEmpty()) {
+            loginViewModel.login(account, password)
+        } else {
+            shortToast("账号或密码不能为空")
+        }
+
     }
 
-    private fun checkDataCorrect(stuNum: String, idNum: String): Boolean {
-        if (idNum.length < 6) {
-            toast("请检查一下密码吧，似乎有点问题")
-            return false
-        }
-        return true
-    }
 
     // 这个方法可以在登录状态和未登录状态之间切换
     private fun changeUiState() {
