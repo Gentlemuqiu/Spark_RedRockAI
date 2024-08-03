@@ -183,6 +183,7 @@ class ClassFragment : Fragment() {
                    .withString("description", it.desc)
                    .withString("coverDetail", it.coverUrl)
                    .withInt("id", it.playUrl.hashCode())
+                   .withInt("tagId", it.tagId)
                     .navigation(context)
             }
         }

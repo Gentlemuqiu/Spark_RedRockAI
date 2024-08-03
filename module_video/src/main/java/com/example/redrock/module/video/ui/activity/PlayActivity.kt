@@ -118,6 +118,7 @@ class PlayActivity : BaseActivity() {
     private var likeCount: Int? = null
     private var commentCount: Int? = null
     private var id: Int? = null
+    private var tagId: Int? = null
 
     private fun initDate() {
 
@@ -128,7 +129,9 @@ class PlayActivity : BaseActivity() {
         likeCount = intent.getIntExtra("likeCount", 0)
         commentCount = intent.getIntExtra("commentCount", 0)
         id = intent.getIntExtra("id", 0)
-        idViewModel.id.value = id
+        tagId = intent.getIntExtra("tagId", 0)
+
+        idViewModel.id.value = tagId
 
         mBinding.apply {
             tvPlayTitle.text = title

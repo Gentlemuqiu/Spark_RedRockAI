@@ -12,14 +12,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.redrock.module.video.Bean.RelatedCategoryBean
-import com.example.redrock.module.video.ui.activity.PlayActivity
 import com.example.redrock.module.video.R
-import com.example.redrockai.lib.utils.formatNumberToTime
-import com.example.redrockai.lib.utils.room.bean.HistoryRecord
+import com.example.redrock.module.video.ui.activity.PlayActivity
 import com.example.redrockai.lib.utils.room.dao.HistoryRecordDao
 import com.example.redrockai.lib.utils.room.db.AppDatabase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 
 class TopAdapter() :
@@ -80,11 +76,12 @@ class TopAdapter() :
                     /*GlobalScope.launch {
                         historyRecordDao.insertOrUpdate(record)
                     }*/
-                  /*  intent.putExtra("playUrl", data.playUrl)
-                    intent.putExtra("title", data.title)
-                    intent.putExtra("description", data.description)
-                    intent.putExtra("category", data.category)
-                    intent.putExtra("id", data.id)*/
+                    intent.putExtra("playUrl", this.playUrl)
+                    intent.putExtra("title", this.title)
+                    intent.putExtra("description", this.desc)
+//                    intent.putExtra("category", this.)
+                    intent.putExtra("tagId", this.tagId)
+                    intent.putExtra("id", this.playUrl.hashCode())
                 }
                 view.context.startActivity(intent)
             }
