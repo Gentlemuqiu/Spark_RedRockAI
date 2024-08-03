@@ -13,11 +13,11 @@ data class RelatedCategoryBean(
 
     data class Data(
         @SerializedName("cover_url")
-        val coverUrl: String,
+        val playUrl: String,
         @SerializedName("desc")
         val desc: String,
         @SerializedName("play_url")
-        val playUrl: String,
+        val coverUrl: String,
         @SerializedName("tag_id")
         val tagId: Int,
         @SerializedName("title")

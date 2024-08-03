@@ -71,12 +71,6 @@ class RegisterActivity : AppCompatActivity() {
                 if (password.isEmpty()) shortToast("密码不能为空")
             }
         }
-
-        mBinding.loginTvTouristModeEnter.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
-            finish()
-
-        }
     }
 
 }
