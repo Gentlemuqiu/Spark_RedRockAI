@@ -1,0 +1,197 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/config_white_black" >
+
+    <TextView
+        android:id="@+id/login_tv_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="start"
+        android:text="注册"
+        android:textColor="@color/config_level_two_font_color"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/login_tv_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="您好鸭，欢迎来到学智链~"
+        android:textColor="@color/config_alpha_level_two_font_color"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/login_tv_login"
+        app:layout_constraintTop_toBottomOf="@+id/login_tv_login"
+        app:layout_constraintVertical_bias="0.01999998"
+        tools:ignore="HardcodedText" />
+
+
+    <ImageView
+        android:id="@+id/login_iv_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toStartOf="@+id/login_tv_welcome"
+        app:layout_constraintTop_toBottomOf="@+id/login_tv_welcome"
+        app:layout_constraintVertical_bias="0.07"
+        app:srcCompat="@drawable/login_ic_student_id"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/login_iv_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        app:srcCompat="@drawable/login_ic_password"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/login_iv_account"
+        app:layout_constraintStart_toStartOf="@+id/login_iv_account"
+        app:layout_constraintTop_toBottomOf="@+id/login_iv_account"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="ContentDescription" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_et_account_container"
+        style="@style/LoginTextInputStyle"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="@+id/login_iv_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/login_iv_account"
+        app:layout_constraintTop_toTopOf="@+id/login_iv_account"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_et_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawablePadding="16dp"
+            android:hint="请输入账号"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textColor="@color/login_et_text_color"
+            android:textColorHint="@color/login_et_hint_color"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_et_password_container"
+        style="@style/LoginTextInputStyle"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/login_iv_password"
+        app:layout_constraintEnd_toEndOf="@+id/login_et_account_container"
+        app:layout_constraintStart_toStartOf="@+id/login_et_account_container"
+        app:layout_constraintTop_toBottomOf="@+id/login_et_account_container"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/register_et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawablePadding="16dp"
+            android:hint="请输入密码"
+            android:imeOptions="actionSend"
+            android:inputType="textPassword"
+            android:maxLength="16"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:textColor="@color/login_et_text_color"
+            android:textColorHint="@color/login_et_hint_color"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="212dp"
+        android:background="@drawable/login_ic_btn_login_background"
+        android:text="注 册"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn_login"
+        app:layout_constraintVertical_bias="0.85"
+        tools:ignore="UnknownIdInLayout">
+
+
+    </RelativeLayout>
+
+
+
+
+    <!--这个登录时的飞机动画-->
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/login_loging" />
+
+    <TextView
+        android:id="@+id/login_tv_tourist_mode_enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="148dp"
+        android:text="游客模式"
+        android:textColor="@color/login_tv_text_tourist"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"
+        tools:ignore="HardcodedText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

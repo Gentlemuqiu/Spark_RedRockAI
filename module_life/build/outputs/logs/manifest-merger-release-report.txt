@@ -1,0 +1,30 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:2:1-13:12
+INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:2:1-13:12
+	package
+		INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:4:5-11:19
+activity#com.example.module.life.ui.Activity.WebActivity
+ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:5:9-7:40
+	android:exported
+		ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:7:13-37
+	android:name
+		ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:6:13-52
+activity#com.example.module.life.ui.Activity.SearchActivity
+ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:8:9-10:40
+	android:exported
+		ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:10:13-37
+	android:name
+		ADDED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml:9:13-55
+uses-sdk
+INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml
+INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life\src\main\AndroidManifest.xml

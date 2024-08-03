@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\29364\Desktop\deskNormal\Spark_RedRockAI\module_life"
+    name=":module_life"
+    type="LIBRARY"
+    maven="RedRockAI:module_life:"
+    agpVersion="8.2.2"
+    buildFolder="build"
+    bootClassPath="E:\SDK\platforms\android-34\android.jar;E:\SDK\build-tools\34.0.0\core-lambda-stubs.jar"
+    javaSourceLevel="1.8"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>
