@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.module_teacher.repository.UploadRepository
 import com.example.module_teacher.bean.UploadResponse
+import com.example.redrockai.lib.utils.toast
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -24,6 +25,7 @@ class UploadViewModel : ViewModel() {
                 _uploadResponse.postValue(response)
             }catch (e: Exception) {
                 // Handle the exception
+                toast("网络错误")
                 Log.e("NetworkError", "Error fetching data: ", e)
             }
 
@@ -37,6 +39,7 @@ class UploadViewModel : ViewModel() {
                 _uploadResponseVideo.postValue(response)
             }catch (e: Exception) {
                 // Handle the exception
+                toast("网络错误")
                 Log.e("NetworkError", "Error fetching data: ", e)
             }
         }
