@@ -29,6 +29,8 @@ class IntroduceViewModel() : ViewModel() {
                 }
                 .collect {
                     _relatedCategoryData.value = it
+                    Log.d("33452352435", "测试数据${_relatedCategoryData.value}")
+
                 }
         }
     }

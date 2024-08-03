@@ -178,11 +178,11 @@ class ClassFragment : Fragment() {
 //                }
 
                ARouter.getInstance().build("/play/PlayActivity/")
-                    .withString("playUrl", it.playUrl)
-                    .withString("title", it.title)
-                    .withString("description", it.desc)
-                    .withString("coverDetail", it.coverUrl)
-                    .withInt("id", it.tagId)
+                   .withString("playUrl", it.playUrl)
+                   .withString("title", it.title)
+                   .withString("description", it.desc)
+                   .withString("coverDetail", it.coverUrl)
+                   .withInt("id", it.playUrl.hashCode())
                     .navigation(context)
             }
         }

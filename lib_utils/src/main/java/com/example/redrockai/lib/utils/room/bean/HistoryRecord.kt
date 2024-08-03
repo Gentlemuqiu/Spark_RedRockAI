@@ -13,14 +13,14 @@ import androidx.room.Entity
 
 @Entity(tableName = "history_records", primaryKeys = ["newsId"])
 data class HistoryRecord(
-    val newsId: Int, //主键!!
+    val newsId: Int, //主键!!因为直接换主键需要改很多东西，直接用了playerUrl.hashcode
     val title: String,
     val timestamp: Long,
     val playerUrl: String,
     val description: String,
     val coverDetail: String,
-    val category: String,
-    val shareCount: Int,
-    val likeCount: Int,
-    val commentCount: Int,
+//    val category: String,
+//    val shareCount: Int,
+//    val likeCount: Int,
+//    val commentCount: Int,
     )

@@ -1,6 +1,7 @@
 package com.example.redrock.module.video.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -74,15 +75,14 @@ class PlayActivity : BaseActivity() {
                 // 生成一条记录
                 val record = HistoryRecord(
                     newsId = id!!,
+                    playerUrl = playUrl!!,
                     title = title,
                     timestamp = System.currentTimeMillis(),
-                    playerUrl = playUrl!!,
                     description = description!!,
                     coverDetail = coverDetail,
-                    category = category!!,
-                    shareCount = shareCount!!,
-                    likeCount = likeCount!!,
-                    commentCount = commentCount!!
+//                    shareCount = shareCount!!,
+//                    likeCount = likeCount!!,
+//                    commentCount = commentCount!!
 
                 )
 
@@ -114,26 +114,26 @@ class PlayActivity : BaseActivity() {
 
     private var playUrl: String? = null
     private var description: String? = null
-    private var category: String? = null
     private var shareCount: Int? = null
     private var likeCount: Int? = null
     private var commentCount: Int? = null
     private var id: Int? = null
 
     private fun initDate() {
+
         playUrl = intent.getStringExtra("playUrl")
         description = intent.getStringExtra("description")
-        category = intent.getStringExtra("category")
         title = intent.getStringExtra("title").toString()
         shareCount = intent.getIntExtra("shareCount", 0)
         likeCount = intent.getIntExtra("likeCount", 0)
         commentCount = intent.getIntExtra("commentCount", 0)
         id = intent.getIntExtra("id", 0)
         idViewModel.id.value = id
+
         mBinding.apply {
             tvPlayTitle.text = title
             tvPlayDescription.text = description
-            tvPlayCategory.text = category
+//            tvPlayCategory.text = category
             tvPlayShare.text = shareCount.toString()
             tvPlayLike.text = likeCount.toString()
             tvPlayComment.text = commentCount.toString()

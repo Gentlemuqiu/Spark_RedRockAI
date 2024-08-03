@@ -10,7 +10,6 @@ import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.module.schoolroom.adapter.PastCourseRvAdapter
 import com.example.redrockai.module.schoolroom.databinding.ActivityHistoryBinding
 import com.example.redrockai.module.schoolroom.viewModel.HistoryRecordViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
@@ -53,11 +52,11 @@ class HistoryRecordActivity : BaseActivity() {
                         .withString("playUrl", it.playerUrl)
                         .withString("title", it.title)
                         .withString("description", it.description)
-                        .withString("category", it.category)
-                        .withInt("shareCount", it.shareCount)
-                        .withInt("likeCount", it.likeCount)
-                        .withInt("commentCount", it.commentCount)
-                        .withInt("id", it.newsId)
+//                        .withString("category", it.category)
+//                        .withInt("shareCount", it.shareCount)
+//                        .withInt("likeCount", it.likeCount)
+//                        .withInt("commentCount", it.commentCount)
+                        .withInt("id", it.playerUrl.hashCode())
                         .navigation(this@HistoryRecordActivity)
                 }
 

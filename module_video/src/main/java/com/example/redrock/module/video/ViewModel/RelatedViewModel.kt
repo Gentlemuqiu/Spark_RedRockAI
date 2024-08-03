@@ -1,5 +1,6 @@
 package com.example.model.play.ViewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,8 @@ class RelatedViewModel() : ViewModel() {
                 }
                 .collect{
                     _relatedData.value=it
+                    Log.d("332443424", "测试数据${it}")
+
                 }
         }
     }

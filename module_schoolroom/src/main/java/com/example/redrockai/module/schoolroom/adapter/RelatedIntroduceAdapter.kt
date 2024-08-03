@@ -1,5 +1,6 @@
 package com.example.redrockai.module.schoolroom.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,8 @@ class RelatedIntroduceAdapter :
 
 
         fun bind(itemData: RelatedCategoryBean.Data) {
+            Log.d("LogTest", "测试数据${itemData}")
+
 
             itemTitle.text = itemData.title
             itemDesc.text = itemData.desc
