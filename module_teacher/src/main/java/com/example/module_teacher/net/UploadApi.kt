@@ -1,5 +1,6 @@
-package com.example.module_teacher
+package com.example.module_teacher.net
 
+import com.example.module_teacher.bean.UploadResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Multipart

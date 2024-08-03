@@ -1,4 +1,4 @@
-package com.example.module_teacher
+package com.example.module_teacher.net
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

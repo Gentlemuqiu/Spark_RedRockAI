@@ -1,4 +1,4 @@
-package com.example.module_teacher
+package com.example.module_teacher.util
 
 fun replaceLastFiveCharactersWithJpg(input: String): String {
     return if (input.length >= 5) {

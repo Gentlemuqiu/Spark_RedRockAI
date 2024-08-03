@@ -44,14 +44,16 @@
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.module_teacher.ui.CreateActivity"
+            android:exported="false" />
         <activity
             android:name=".module.schoolroom.ui.activity.HistoryRecordActivity"
             android:exported="false" /> <!-- 不要删除该标签，兼容低版本安卓 -->

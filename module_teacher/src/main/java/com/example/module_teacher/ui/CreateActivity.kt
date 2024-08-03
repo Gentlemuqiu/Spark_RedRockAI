@@ -1,14 +1,16 @@
-package com.example.module_teacher
+package com.example.module_teacher.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -19,10 +21,15 @@ import android.text.TextWatcher
 import android.text.style.RelativeSizeSpan
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,10 +40,17 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder
 import com.bigkoo.pickerview.view.OptionsPickerView
-import com.bigkoo.pickerview.view.TimePickerView
+import com.bumptech.glide.Glide
+import com.example.module_teacher.R
+import com.example.module_teacher.bean.CreateVideoRequest
+import com.example.module_teacher.viewmodel.UploadViewModel
 import com.example.module_teacher.databinding.ActivityCreateBinding
+import com.example.module_teacher.util.replaceLastFiveCharactersWithJpg
+import com.example.module_teacher.util.replaceLastFiveCharactersWithMp4
+import com.example.module_teacher.viewmodel.CreateVideoModel
 import com.example.redrockai.lib.utils.toast
 import com.example.redrockai.lib.utils.view.gone
+import com.example.redrockai.lib.utils.view.visible
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.FileOutputStream
@@ -51,13 +65,16 @@ class CreateActivity : AppCompatActivity() {
     }
     private lateinit var coverFile: File
     private var isCovered = false
+    private var isCovered1 = false
 
     // 定义所需的权限和请求码
     private val permissions = arrayOf(
         Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
     )
     private val uploadViewModel by lazy { ViewModelProvider(this)[UploadViewModel::class.java] }
+    private val createViewModel by lazy { ViewModelProvider(this)[CreateVideoModel::class.java] }
 
     private lateinit var photoUri: Uri
     private lateinit var cover_url: String
@@ -66,11 +83,13 @@ class CreateActivity : AppCompatActivity() {
     private lateinit var pvtype: OptionsPickerView<String>
     private var index = 0
     private var isChanged = false
-    private var selectedType: String = ""
+    private var selectedType: Int = -1
     private val typeList =
         mutableListOf("高等数学", "线性代数", "人工智能", "机器学习", "离散数学", "数据结构")
 
     private val permissionsRequestCode = 100
+
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private val takePhotoResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -89,11 +108,12 @@ class CreateActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // check()
+            check()
         }
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
@@ -105,7 +125,8 @@ class CreateActivity : AppCompatActivity() {
             Log.d("CreateActivity", "uploadFile response: ${response}")
             response?.let {
                 if (it.code == 0) {
-                    cover_url = replaceLastFiveCharactersWithJpg(it.url)
+                    cover_url = it.url
+                    isCovered1 = true
                     Log.d("hui", "Upload success: ${it.url}")
                 } else {
                     Log.e("hui", "Upload failed with message: ${it.msg}")
@@ -117,17 +138,26 @@ class CreateActivity : AppCompatActivity() {
         // 观察视频文件的 LiveData
 
         uploadViewModel.uploadResponseVideo.observe(this, Observer { response ->
-            Log.d("CreateActivity", "uploadFile response: ${response}")
+            Log.d("hui", "uploadFile response: ${response}")
             response?.let {
                 if (it.code == 0) {
-                    play_url = replaceLastFiveCharactersWithMp4(it.url)
-                    if (play_url.isNotEmpty()){
-                        mBinding.ivCoverVideo.setBackgroundResource(R.drawable.right)
-                        mBinding.ivCoverVideo.gone()
-                    }else{
-                        mBinding.ivCoverVideo.setBackgroundResource(R.drawable.error)
-                        mBinding.ivCoverVideo.gone()
+                    play_url = it.url
+                    Log.d("hui", "onCreate: ")
+                    isCovered = true
+                    if (play_url.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(R.drawable.right)
+                            .into(mBinding.ivCoverVideo)
+                        mBinding.tvCoverVideo.gone()
+                        mBinding.ivCoverVideo.setOnClickListener(null)
+                    } else {
+                        Glide.with(this)
+                            .load(R.drawable.error)
+                            .into(mBinding.ivCoverVideo)
+                        mBinding.tvCoverVideo.visible()
+
                     }
+
                     Log.d("hui", "Upload success: ${it.url}")
                 } else {
                     Log.e("hui", "Upload failed with message: ${it.msg}")
@@ -136,56 +166,45 @@ class CreateActivity : AppCompatActivity() {
                 Log.e("hui", "Upload failed")
             }
         })
+        createViewModel.response.observe(this, Observer { response ->
+            if (response.isSuccessful) {
+                val result = response.body()?.code
+                if (result == 200) {
+                    toast("上传成功")
+                    finish()
+                } else {
+                    toast("上传失败")
+                }
+            } else { // 处理错误
+                Log.d("hui", "onCreate: ")
+                toast("上传失败")
+            }
+        })
+
     }
 
-    /* fun check() {
-         val name = mBinding.ufieldEtName.toString()
-         val introduce = mBinding.etIntroduce.text.toString()
-         if (name.isNotEmpty() && introduce.isNotEmpty() && isChanged && play_url.isNotEmpty() && cover_url.isNotEmpty()) {
-             mBinding.btCreate.apply {
-                 setBackgroundResource(R.drawable.ufield_shape_createbutton2)
-                 setOnClickListener {
-                     if (isCovered) {
-                         viewModel.postActivityWithCover(
-                             getMap(
-                                 name,
-                                 selectedType,
-                                 selectedStartTimestamp.toInt(),
-                                 selectedEndTimestamp.toInt(),
-                                 address,
-                                 way,
-                                 sponsor,
-                                 phone,
-                                 introduce
-                             ),
-                             coverFile
-                         )
-                         setOnClickListener(null)
-                     } else {
-                         viewModel.postActivityNotCover(
-                             getMap(
-                                 name,
-                                 selectedType,
-                                 selectedStartTimestamp.toInt(),
-                                 selectedEndTimestamp.toInt(),
-                                 address,
-                                 way,
-                                 sponsor,
-                                 phone,
-                                 introduce
-                             )
-                         )
-                         setOnClickListener(null)
+    fun check() {
+        val name = mBinding.ufieldEtName.text.toString()
+        val introduce = mBinding.etIntroduce.text.toString()
+        if (name.isNotEmpty() && introduce.isNotEmpty() && isChanged && selectedType != -1) {
+            if (isCovered && isCovered1) {
+                val requestBody =
+                    CreateVideoRequest(selectedType, name, introduce, cover_url, play_url)
+                mBinding.btCreate.apply {
+                    setBackgroundResource(R.drawable.ufield_shape_createbutton2)
+                    setOnClickListener {
+                        createViewModel.createVideo(requestBody)
+                        setOnClickListener(null)
+                    }
+                }
+            }
+        } else {
+            mBinding.btCreate.setBackgroundResource(R.drawable.ufield_shape_createbutton)
+            mBinding.btCreate.setOnClickListener(null)
+        }
+    }
 
-                     }
-                 }
-             }
-         } else {
-             mBinding.btCreate.setBackgroundResource(R.drawable.ufield_shape_createbutton)
-             mBinding.btCreate.setOnClickListener(null)
-         }
-     }*/
-
+    @RequiresApi(Build.VERSION_CODES.CUPCAKE)
     private fun initListener() {
         mBinding.tvChoose.setOnClickListener {
             pvtype = OptionsPickerBuilder(this) { p1, _, _, _ ->
@@ -193,13 +212,13 @@ class CreateActivity : AppCompatActivity() {
                 isChanged = true
                 mBinding.tvChoose.text = typeList[index]
                 selectedType = when (typeList[index]) {
-                    "高等数学" -> "1"
-                    "线性代数" -> "2"
-                    "人工智能" -> "3"
-                    "机器学习" -> "4"
-                    "离散数学" -> "5"
-                    "数据结构" -> "6"
-                    else -> ""
+                    "高等数学" -> 1
+                    "线性代数" -> 2
+                    "人工智能" -> 3
+                    "机器学习" -> 4
+                    "离散数学" -> 5
+                    "数据结构" -> 6
+                    else -> -1
                 }
             }
                 .setLayoutRes(R.layout.popup_activitytype_layout) {
@@ -234,7 +253,9 @@ class CreateActivity : AppCompatActivity() {
                 window?.apply {
                     setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim)
                     setGravity(Gravity.BOTTOM)
-                    setDimAmount(0.3f)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        setDimAmount(0.3f)
+                    }
                 }
             }
             pvtype.show()
@@ -244,8 +265,11 @@ class CreateActivity : AppCompatActivity() {
     private fun initTextListener() {
         mBinding.ufieldEtName.addTextChangedListener(watcher)
         mBinding.tvChoose.addTextChangedListener(watcher)
+        mBinding.etIntroduce.addTextChangedListener(watcher)
+
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun initView() {
         mBinding.ufieldIvBack.setOnClickListener {
             finishAfterTransition()
@@ -272,6 +296,7 @@ class CreateActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     @SuppressLint("CheckResult")
     fun getPhoto() {
         MaterialDialog(this).show {
@@ -287,6 +312,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private fun takePhoto() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -305,6 +331,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private val getPhotoInPhotoAlbum =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
@@ -320,16 +347,28 @@ class CreateActivity : AppCompatActivity() {
     private val getVideoInPhotoAlbum =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                startUploadVideo(uri)
+                contentResolver.openInputStream(uri)?.use { _ ->
+                    startUploadVideo(uri)
+                }
             }
         }
 
-    private fun startUploadVideo(videoUri: Uri) {
-        // 启动视频上传
-        val videoFile = File(videoUri.path ?: return)
-        uploadViewModel.uploadFileVideo(videoFile)
+    private fun startUploadVideo(uri: Uri) {
+        val tempFile = createTempFile("upload", ".mp4", cacheDir)
+        try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                tempFile.outputStream().use { outputStream ->
+                    inputStream.copyTo(outputStream)
+                }
+            }
+            uploadViewModel.uploadFileVideo(tempFile)
+        } catch (e: Exception) {
+            Log.e("startUploadVideo", "Failed to open input stream", e)
+        }
     }
 
+
+    @SuppressLint("CheckResult")
     private fun getVideo() {
         MaterialDialog(this).show {
             listItems(items = listOf("选择视频")) { _, index, _ ->
@@ -342,6 +381,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoFile = createPhotoFile()
@@ -354,12 +394,14 @@ class CreateActivity : AppCompatActivity() {
         takePhotoResultLauncher.launch(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private fun createPhotoFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmm ss", Locale.getDefault()).format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private fun startCropActivity(uri: Uri) {
         val destinationFile = createDestinationFile()
         val uCrop = UCrop.of(uri, Uri.fromFile(destinationFile))
@@ -384,12 +426,14 @@ class CreateActivity : AppCompatActivity() {
         return (dp * scale + 0.5f).toInt()
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     private fun createDestinationFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmm ss", Locale.getDefault()).format(Date())
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File(storageDir, "cropped_$timeStamp.jpg")
     }
 
+    @RequiresApi(Build.VERSION_CODES.FROYO)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -484,4 +528,38 @@ class CreateActivity : AppCompatActivity() {
         return file.extension.equals("png", true)
     }
 
+    @RequiresApi(Build.VERSION_CODES.CUPCAKE)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (ev.action == MotionEvent.ACTION_UP) {
+            val v = currentFocus
+
+            //如果不是落在EditText区域，则需要关闭输入法
+            if (hideKeyboard(v, ev)) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(v?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                v?.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
+    // 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘
+    private fun hideKeyboard(view: View?, event: MotionEvent): Boolean {
+        if (view != null && view is EditText) {
+
+            val location = intArrayOf(0, 0)
+            view.getLocationInWindow(location)
+
+            //获取现在拥有焦点的控件view的位置，即EditText
+            val left = location[0]
+            val top = location[1]
+            val bottom = top + view.height
+            val right = left + view.width
+            //判断我们手指点击的区域是否落在EditText上面，如果不是，则返回true，否则返回false
+            val isInEt = (event.x > left && event.x < right && event.y > top
+                    && event.y < bottom)
+            return !isInEt
+        }
+        return false
+    }
 }

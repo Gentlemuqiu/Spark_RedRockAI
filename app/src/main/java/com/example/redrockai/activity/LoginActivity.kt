@@ -14,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.core.view.get
+import com.example.module_teacher.ui.CreateActivity
 import com.example.redrockai.adapter.LoginViewModel
 import com.example.redrockai.databinding.ActivityLoginBinding
 import com.example.redrockai.lib.utils.BaseActivity
@@ -37,7 +38,7 @@ class LoginActivity : BaseActivity() {
 
         //如果已经登录的话,检测之前是否登录
         if (SPUtils.getLoginStatus()) {
-//            startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
+            startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
         }
 
 
@@ -45,7 +46,7 @@ class LoginActivity : BaseActivity() {
         loginViewModel.loginResult.observe(this) { response ->
             if (response.code == 0) {
                 shortToast("登录成功")
-//                startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
+                startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
                 finish()
             } else {
                 shortToast("登录失败")
