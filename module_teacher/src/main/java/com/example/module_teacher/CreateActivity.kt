@@ -61,6 +61,8 @@ class CreateActivity : AppCompatActivity() {
 
     private lateinit var photoUri: Uri
     private lateinit var cover_url: String
+    private lateinit var play_url: String
+
     private lateinit var pvtype: OptionsPickerView<String>
     private var index = 0
     private var isChanged = false
@@ -103,7 +105,7 @@ class CreateActivity : AppCompatActivity() {
             Log.d("CreateActivity", "uploadFile response: ${response}")
             response?.let {
                 if (it.code == 0) {
-                    cover_url = it.url
+                    cover_url = replaceLastFiveCharactersWithJpg(it.url)
                     Log.d("hui", "Upload success: ${it.url}")
                 } else {
                     Log.e("hui", "Upload failed with message: ${it.msg}")
@@ -118,6 +120,14 @@ class CreateActivity : AppCompatActivity() {
             Log.d("CreateActivity", "uploadFile response: ${response}")
             response?.let {
                 if (it.code == 0) {
+                    play_url = replaceLastFiveCharactersWithMp4(it.url)
+                    if (play_url.isNotEmpty()){
+                        mBinding.ivCoverVideo.setBackgroundResource(R.drawable.right)
+                        mBinding.ivCoverVideo.gone()
+                    }else{
+                        mBinding.ivCoverVideo.setBackgroundResource(R.drawable.error)
+                        mBinding.ivCoverVideo.gone()
+                    }
                     Log.d("hui", "Upload success: ${it.url}")
                 } else {
                     Log.e("hui", "Upload failed with message: ${it.msg}")
@@ -127,54 +137,54 @@ class CreateActivity : AppCompatActivity() {
             }
         })
     }
-    /*fun check() {
-        val name = mBinding.ufieldEtName.toString()
-        val introduce = mBinding.etIntroduce.text.toString()
-        if (name.isNotEmpty() && introduce.isNotEmpty() && isChanged) {
-               mBinding.btCreate.apply {
-                    setBackgroundResource(R.drawable.ufield_shape_createbutton2)
-                    setOnClickListener {
-                        if (isCovered) {
-                            viewModel.postActivityWithCover(
-                                getMap(
-                                    name,
-                                    selectedType,
-                                    selectedStartTimestamp.toInt(),
-                                    selectedEndTimestamp.toInt(),
-                                    address,
-                                    way,
-                                    sponsor,
-                                    phone,
-                                    introduce
-                                ),
-                                coverFile
-                            )
-                            setOnClickListener(null)
-                        } else {
-                            viewModel.postActivityNotCover(
-                                getMap(
-                                    name,
-                                    selectedType,
-                                    selectedStartTimestamp.toInt(),
-                                    selectedEndTimestamp.toInt(),
-                                    address,
-                                    way,
-                                    sponsor,
-                                    phone,
-                                    introduce
-                                )
-                            )
-                            setOnClickListener(null)
 
-                        }
-                    }
-                }
-            }
-        else {
-            mBinding.btCreate.setBackgroundResource(R.drawable.ufield_shape_createbutton)
-            mBinding.btCreate.setOnClickListener(null)
-        }
-    }*/
+    /* fun check() {
+         val name = mBinding.ufieldEtName.toString()
+         val introduce = mBinding.etIntroduce.text.toString()
+         if (name.isNotEmpty() && introduce.isNotEmpty() && isChanged && play_url.isNotEmpty() && cover_url.isNotEmpty()) {
+             mBinding.btCreate.apply {
+                 setBackgroundResource(R.drawable.ufield_shape_createbutton2)
+                 setOnClickListener {
+                     if (isCovered) {
+                         viewModel.postActivityWithCover(
+                             getMap(
+                                 name,
+                                 selectedType,
+                                 selectedStartTimestamp.toInt(),
+                                 selectedEndTimestamp.toInt(),
+                                 address,
+                                 way,
+                                 sponsor,
+                                 phone,
+                                 introduce
+                             ),
+                             coverFile
+                         )
+                         setOnClickListener(null)
+                     } else {
+                         viewModel.postActivityNotCover(
+                             getMap(
+                                 name,
+                                 selectedType,
+                                 selectedStartTimestamp.toInt(),
+                                 selectedEndTimestamp.toInt(),
+                                 address,
+                                 way,
+                                 sponsor,
+                                 phone,
+                                 introduce
+                             )
+                         )
+                         setOnClickListener(null)
+
+                     }
+                 }
+             }
+         } else {
+             mBinding.btCreate.setBackgroundResource(R.drawable.ufield_shape_createbutton)
+             mBinding.btCreate.setOnClickListener(null)
+         }
+     }*/
 
     private fun initListener() {
         mBinding.tvChoose.setOnClickListener {
@@ -331,6 +341,7 @@ class CreateActivity : AppCompatActivity() {
             cornerRadius(16F)
         }
     }
+
     private fun launchCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoFile = createPhotoFile()

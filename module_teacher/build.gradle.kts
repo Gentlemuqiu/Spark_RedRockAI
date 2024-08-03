@@ -50,6 +50,7 @@ dependencies {
     implementation(project(":lib_utils"))
     //UC crop裁剪
     implementation("com.github.yalantis:ucrop:2.2.6")
+    implementation("androidx.activity:activity:1.9.1")
     //使用Arouter
     kapt("com.alibaba:arouter-compiler:1.5.2")
     implementation("com.alibaba:arouter-api:1.5.2")
