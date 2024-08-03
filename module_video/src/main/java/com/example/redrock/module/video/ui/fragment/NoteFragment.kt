@@ -57,7 +57,7 @@ class NoteFragment : Fragment() {
     private val PREF_IMAGE_URI = "NoteImage"
 
 
-    //todo：一定要确保noteID赋值，我这里兜底措施，lyt，
+
     //定时保存笔记
     private val handler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {

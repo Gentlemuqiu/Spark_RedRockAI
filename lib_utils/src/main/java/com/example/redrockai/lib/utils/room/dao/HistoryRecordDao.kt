@@ -20,7 +20,6 @@ interface HistoryRecordDao {
 
 
     // 查询是否存在当前的新闻记录，不存在则返回为空
-    // todo：你应该先进行插入前的检查或者使用insertOrUpdate 这个api
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(record: HistoryRecord)
 
