@@ -21,7 +21,6 @@ import com.example.redrockai.lib.utils.BaseActivity
 import com.example.redrockai.lib.utils.BaseUtils.shortToast
 import com.example.redrockai.lib.utils.setOnSingleClickListener
 import com.example.redrockai.lib.utils.toast
-import com.example.redrockai.util.SPUtils
 
 class LoginActivity : BaseActivity() {
     private val mBinding: ActivityLoginBinding by lazy {
@@ -36,10 +35,10 @@ class LoginActivity : BaseActivity() {
         setContentView(mBinding.root)
         initView()
 
-        //如果已经登录的话,检测之前是否登录
-        if (SPUtils.getLoginStatus()) {
-            startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
-        }
+//        //如果已经登录的话,检测之前是否登录
+//        if (SPUtils.getLoginStatus()) {
+//            startActivity(Intent(this@LoginActivity, CreateActivity::class.java))
+//        }
 
 
         // 观察登录结果
