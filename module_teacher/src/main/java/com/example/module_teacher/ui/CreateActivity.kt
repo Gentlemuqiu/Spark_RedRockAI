@@ -26,6 +26,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -51,6 +52,9 @@ import com.example.module_teacher.viewmodel.CreateVideoModel
 import com.example.redrockai.lib.utils.toast
 import com.example.redrockai.lib.utils.view.gone
 import com.example.redrockai.lib.utils.view.visible
+import com.github.ybq.android.spinkit.sprite.Sprite
+import com.github.ybq.android.spinkit.style.DoubleBounce
+import com.github.ybq.android.spinkit.style.Wave
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.io.FileOutputStream
@@ -66,6 +70,7 @@ class CreateActivity : AppCompatActivity() {
     private lateinit var coverFile: File
     private var isCovered = false
     private var isCovered1 = false
+    private lateinit var progressBar: ProgressBar
 
     // 定义所需的权限和请求码
     private val permissions = arrayOf(
@@ -120,13 +125,16 @@ class CreateActivity : AppCompatActivity() {
         initView()
         initTextListener()
         initListener()
+        progressBar = mBinding.spinKit
+        val wave: Sprite = Wave()
+        progressBar.indeterminateDrawable = wave
         // 观察图片文件的 LiveData
         uploadViewModel.uploadResponse.observe(this, Observer { response ->
             Log.d("CreateActivity", "uploadFile response: ${response}")
             response?.let {
                 if (it.code == 0) {
                     cover_url = it.url
-                    isCovered1 = true
+                    isCovered = true
                     Log.d("hui", "Upload success: ${it.url}")
                 } else {
                     Log.e("hui", "Upload failed with message: ${it.msg}")
@@ -134,6 +142,7 @@ class CreateActivity : AppCompatActivity() {
             } ?: run {
                 Log.e("hui", "Upload failed")
             }
+            check()
         })
         // 观察视频文件的 LiveData
 
@@ -143,19 +152,23 @@ class CreateActivity : AppCompatActivity() {
                 if (it.code == 0) {
                     play_url = it.url
                     Log.d("hui", "onCreate: ")
-                    isCovered = true
                     if (play_url.isNotEmpty()) {
+                        mBinding.ivCoverVideo.visible()
+                        isCovered1 = true
                         Glide.with(this)
                             .load(R.drawable.right)
                             .into(mBinding.ivCoverVideo)
                         mBinding.tvCoverVideo.gone()
+                        progressBar.gone()
                         mBinding.ivCoverVideo.setOnClickListener(null)
                     } else {
                         Glide.with(this)
                             .load(R.drawable.error)
                             .into(mBinding.ivCoverVideo)
+                        mBinding.ivCoverVideo.gone()
                         mBinding.tvCoverVideo.visible()
-
+                        mBinding.tvCoverVideo.text="正在上传"
+                        progressBar.visible()
                     }
 
                     Log.d("hui", "Upload success: ${it.url}")
@@ -165,6 +178,7 @@ class CreateActivity : AppCompatActivity() {
             } ?: run {
                 Log.e("hui", "Upload failed")
             }
+            check()
         })
         createViewModel.response.observe(this, Observer { response ->
             if (response.isSuccessful) {
@@ -188,8 +202,7 @@ class CreateActivity : AppCompatActivity() {
         val introduce = mBinding.etIntroduce.text.toString()
         if (name.isNotEmpty() && introduce.isNotEmpty() && isChanged && selectedType != -1) {
             if (isCovered && isCovered1) {
-                val requestBody =
-                    CreateVideoRequest(selectedType, name, introduce, cover_url, play_url)
+                val requestBody = CreateVideoRequest(selectedType, name, introduce, cover_url, play_url)
                 mBinding.btCreate.apply {
                     setBackgroundResource(R.drawable.ufield_shape_createbutton2)
                     setOnClickListener {
@@ -203,6 +216,7 @@ class CreateActivity : AppCompatActivity() {
             mBinding.btCreate.setOnClickListener(null)
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.CUPCAKE)
     private fun initListener() {
@@ -362,6 +376,10 @@ class CreateActivity : AppCompatActivity() {
                 }
             }
             uploadViewModel.uploadFileVideo(tempFile)
+            mBinding.ivCoverVideo.gone()
+            mBinding.tvCoverVideo.visible()
+            mBinding.tvCoverVideo.text="正在上传"
+            progressBar.visible()
         } catch (e: Exception) {
             Log.e("startUploadVideo", "Failed to open input stream", e)
         }

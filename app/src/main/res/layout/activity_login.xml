@@ -173,8 +173,8 @@
         tools:ignore="HardcodedText" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="39dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -182,33 +182,18 @@
         app:layout_constraintVertical_bias="0.85">
 
 
-
         <TextView
             android:id="@+id/login_tv_tourist_mode_enter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/login_tv_tourist_mode"
-            android:text="游客模式"
+            android:text="学习模式"
             android:textColor="@color/login_tv_text_tourist"
-            android:textSize="13sp"
+            android:textSize="30sp"
             tools:ignore="HardcodedText" />
     </RelativeLayout>
 
 
 
-
-    <!--这个登录时的飞机动画-->
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/login_loging" />
 
 
 
